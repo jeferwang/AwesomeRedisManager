@@ -4,6 +4,7 @@ import router from './router'
 import store from './store'
 import i18n from './i18n'
 import './plugins/element.js'
+import './plugins/iview.js'
 
 Vue.config.productionTip = false
 
