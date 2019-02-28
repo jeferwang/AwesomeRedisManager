@@ -817,7 +817,7 @@
   resolved "http://registry.npm.taobao.org/@vue/cli-overlay/download/@vue/cli-overlay-3.4.1.tgz#f850c2f8d7cd42b475d03ec6658ccf2ec9830511"
   integrity sha1-+FDC+NfNQrR10D7GZYzPLsmDBRE=
 
-"@vue/cli-plugin-babel@^3.4.0":
+"@vue/cli-plugin-babel@^3.4.1":
   version "3.4.1"
   resolved "http://registry.npm.taobao.org/@vue/cli-plugin-babel/download/@vue/cli-plugin-babel-3.4.1.tgz#f84fe329966ab5c82c80da1bd62da4db4089090b"
   integrity sha1-+E/jKZZqtcgsgNob1i2k20CJCQs=

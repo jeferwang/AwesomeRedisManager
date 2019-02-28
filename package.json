@@ -1,5 +1,5 @@
 {
-  "name": "awesome-redis",
+  "name": "awesome-redis-manager",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -13,7 +13,7 @@
     "vuex": "^3.0.1"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.4.0",
+    "@vue/cli-plugin-babel": "^3.4.1",
     "@vue/cli-plugin-eslint": "^3.4.0",
     "@vue/cli-service": "^3.4.0",
     "@vue/eslint-config-standard": "^4.0.0",
