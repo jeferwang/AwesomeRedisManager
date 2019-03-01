@@ -81,7 +81,6 @@ app.on('ready', async () => {
   createMainWindow()
 })
 app.on('createWindow', async (options) => {
-  console.log(options)
   otherWindows.push(createWindow(options))
 })
 
