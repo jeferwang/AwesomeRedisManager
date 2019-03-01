@@ -1,34 +1,28 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <div>
-      <p>
-        If iView is successfully added to this project, you'll see an
-        <code v-text="'<Button>'" />
-        below
-      </p>
-      <Button type="primary">
-        Button
-      </Button>
-    </div>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
+// import Redis from 'ioredis'
+// import electron from 'electron'
+// import fs from 'fs'
+// import path from 'path'
 
 export default {
   name: 'App',
-  components: {}
+  components: {},
+  mounted () {
+    // const client = new Redis('127.0.0.1', 6379)
+    // client.set('name', 'jeferwang111')
+    // const udPath = (electron.app || electron.remote.app).getPath('userData')
+    // const confPath = path.join(udPath, 'config')
+    // !fs.existsSync(confPath) && fs.mkdirSync(confPath)
+    // fs.writeFileSync(`${confPath}/config.json`, JSON.stringify({ a: 1 }, null, '  '))
+  }
 }
 </script>
 
-<style>
-  #app {
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    color: #2c3e50;
-    margin-top: 60px;
-  }
+<style lang="scss" scoped>
 </style>

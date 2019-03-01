@@ -9,8 +9,14 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'home',
-      component: () => import('./App.vue')
+      component: () => import('@/views/Layouts/MainLayout'),
+      redirect: '/Welcome/Index',
+      children: [
+        {
+          path: '/Welcome/Index',
+          component: () => import('@/views/Pages/Welcome/Index')
+        }
+      ]
     }
   ]
 })
