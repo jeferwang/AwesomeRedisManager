@@ -26,7 +26,7 @@ export default {
   methods: {
     onClickNew () {
       let app = electron.app || electron.remote.app
-      app.emit('createWindow', { path: 'test', width: 100, height: 100 })
+      app.emit('createWindow', { initPath: 'test', width: 100, height: 100, title: '测试' })
     }
   }
 }

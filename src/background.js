@@ -3,6 +3,8 @@
 import { app, protocol, BrowserWindow } from 'electron'
 import { createProtocol, installVueDevtools } from 'vue-cli-plugin-electron-builder/lib'
 
+const appName = 'Awesome Redis Manager'
+
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -11,18 +13,19 @@ const isDevelopment = process.env.NODE_ENV !== 'production'
 // Standard scheme must be registered before the app is ready
 protocol.registerStandardSchemes(['app'], { secure: true })
 
-function createWindow ({ width = 1024, height = 768, path = '' } = {}) {
+function createWindow (options) {
+  options = Object.assign({}, { width: 1024, height: 768, initPath: '', title: appName }, options)
   // Create the browser window.
-  let win = new BrowserWindow({ width, height })
+  let win = new BrowserWindow(options)
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
-    win.loadURL(`${process.env.WEBPACK_DEV_SERVER_URL}${path}`)
+    win.loadURL(`${process.env.WEBPACK_DEV_SERVER_URL}${options.initPath}`)
     if (!process.env.IS_TEST) win.webContents.openDevTools()
   } else {
     createProtocol('app')
     // Load the index.html when not in development
-    win.loadURL(`app://./index.html/${path}`)
+    win.loadURL(`app://./index.html/${options.initPath}`)
   }
 
   win.on('closed', () => {
@@ -78,6 +81,7 @@ app.on('ready', async () => {
   createMainWindow()
 })
 app.on('createWindow', async (options) => {
+  console.log(options)
   otherWindows.push(createWindow(options))
 })
 
