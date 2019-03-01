@@ -17,6 +17,10 @@ export default new Router({
           component: () => import('@/views/Pages/Welcome/Index')
         }
       ]
+    },
+    {
+      path: '/test',
+      component: () => import('@/views/Pages/Welcome/Index')
     }
   ]
 })

@@ -1,36 +1,47 @@
 'use strict'
 
 import { app, protocol, BrowserWindow } from 'electron'
-import {
-  createProtocol,
-  installVueDevtools
-} from 'vue-cli-plugin-electron-builder/lib'
+import { createProtocol, installVueDevtools } from 'vue-cli-plugin-electron-builder/lib'
 
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
-let win
 
 // Standard scheme must be registered before the app is ready
 protocol.registerStandardSchemes(['app'], { secure: true })
 
-function createWindow () {
+function createWindow ({ width = 1024, height = 768, path = '' } = {}) {
   // Create the browser window.
-  win = new BrowserWindow({ width: 1024, height: 768 })
+  let win = new BrowserWindow({ width, height })
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
-    win.loadURL(process.env.WEBPACK_DEV_SERVER_URL)
+    win.loadURL(`${process.env.WEBPACK_DEV_SERVER_URL}${path}`)
     if (!process.env.IS_TEST) win.webContents.openDevTools()
   } else {
     createProtocol('app')
     // Load the index.html when not in development
-    win.loadURL('app://./index.html')
+    win.loadURL(`app://./index.html/${path}`)
   }
 
   win.on('closed', () => {
     win = null
+  })
+  return win
+}
+
+let mainWindow
+let otherWindows = []
+
+function createMainWindow () {
+  mainWindow = createWindow()
+  mainWindow.on('close', () => {
+    // 主窗口关闭的时候，关闭其他窗口
+    otherWindows.forEach(ow => ow && !ow.isDestroyed() && ow.close())
+    // 初始化数据
+    otherWindows = []
+    mainWindow = null
   })
 }
 
@@ -39,6 +50,7 @@ app.on('window-all-closed', () => {
   // On macOS it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
   if (process.platform !== 'darwin') {
+    // 非MacOS情况下，关闭所有窗口代表关闭程序
     app.quit()
   }
 })
@@ -46,8 +58,8 @@ app.on('window-all-closed', () => {
 app.on('activate', () => {
   // On macOS it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
-  if (win === null) {
-    createWindow()
+  if (mainWindow === null) {
+    createMainWindow()
   }
 })
 
@@ -63,7 +75,10 @@ app.on('ready', async () => {
       console.error('Vue Devtools failed to install:', e.toString())
     }
   }
-  createWindow()
+  createMainWindow()
+})
+app.on('createWindow', async (options) => {
+  otherWindows.push(createWindow(options))
 })
 
 // Exit cleanly on request from parent process in development mode.
