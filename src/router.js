@@ -9,7 +9,7 @@ export default new Router({
   routes: [
     {
       path: '/',
-      component: () => import('@/views/Layouts/MainLayout'),
+      component: () => import('@/views/Layouts/MainLayout/MainLayout'),
       redirect: '/Welcome/Index',
       children: [
         {
@@ -19,8 +19,8 @@ export default new Router({
       ]
     },
     {
-      path: '/test',
-      component: () => import('@/views/Pages/Welcome/Index')
+      path: '/Create/CreateConfig',
+      component: () => import('@/views/Pages/Create/CreateConfig')
     }
   ]
 })

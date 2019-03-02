@@ -1,31 +1,102 @@
 <template>
-  <div class="left">
+  <div class="left noselect">
     <div class="input_search_box">
       <input type="text" class="input_search" placeholder="快速连接">
     </div>
     <div class="left_main">
       <div class="left_tabs">
-        <div class="left_tab_item active">
+        <div
+          class="left_tab_item"
+          :class="{active:active==='favorite'}"
+          @click="active='favorite'"
+        >
           <div>
             <span class="fa fa-star color_warn"></span>
             <span>收藏</span>
           </div>
         </div>
-        <div class="left_tab_item">
+        <div
+          class="left_tab_item"
+          :class="{active:active==='list'}"
+          @click="active='list'"
+        >
           <div>
             <!--<span class="fa fa-list color_primary"></span>-->
             <span>服务器列表</span>
           </div>
         </div>
       </div>
-      <div class="left_tab_main"></div>
+      <div class="left_tab_main">
+        <div class="config_list">
+          <div
+            class="config_item"
+            v-for="config in configList()"
+            :key="`${config.name}${config.address}${config.port}${config.createdAt}`"
+            @contextmenu="onShowContextMenu"
+          >
+            <div>{{config.name}}</div>
+            <div v-if="config.isFavorite">
+              <span class="fa fa-star color_warn"></span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+    <LeftExtMenu v-if="extMenu.show" :style="{left:`${extMenu.x}px`,top:`${extMenu.y}px`}"></LeftExtMenu>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+import LeftExtMenu from './LeftExtMenu'
+
 export default {
-  name: 'Left'
+  name: 'Left',
+  data () {
+    return {
+      active: 'list',
+      extMenu: {
+        show: false,
+        x: 0,
+        y: 0
+      }
+    }
+  },
+  components: {
+    LeftExtMenu
+  },
+  methods: {
+    onShowContextMenu (e) {
+      e.preventDefault()
+      this.extMenu.x = e.x + 5
+      this.extMenu.y = e.y + 5
+      this.extMenu.show = true
+    },
+    configList () {
+      switch (this.active) {
+        case 'list':
+          return this.getConfigs
+        case 'favorite':
+          return this.getFavoriteConfigs
+      }
+    }
+  },
+  computed: {
+    ...mapGetters('redisConfig', [
+      'getConfigs',
+      'getFavoriteConfigs'
+    ])
+  },
+  mounted () {
+    this.$getElectronApp()
+      .on('refreshConfigData', () => {
+        this.$store.dispatch('redisConfig/readConfigs')
+      })
+    window.addEventListener('click', (e) => {
+      e.preventDefault()
+      this.extMenu.show = false
+    })
+  }
 }
 </script>
 
@@ -112,6 +183,22 @@ export default {
         border-top: 1px solid #dcdee2;
         border-right: 1px solid #dcdee2;
         border-bottom: 1px solid #dcdee2;
+
+        .config_list {
+          padding: 5px;
+
+          .config_item {
+            cursor: pointer;
+            padding: 5px;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+
+            &:hover {
+              background: #f8f8f9;
+            }
+          }
+        }
       }
     }
   }

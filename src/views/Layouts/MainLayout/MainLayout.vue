@@ -9,9 +9,9 @@
 </template>
 
 <script>
-import Toolbar from './components/MainLayouts/Toolbar'
-import Left from './components/MainLayouts/Left'
-import Right from './components/MainLayouts/Right'
+import Toolbar from './components/Toolbar'
+import Left from './components/Left'
+import Right from './components/Right'
 
 export default {
   name: 'MainLayout',

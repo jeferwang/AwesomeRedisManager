@@ -30,6 +30,7 @@ function createWindow (options) {
 
   win.on('closed', () => {
     win = null
+    options.closedEvents && Object.keys(options.closedEvents).forEach(eName => app.emit(eName, options.closedEvents[eName]))
   })
   return win
 }

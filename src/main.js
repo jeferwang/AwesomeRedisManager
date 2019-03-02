@@ -3,6 +3,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import i18n from './i18n'
+import ElectronMethods from './plugins/electron'
 import 'normalize.css/normalize.css'
 import 'font-awesome/css/font-awesome.css'
 import './plugins/element.js'
@@ -10,6 +11,8 @@ import './plugins/iview.js'
 import './style/style.scss'
 
 Vue.config.productionTip = false
+
+Vue.use(ElectronMethods)
 
 new Vue({
   router,

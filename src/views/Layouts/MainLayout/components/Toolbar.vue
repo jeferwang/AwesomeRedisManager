@@ -1,5 +1,5 @@
 <template>
-  <div class="toolbar">
+  <div class="toolbar noselect">
     <div class="tool_item" @click="onClickNew">
       <div class="tool_icon">
         <span class="fa fa-plus"></span>
@@ -26,7 +26,13 @@ export default {
   methods: {
     onClickNew () {
       let app = electron.app || electron.remote.app
-      app.emit('createWindow', { initPath: 'test', width: 100, height: 100, title: '测试' })
+      app.emit('createWindow', {
+        initPath: 'Create/CreateConfig',
+        width: 600,
+        height: 400,
+        title: '新建连接',
+        closedEvents: { 'refreshConfigData': null }
+      })
     }
   }
 }
