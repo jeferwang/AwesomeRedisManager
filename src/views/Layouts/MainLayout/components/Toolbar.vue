@@ -10,7 +10,7 @@
       <div class="tool_icon">
         <span class="fa fa-close"></span>
       </div>
-      <div class="tool_name">关闭当前</div>
+      <div class="tool_name">关闭全部</div>
     </div>
   </div>
 </template>

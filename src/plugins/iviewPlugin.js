@@ -8,11 +8,13 @@ import {
   Input,
   InputNumber,
   Card,
-  Poptip
+  Poptip,
+  Modal
 } from 'iview'
 
 import 'iview/dist/styles/iview.css'
 
+Vue.prototype.$Modal = Modal
 Vue.component('Button', Button)
 Vue.component('Tabs', Tabs)
 Vue.component('TabPane', TabPane)
@@ -22,3 +24,4 @@ Vue.component('Input', Input)
 Vue.component('InputNumber', InputNumber)
 Vue.component('Card', Card)
 Vue.component('Poptip', Poptip)
+Vue.component('Modal', Modal)

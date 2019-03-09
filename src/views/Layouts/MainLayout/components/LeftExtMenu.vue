@@ -1,8 +1,17 @@
 <template>
   <div class="left_ext_menu">
-    <div class="menu_item" @click="$emit('favorite')">{{config && config.isFavorite?'取消收藏':'收藏'}}</div>
-    <div class="menu_item" @click="$emit('edit')">编辑</div>
-    <div class="menu_item" @click="$emit('delete')">删除</div>
+    <div class="menu_item" @click="$emit('favorite')">
+      <span class="fa fa-star-o"></span>
+      <span>{{config && config.isFavorite?'取消收藏':'收藏'}}</span>
+    </div>
+    <div class="menu_item" @click="$emit('edit')">
+      <span class="fa fa-pencil-square-o"></span>
+      <span>编辑</span>
+    </div>
+    <div class="menu_item" @click="$emit('delete')">
+      <span class="fa fa-trash-o"></span>
+      <span>删除</span>
+    </div>
   </div>
 </template>
 
@@ -26,9 +35,13 @@ export default {
 
     .menu_item {
       min-width: 100px;
-      padding: 5px;
+      padding: 5px 10px;
       border-bottom: 1px solid #dcdee2;
       cursor: pointer;
+
+      .fa{
+        margin-right: 5px;
+      }
 
       &:last-child {
         border-bottom: none;

@@ -89,8 +89,19 @@ export default {
     },
     onDeleteConfig () {
       if (!this.tmpConfig) return false
-      this.$store.dispatch('redisConfig/delConfig', this.tmpConfig.createdAt)
-      this.tmpConfig = null
+      return new Promise(resolve => {
+        this.$Modal.confirm({
+          title: '警告',
+          content: '确定删除配置吗？',
+          onOk () {
+            resolve()
+          }
+        })
+      }).then(() => {
+        // todo 删除配置后同时关闭相关的连接
+        this.$store.dispatch('redisConfig/delConfig', this.tmpConfig.createdAt)
+        this.tmpConfig = null
+      })
     },
     onShowContextMenu (e, config) {
       e.preventDefault()
