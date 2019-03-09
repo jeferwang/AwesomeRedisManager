@@ -1,12 +1,12 @@
 import electronPlugin from './electronPlugin'
 
 const windowManager = {
-  openCreateConfig () {
+  openCreateConfig ({ title = '新建连接' } = {}) {
     electronPlugin.getApp().emit('createWindow', {
       initPath: 'Create/CreateConfig',
       width: 600,
       height: 400,
-      title: '新建连接',
+      title: title,
       closedEvents: { 'refreshConfigData': null }
     })
   }

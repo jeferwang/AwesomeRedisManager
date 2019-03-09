@@ -6,11 +6,23 @@
       </div>
       <div class="tool_name">新建</div>
     </div>
-    <div class="tool_item">
+    <div class="tool_item" @click="onClickNew">
       <div class="tool_icon">
-        <span class="fa fa-close"></span>
+        <span class="fa fa-download"></span>
       </div>
-      <div class="tool_name">关闭全部</div>
+      <div class="tool_name">导入</div>
+    </div>
+    <div class="tool_item" @click="onClickNew">
+      <div class="tool_icon">
+        <span class="fa fa-upload"></span>
+      </div>
+      <div class="tool_name">导出</div>
+    </div>
+    <div class="tool_item" @click="onClickNew">
+      <div class="tool_icon">
+        <span class="fa fa-cloud"></span>
+      </div>
+      <div class="tool_name">云备份</div>
     </div>
   </div>
 </template>

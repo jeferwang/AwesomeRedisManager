@@ -31,9 +31,11 @@
           <template v-for="config in configList()">
             <div
               class="config_item"
+              :class="{context_menu:tmpConfig && tmpConfig.createdAt===config.createdAt && extMenu.show}"
               :key="`${config.name}${config.address}${config.port}${config.createdAt}`"
-              v-if="!searchText.length || config.name.includes(searchText) || config.address.includes(searchText)"
+              v-if="!searchText.length || config.name.includes(searchText)"
               @contextmenu="e=>onShowContextMenu(e,config)"
+              @click="onCreateConnect(config)"
             >
               <div>{{config.name}}</div>
               <div v-if="config.isFavorite">
@@ -77,10 +79,13 @@ export default {
     LeftExtMenu
   },
   methods: {
+    onCreateConnect (config) {
+      console.log(config)
+    },
     onEditConfig () {
       if (!this.tmpConfig) return false
       this.$storage.local.set('tmpEditConfig', this.tmpConfig)
-      this.$windowsManager.openCreateConfig()
+      this.$windowsManager.openCreateConfig({ title: '编辑连接' })
     },
     onFavoriteConfig () {
       if (!this.tmpConfig) return false
@@ -231,8 +236,14 @@ export default {
             display: flex;
             flex-direction: row;
             justify-content: space-between;
+            border: 1px solid #ffffff;
+            box-sizing: border-box;
 
-            &:hover {
+            &.context_menu {
+              border: 1px dashed #dcdee2;
+            }
+
+            &:hover, &.context_menu {
               background: #f8f8f9;
             }
           }
