@@ -1,6 +1,7 @@
 <template>
   <div class="left_ext_menu">
     <div class="menu_item" @click="$emit('favorite')">{{config && config.isFavorite?'取消收藏':'收藏'}}</div>
+    <div class="menu_item" @click="$emit('edit')">编辑</div>
     <div class="menu_item" @click="$emit('delete')">删除</div>
   </div>
 </template>

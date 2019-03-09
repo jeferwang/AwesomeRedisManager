@@ -16,7 +16,6 @@
 </template>
 
 <script>
-import electron from 'electron'
 
 export default {
   name: 'Toolbar',
@@ -25,14 +24,7 @@ export default {
   },
   methods: {
     onClickNew () {
-      let app = electron.app || electron.remote.app
-      app.emit('createWindow', {
-        initPath: 'Create/CreateConfig',
-        width: 600,
-        height: 400,
-        title: '新建连接',
-        closedEvents: { 'refreshConfigData': null }
-      })
+      this.$windowsManager.openCreateConfig()
     }
   }
 }

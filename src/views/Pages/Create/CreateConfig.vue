@@ -45,8 +45,8 @@ export default {
         name: this.formData.name || this.formData.address || '127.0.0.1',
         address: this.formData.address || '127.0.0.1',
         port: this.formData.port || 6379,
-        createdAt: Date.now(),
-        isFavorite: false
+        createdAt: this.formData.createdAt || Date.now(),
+        isFavorite: this.formData.isFavorite || false
       }
       console.log(config)
       this.$store.dispatch('redisConfig/saveConfig', config)
@@ -58,6 +58,12 @@ export default {
           console.log(err)
           this.$Message.error('保存失败')
         })
+    }
+  },
+  mounted () {
+    const tmp = this.$storage.local.get('tmpEditConfig')
+    if (tmp) {
+      this.formData = tmp
     }
   }
 }

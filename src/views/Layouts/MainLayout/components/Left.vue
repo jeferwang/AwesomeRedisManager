@@ -49,6 +49,7 @@
       :style="{left:`${extMenu.x}px`,top:`${extMenu.y}px`}"
       :config="tmpConfig"
       @favorite="onFavoriteConfig"
+      @edit="onEditConfig"
       @delete="onDeleteConfig"
     ></LeftExtMenu>
   </div>
@@ -76,6 +77,11 @@ export default {
     LeftExtMenu
   },
   methods: {
+    onEditConfig () {
+      if (!this.tmpConfig) return false
+      this.$storage.local.set('tmpEditConfig', this.tmpConfig)
+      this.$windowsManager.openCreateConfig()
+    },
     onFavoriteConfig () {
       if (!this.tmpConfig) return false
       this.$store.dispatch('redisConfig/toggleFavConfig', this.tmpConfig.createdAt)

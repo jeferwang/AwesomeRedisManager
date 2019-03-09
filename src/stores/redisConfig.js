@@ -31,7 +31,14 @@ const mutations = {
   },
   // configs数组添加一项
   addConfig (state, config) {
-    state.configs = [...state.configs, config].sort(sortConfigs)
+    let configs = state.configs
+    const configIdx = getConfigIdxByTime(config.createdAt)
+    if (configIdx !== -1) {
+      configs[configIdx] = config
+    } else {
+      configs.push(config)
+    }
+    state.configs = configs.sort(sortConfigs)
   },
   delConfig (state, timestamp) {
     const configIdx = getConfigIdxByTime(timestamp)
@@ -57,21 +64,15 @@ const actions = {
   },
   // 保存一个Redis连接配置
   async saveConfig (context, config) {
-    // 放入state
     context.commit('addConfig', config)
-    // 写入文件
     return writeRedisConfig(context.state.configs)
   },
   async toggleFavConfig (context, timestamp) {
-    // 从state移除
     context.commit('toggleFavConfig', timestamp)
-    // 写入文件
     return writeRedisConfig(context.state.configs)
   },
   async delConfig (context, timestamp) {
-    // 从state移除
     context.commit('delConfig', timestamp)
-    // 写入文件
     return writeRedisConfig(context.state.configs)
   }
 }
