@@ -32,7 +32,7 @@
             class="config_item"
             v-for="config in configList()"
             :key="`${config.name}${config.address}${config.port}${config.createdAt}`"
-            @contextmenu="onShowContextMenu"
+            @contextmenu="e=>onShowContextMenu(e,config)"
           >
             <div>{{config.name}}</div>
             <div v-if="config.isFavorite">
@@ -42,7 +42,13 @@
         </div>
       </div>
     </div>
-    <LeftExtMenu v-if="extMenu.show" :style="{left:`${extMenu.x}px`,top:`${extMenu.y}px`}"></LeftExtMenu>
+    <LeftExtMenu
+      v-if="extMenu.show"
+      :style="{left:`${extMenu.x}px`,top:`${extMenu.y}px`}"
+      :config="tmpConfig"
+      @favorite="onFavoriteConfig"
+      @delete="onDeleteConfig"
+    ></LeftExtMenu>
   </div>
 </template>
 
@@ -59,15 +65,27 @@ export default {
         show: false,
         x: 0,
         y: 0
-      }
+      },
+      tmpConfig: null
     }
   },
   components: {
     LeftExtMenu
   },
   methods: {
-    onShowContextMenu (e) {
+    onFavoriteConfig () {
+      if (!this.tmpConfig) return false
+      this.$store.dispatch('redisConfig/toggleFavConfig', this.tmpConfig.timestamp)
+      this.tmpConfig = null
+    },
+    onDeleteConfig () {
+      if (!this.tmpConfig) return false
+      this.$store.dispatch('redisConfig/delConfig', this.tmpConfig.timestamp)
+      this.tmpConfig = null
+    },
+    onShowContextMenu (e, config) {
       e.preventDefault()
+      this.tmpConfig = config
       this.extMenu.x = e.x + 5
       this.extMenu.y = e.y + 5
       this.extMenu.show = true

@@ -1,8 +1,16 @@
-import fs from 'fs'
-import electronPlugin from '../plugins/electron'
+import { readRedisConfig, writeRedisConfig } from '../plugins/redisPlugin'
 
 function sortConfigs (a, b) {
   return a.createdAt - b.createdAt
+}
+
+function getConfigIdxByTime (timestamp) {
+  for (let i = 0; i < state.configs.length; i++) {
+    if (state.configs[i].timestamp === timestamp) {
+      return i
+    }
+  }
+  return -1
 }
 
 const state = {
@@ -24,42 +32,47 @@ const mutations = {
   // configs数组添加一项
   addConfig (state, config) {
     state.configs = [...state.configs, config].sort(sortConfigs)
+  },
+  delConfig (state, timestamp) {
+    const configIdx = getConfigIdxByTime(timestamp)
+    if (configIdx !== -1) {
+      state.configs.splice(configIdx, 1)
+      return true
+    }
+    return false
+  },
+  toggleFavConfig (state, timestamp) {
+    const configIdx = getConfigIdxByTime(timestamp)
+    if (configIdx !== -1) {
+      state.configs[configIdx].isFavorite = !state.configs[configIdx].isFavorite
+      return true
+    }
+    return false
   }
 }
 const actions = {
   // 读取配置文件中的Redis连接配置
-  readConfigs (context) {
-    const redisConfigPath = `${electronPlugin.getConfigPath()}/redisConfig.json`
-    fs.access(redisConfigPath, function (err) {
-      if (err) {
-        console.warn(err)
-        return false
-      }
-      fs.readFile(redisConfigPath, (err, data) => {
-        if (err) {
-          console.log(err)
-          return false
-        }
-        data = JSON.parse(data)
-        context.commit('setConfigs', data)
-      })
-    })
+  async readConfigs (context) {
+    context.commit('setConfigs', await readRedisConfig())
   },
   // 保存一个Redis连接配置
-  saveConfig (context, config) {
-    return new Promise((resolve, reject) => {
-      // 放入state
-      context.commit('addConfig', config)
-      // 写入文件
-      const redisConfigPath = `${electronPlugin.getConfigPath()}/redisConfig.json`
-      fs.writeFile(redisConfigPath, JSON.stringify(context.state.configs, null, '  '), (err) => {
-        if (err) {
-          reject(err)
-        } else {
-          resolve('OK')
-        }
-      })
-    })
+  async saveConfig (context, config) {
+    // 放入state
+    context.commit('addConfig', config)
+    // 写入文件
+    return writeRedisConfig(context.state.configs)
+  },
+  async toggleFavConfig (context, timestamp) {
+    // 从state移除
+    context.commit('toggleFavConfig', timestamp)
+    // 写入文件
+    return writeRedisConfig(context.state.configs)
+  },
+  async delConfig (context, timestamp) {
+    // 从state移除
+    context.commit('delConfig', timestamp)
+    // 写入文件
+    return writeRedisConfig(context.state.configs)
   }
 }
 export default {
