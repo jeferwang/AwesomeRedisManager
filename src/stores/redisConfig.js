@@ -6,7 +6,7 @@ function sortConfigs (a, b) {
 
 function getConfigIdxByTime (timestamp) {
   for (let i = 0; i < state.configs.length; i++) {
-    if (state.configs[i].timestamp === timestamp) {
+    if (state.configs[i].createdAt === timestamp) {
       return i
     }
   }

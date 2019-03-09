@@ -1,7 +1,7 @@
 <template>
   <div class="left noselect">
     <div class="input_search_box">
-      <input type="text" class="input_search" placeholder="快速连接">
+      <input type="text" class="input_search" v-model="searchText" placeholder="搜索...">
     </div>
     <div class="left_main">
       <div class="left_tabs">
@@ -28,17 +28,19 @@
       </div>
       <div class="left_tab_main">
         <div class="config_list">
-          <div
-            class="config_item"
-            v-for="config in configList()"
-            :key="`${config.name}${config.address}${config.port}${config.createdAt}`"
-            @contextmenu="e=>onShowContextMenu(e,config)"
-          >
-            <div>{{config.name}}</div>
-            <div v-if="config.isFavorite">
-              <span class="fa fa-star color_warn"></span>
+          <template v-for="config in configList()">
+            <div
+              class="config_item"
+              :key="`${config.name}${config.address}${config.port}${config.createdAt}`"
+              v-if="!searchText.length || config.name.includes(searchText) || config.address.includes(searchText)"
+              @contextmenu="e=>onShowContextMenu(e,config)"
+            >
+              <div>{{config.name}}</div>
+              <div v-if="config.isFavorite">
+                <span class="fa fa-star color_warn"></span>
+              </div>
             </div>
-          </div>
+          </template>
         </div>
       </div>
     </div>
@@ -66,7 +68,8 @@ export default {
         x: 0,
         y: 0
       },
-      tmpConfig: null
+      tmpConfig: null,
+      searchText: ''
     }
   },
   components: {
@@ -75,12 +78,12 @@ export default {
   methods: {
     onFavoriteConfig () {
       if (!this.tmpConfig) return false
-      this.$store.dispatch('redisConfig/toggleFavConfig', this.tmpConfig.timestamp)
+      this.$store.dispatch('redisConfig/toggleFavConfig', this.tmpConfig.createdAt)
       this.tmpConfig = null
     },
     onDeleteConfig () {
       if (!this.tmpConfig) return false
-      this.$store.dispatch('redisConfig/delConfig', this.tmpConfig.timestamp)
+      this.$store.dispatch('redisConfig/delConfig', this.tmpConfig.createdAt)
       this.tmpConfig = null
     },
     onShowContextMenu (e, config) {
