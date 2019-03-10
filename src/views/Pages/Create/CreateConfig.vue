@@ -6,17 +6,20 @@
           <Input v-model="formData.name"/>
         </FormItem>
         <FormItem label="服务器地址">
-          <Input v-model="formData.address" placeholder="127.0.0.1"/>
+          <Input v-model="formData.host" placeholder="127.0.0.1"/>
         </FormItem>
         <FormItem label="服务器地址">
           <InputNumber :max="65535" :min="1" v-model="formData.port" placeholder="6379"></InputNumber>
+        </FormItem>
+        <FormItem label="密码">
+          <Input v-model="formData.password" type="password"/>
         </FormItem>
         <FormItem>
           <Button class="btn_save" type="primary" @click="saveConfig">
             <span class="fa fa-save"></span>
             <span>&nbsp;保存</span>
           </Button>
-          <Button class="btn_test">
+          <Button class="btn_test" @click="testConfig">
             <span class="fa fa-link"></span>
             <span>&nbsp;测试连接</span>
           </Button>
@@ -34,23 +37,39 @@ export default {
     return {
       formData: {
         name: null,
-        address: null,
-        port: null
+        host: null,
+        port: null,
+        password: null
       }
     }
   },
   methods: {
-    saveConfig () {
-      const config = {
-        name: this.formData.name || this.formData.address || '127.0.0.1',
-        address: this.formData.address || '127.0.0.1',
+    getConfig () {
+      return {
+        name: this.formData.name || this.formData.host || '127.0.0.1',
+        host: this.formData.host || '127.0.0.1',
         port: this.formData.port || 6379,
+        password: this.formData.password || null,
         createdAt: this.formData.createdAt || Date.now(),
         isFavorite: this.formData.isFavorite || false
       }
-      console.log(config)
+    },
+    async testConfig () {
+      const config = this.getConfig()
+      let client = await this.$connectRedis(config)
+      try {
+        await client.select(0)
+        this.$Message.success('连接成功')
+      } catch (e) {
+        this.$Message.warning('连接失败')
+      }
+      client.disconnect(false)
+    },
+    saveConfig () {
+      const config = this.getConfig()
       this.$store.dispatch('redisConfig/saveConfig', config)
         .then(() => {
+          this.$storage.local.remove('tmpEditConfig')
           // this.$Message.success('保存成功')
           this.$getCurrentWindow().close()
         })

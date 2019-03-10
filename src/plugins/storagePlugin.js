@@ -16,6 +16,12 @@ export const Storage = {
       } else {
         return JSON.parse(res)
       }
+    },
+    remove (key) {
+      if (typeof key !== 'string') {
+        throw new Error('Key只能为字符串')
+      }
+      localStorage.removeItem(key)
     }
   }
 }

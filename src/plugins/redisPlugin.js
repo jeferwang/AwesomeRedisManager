@@ -1,3 +1,4 @@
+import Redis from 'ioredis'
 import electronPlugin from './electronPlugin'
 import fs from 'fs'
 
@@ -39,11 +40,25 @@ export function writeRedisConfig (configList) {
   })
 }
 
+export async function connectRedis (config) {
+  return new Redis({
+    host: config.host,
+    port: config.port,
+    password: config.password,
+    maxRetriesPerRequest: 0,
+    reconnectOnError: function (e) {
+      return 0
+    }
+  })
+}
+
 export default {
   redisConfigPath,
   readRedisConfig,
   writeRedisConfig,
+  connectRedis,
   install (Vue, options) {
     Vue.prototype.$redisConfigPath = redisConfigPath
+    Vue.prototype.$connectRedis = connectRedis
   }
 }

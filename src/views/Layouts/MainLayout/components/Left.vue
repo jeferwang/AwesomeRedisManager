@@ -32,7 +32,7 @@
             <div
               class="config_item"
               :class="{context_menu:tmpConfig && tmpConfig.createdAt===config.createdAt && extMenu.show}"
-              :key="`${config.name}${config.address}${config.port}${config.createdAt}`"
+              :key="`${config.name}${config.host}${config.port}${config.createdAt}`"
               v-if="!searchText.length || config.name.includes(searchText)"
               @contextmenu="e=>onShowContextMenu(e,config)"
               @click="onCreateConnect(config)"

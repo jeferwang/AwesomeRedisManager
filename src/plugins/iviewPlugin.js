@@ -9,12 +9,14 @@ import {
   InputNumber,
   Card,
   Poptip,
-  Modal
+  Modal,
+  Message
 } from 'iview'
 
 import 'iview/dist/styles/iview.css'
 
 Vue.prototype.$Modal = Modal
+Vue.prototype.$Message = Message
 Vue.component('Button', Button)
 Vue.component('Tabs', Tabs)
 Vue.component('TabPane', TabPane)
