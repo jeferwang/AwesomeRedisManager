@@ -1,8 +1,6 @@
 <template>
   <div class="right">
-    <div class="tab_list">
-      <div class="tab_item">欢迎使用</div>
-    </div>
+    <slot></slot>
   </div>
 </template>
 

@@ -3,7 +3,9 @@
     <Toolbar></Toolbar>
     <div class="page_main">
       <Left></Left>
-      <Right></Right>
+      <Right>
+        <Tabs></Tabs>
+      </Right>
     </div>
   </div>
 </template>
@@ -12,13 +14,15 @@
 import Toolbar from './components/Toolbar'
 import Left from './components/Left'
 import Right from './components/Right'
+import Tabs from './components/Tabs'
 
 export default {
   name: 'MainLayout',
   components: {
     Toolbar,
     Left,
-    Right
+    Right,
+    Tabs
   }
 }
 </script>

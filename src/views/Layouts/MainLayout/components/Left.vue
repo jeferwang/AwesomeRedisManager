@@ -79,8 +79,13 @@ export default {
     LeftExtMenu
   },
   methods: {
-    onCreateConnect (config) {
-      console.log(config)
+    async onCreateConnect (config) {
+      // console.log(config)
+      const res = await this.$store.dispatch('tabs/addTabByConfig', config)
+      if (!res) {
+        this.$Message.warning('连接失败')
+        return false
+      }
     },
     onEditConfig () {
       if (!this.tmpConfig) return false
@@ -150,6 +155,8 @@ export default {
     height: 100%;
     width: 250px;
     border-right: 1px solid #e8eaec;
+    flex-grow: 0;
+    flex-shrink: 0;
 
     .input_search_box {
       padding: 10px;
