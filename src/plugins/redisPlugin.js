@@ -5,27 +5,19 @@ import fs from 'fs'
 export const redisConfigPath = `${electronPlugin.getConfigPath()}/redisConfig.json`
 
 export function readRedisConfig () {
-  return new Promise((resolve, reject) => {
-    fs.access(redisConfigPath, function (err) {
-      if (err) {
-        return reject(err)
-      }
-      fs.readFile(redisConfigPath, (err, data) => {
-        if (err) {
-          return reject(err)
-        }
-        try {
-          data = JSON.parse(data)
-          if (!data) {
-            data = []
-          }
-          return resolve(data)
-        } catch (e) {
-          reject(e)
-        }
-      })
-    })
-  })
+  let data = []
+  try {
+    fs.accessSync(redisConfigPath)
+    let fData = fs.readFileSync(redisConfigPath)
+    fData = JSON.parse(fData)
+    if (fData) {
+      data = fData
+    }
+    return data
+  } catch (err) {
+    console.warn('读取配置失败', err)
+    return []
+  }
 }
 
 export function writeRedisConfig (configList) {
@@ -47,6 +39,7 @@ export async function connectRedis (config) {
     password: config.password,
     maxRetriesPerRequest: 0,
     reconnectOnError: function (e) {
+      console.log(e)
       return 0
     }
   })
@@ -57,7 +50,7 @@ export default {
   readRedisConfig,
   writeRedisConfig,
   connectRedis,
-  install (Vue, options) {
+  install (Vue) {
     Vue.prototype.$redisConfigPath = redisConfigPath
     Vue.prototype.$connectRedis = connectRedis
   }
