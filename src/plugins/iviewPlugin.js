@@ -10,7 +10,9 @@ import {
   Card,
   Poptip,
   Modal,
-  Message
+  Message,
+  Select,
+  Option
 } from 'iview'
 
 import 'iview/dist/styles/iview.css'
@@ -27,3 +29,6 @@ Vue.component('InputNumber', InputNumber)
 Vue.component('Card', Card)
 Vue.component('Poptip', Poptip)
 Vue.component('Modal', Modal)
+Vue.component('Select', Select)
+Vue.component('Select', Select)
+Vue.component('Option', Option)

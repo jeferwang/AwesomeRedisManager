@@ -1,5 +1,6 @@
 <template>
-  <div class="tab_list noselect">
+  <!--标签列表-->
+  <div class="tab_list noselect" ref="tab_list">
     <div class="tab_item" v-for="(tab,tidx) in allTabs" :key="tidx" :style="tabStyle(tab)">
       <div
         class="tab_name"
@@ -21,7 +22,8 @@ import { mapGetters } from 'vuex'
 export default {
   name: 'Tabs',
   data () {
-    return {}
+    return {
+    }
   },
   methods: {
     onCloseTab (tabIndex) {
@@ -45,6 +47,8 @@ export default {
       return style
     }
   },
+  mounted () {
+  },
   created () {
   },
   computed: {
@@ -57,11 +61,13 @@ export default {
 
 <style scoped lang="scss">
   .tab_list {
-    width: 100%;
+    max-width: 100%;
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
+    flex-wrap: wrap;
+    border-bottom: 1px solid #eee;
 
     .tab_item {
       cursor: pointer;
@@ -69,6 +75,7 @@ export default {
       background: #ffffff;
       width: 120px;
       height: 30px;
+      flex-shrink: 0;
       display: flex;
       flex-direction: row;
       justify-content: center;
@@ -79,6 +86,8 @@ export default {
       .tab_name {
         flex-grow: 1;
         text-align: center;
+        /*height: 100%;*/
+        /*line-height: 100%;*/
       }
 
       .close_wrapper {

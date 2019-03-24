@@ -1,10 +1,11 @@
 <template>
-  <div class="main_layout">
+  <div class="main_layout" v-loading="loading">
     <Toolbar></Toolbar>
     <div class="page_main">
-      <Left></Left>
+      <Left @start-connect="loading=true" @end-connect="loading=false"></Left>
       <Right>
         <Tabs></Tabs>
+        <DataViews></DataViews>
       </Right>
     </div>
   </div>
@@ -15,14 +16,21 @@ import Toolbar from './components/Toolbar'
 import Left from './components/Left'
 import Right from './components/Right'
 import Tabs from './components/Tabs'
+import DataViews from './components/DataViews'
 
 export default {
   name: 'MainLayout',
+  data () {
+    return {
+      loading: false
+    }
+  },
   components: {
     Toolbar,
     Left,
     Right,
-    Tabs
+    Tabs,
+    DataViews
   }
 }
 </script>

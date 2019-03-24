@@ -14,5 +14,6 @@ export default {
   .right {
     height: 100%;
     flex-grow: 1;
+    width: calc(100% - 250px);
   }
 </style>

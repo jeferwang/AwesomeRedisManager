@@ -32,16 +32,22 @@ export function writeRedisConfig (configList) {
   })
 }
 
-export async function connectRedis (config) {
-  return new Redis({
-    host: config.host,
-    port: config.port,
-    password: config.password,
-    maxRetriesPerRequest: 0,
-    reconnectOnError: function (e) {
-      console.log(e)
-      return 0
-    }
+export function connectRedis (config) {
+  return new Promise((resolve, reject) => {
+    let conn = new Redis({
+      host: config.host,
+      port: config.port,
+      password: config.password
+    })
+    conn.on('connect', () => {
+      console.log('连接成功')
+      resolve(conn)
+    })
+    conn.on('error', e => {
+      conn.disconnect(false)
+      console.log('连接失败', e)
+      reject(e)
+    })
   })
 }
 

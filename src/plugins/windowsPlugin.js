@@ -6,6 +6,7 @@ const windowManager = {
       initPath: 'Create/CreateConfig',
       width: 600,
       height: 400,
+      resizable: false,
       title: title,
       closedEvents: { 'refreshConfigData': null }
     })

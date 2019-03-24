@@ -2,6 +2,7 @@ import { connectRedis } from '../plugins/redisPlugin'
 
 async function configToTab (config) {
   const connect = await connectRedis(config)
+  // connect.disconnect(false)
   return {
     config: config,
     connect: connect,

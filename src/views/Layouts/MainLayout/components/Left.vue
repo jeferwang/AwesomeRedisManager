@@ -1,7 +1,8 @@
 <template>
   <div class="left noselect">
     <div class="input_search_box">
-      <input type="text" class="input_search" v-model="searchText" placeholder="搜索...">
+      <!--<input type="text" class="input_search" v-model="searchText" placeholder="搜索...">-->
+      <Input v-model="searchText" placeholder="搜索..." />
     </div>
     <div class="left_main">
       <div class="left_tabs">
@@ -80,12 +81,12 @@ export default {
   },
   methods: {
     async onCreateConnect (config) {
-      // console.log(config)
+      this.$emit('start-connect')
       const res = await this.$store.dispatch('tabs/addTabByConfig', config)
       if (!res) {
         this.$Message.warning('连接失败')
-        return false
       }
+      this.$emit('end-connect')
     },
     onEditConfig () {
       if (!this.tmpConfig) return false
@@ -159,7 +160,7 @@ export default {
     flex-shrink: 0;
 
     .input_search_box {
-      padding: 10px;
+      padding: 5px 5px 5px 35px;
 
       .input_search {
         width: 100%;
