@@ -1,8 +1,13 @@
 import { connectRedis } from '../plugins/redisPlugin'
 
 async function configToTab (config) {
-  const connect = await connectRedis(config)
-  // connect.disconnect(false)
+  const connect = connectRedis(config)
+  try {
+    await connect.info()
+  } catch (e) {
+    console.warn(e)
+    return null
+  }
   return {
     config: config,
     connect: connect,
@@ -43,6 +48,9 @@ const actions = {
     try {
       // 根据connect创建一个tab实例
       const tab = await configToTab(config)
+      if (!tab) {
+        return false
+      }
       // 设置当前的为active
       tab.active = true
       // 设置其他的为非active

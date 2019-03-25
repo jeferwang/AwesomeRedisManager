@@ -42,7 +42,7 @@ let mainWindow
 let otherWindows = []
 
 function createMainWindow () {
-  mainWindow = createWindow({ width: 1024, height: 768, minWidth: 1024, minHeight: 768 })
+  mainWindow = createWindow({ width: 1600, height: 1200, minWidth: 1600, minHeight: 1200 })
   mainWindow.on('close', () => {
     // 主窗口关闭的时候，关闭其他窗口
     otherWindows.forEach(ow => ow && !ow.isDestroyed() && ow.close())

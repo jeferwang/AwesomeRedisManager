@@ -27,14 +27,28 @@ export default {
   data () {
     return {
       dbNum: 0,
-      currDb: 0
+      currDb: 0,
+      keyList: []
     }
   },
-  methods: {},
-  async created () {
+  methods: {
+    // 加载当前选择的数据库中的key
+    async loadDbKeys () {
+
+    },
+    // 切换数据库
+    async changeDb (dbIndex) {
+      // if(dbIndex>)
+    }
+  },
+  async mounted () {
     // 读取数据库的数量
     let dbNum = await this.tab.connect.config('get', 'databases')
     this.dbNum = ~~dbNum[1]
+    // 页面数据初始化操作
+  },
+  async created () {
+
   },
   computed: {
     ...mapGetters('tabs', [

@@ -33,21 +33,13 @@ export function writeRedisConfig (configList) {
 }
 
 export function connectRedis (config) {
-  return new Promise((resolve, reject) => {
-    let conn = new Redis({
-      host: config.host,
-      port: config.port,
-      password: config.password
-    })
-    conn.on('connect', () => {
-      console.log('连接成功')
-      resolve(conn)
-    })
-    conn.on('error', e => {
-      conn.disconnect(false)
-      console.log('连接失败', e)
-      reject(e)
-    })
+  return new Redis({
+    host: config.host,
+    port: config.port,
+    password: config.password,
+    retryStrategy (times) {
+      return false
+    }
   })
 }
 
