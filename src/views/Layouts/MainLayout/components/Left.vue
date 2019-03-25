@@ -1,51 +1,25 @@
 <template>
   <div class="left noselect">
     <div class="input_search_box">
-      <!--<input type="text" class="input_search" v-model="searchText" placeholder="搜索...">-->
-      <Input v-model="searchText" placeholder="搜索..." />
+      <div class="tip_text">筛选服务器</div>
+      <input type="text" class="com-input input_search" v-model="searchText" placeholder="输入筛选条件">
     </div>
-    <div class="left_main">
-      <div class="left_tabs">
+    <div class="config_list">
+      <template v-for="config in configList()">
         <div
-          class="left_tab_item"
-          :class="{active:active==='favorite'}"
-          @click="active='favorite'"
+          class="config_item"
+          :class="{context_menu:tmpConfig && tmpConfig.createdAt===config.createdAt && extMenu.show}"
+          :key="`${config.name}${config.host}${config.port}${config.createdAt}`"
+          v-if="!searchText.length || config.name.includes(searchText)"
+          @contextmenu="e=>onShowContextMenu(e,config)"
+          @click="onCreateConnect(config)"
         >
-          <div>
+          <div>{{config.name}}</div>
+          <div v-if="config.isFavorite">
             <span class="fa fa-star color_warn"></span>
-            <span>收藏</span>
           </div>
         </div>
-        <div
-          class="left_tab_item"
-          :class="{active:active==='list'}"
-          @click="active='list'"
-        >
-          <div>
-            <!--<span class="fa fa-list color_primary"></span>-->
-            <span>服务器列表</span>
-          </div>
-        </div>
-      </div>
-      <div class="left_tab_main">
-        <div class="config_list">
-          <template v-for="config in configList()">
-            <div
-              class="config_item"
-              :class="{context_menu:tmpConfig && tmpConfig.createdAt===config.createdAt && extMenu.show}"
-              :key="`${config.name}${config.host}${config.port}${config.createdAt}`"
-              v-if="!searchText.length || config.name.includes(searchText)"
-              @contextmenu="e=>onShowContextMenu(e,config)"
-              @click="onCreateConnect(config)"
-            >
-              <div>{{config.name}}</div>
-              <div v-if="config.isFavorite">
-                <span class="fa fa-star color_warn"></span>
-              </div>
-            </div>
-          </template>
-        </div>
-      </div>
+      </template>
     </div>
     <LeftExtMenu
       v-if="extMenu.show"
@@ -115,6 +89,7 @@ export default {
       })
     },
     onShowContextMenu (e, config) {
+      console.log(e)
       e.preventDefault()
       this.tmpConfig = config
       this.extMenu.x = e.x + 5
@@ -153,108 +128,51 @@ export default {
   .left {
     display: flex;
     flex-direction: column;
-    height: 100%;
-    width: 250px;
-    border-right: 1px solid #e8eaec;
-    flex-grow: 0;
-    flex-shrink: 0;
+    border-right: 1px solid $border-color;
 
     .input_search_box {
-      padding: 5px 5px 5px 35px;
+      height: $grid-height-normal;
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      border-bottom: 1px solid $border-color;
+
+      .tip_text {
+        height: $grid-height-normal;
+        line-height: $grid-height-normal;
+        background-color: $background-color-dark;
+        font-size: 14px;
+        padding: 0 10px;
+      }
 
       .input_search {
-        width: 100%;
-        /*border-radius: 2px;*/
-        border: 1px solid #dcdee2;
-        outline: none;
-        border-radius: 2px;
+        flex-grow: 1;
+        border: none;
         font-size: 14px;
         padding: 5px;
-        color: #515a6e;
+        text-align: center;
       }
     }
 
-    .left_main {
-      flex-grow: 1;
-      height: 100%;
-      display: flex;
-      flex-direction: row;
-      padding: 0 5px 5px 5px;
-      box-sizing: border-box;
-
-      .left_tabs {
-        height: 100%;
-        width: 30px;
+    .config_list {
+      color: $text-color-light;
+      .config_item {
+        padding: 0 10px;
+        height: $grid-height-normal;
+        line-height: $grid-height-normal;
+        border-bottom: 1px solid $border-color;
+        cursor: pointer;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
         box-sizing: border-box;
-        border-right: 1px solid #dcdee2;
 
-        .left_tab_item {
-          display: flex;
-          flex-direction: row;
-          justify-content: center;
-          align-items: center;
-          width: 30px;
-          padding: 10px 0;
-          box-sizing: border-box;
-          border: 1px solid rgba(0, 0, 0, 0);
-          cursor: pointer;
-
-          & > div {
-            font-size: 14px;
-            width: 14px;
-            text-align: center;
-            word-break: break-all;
-            line-height: 18px;
-            /*writing-mode: vertical-rl;*/
-            /*writing-mode: vertical-lr;*/
-            /*direction: rtl;*/
-            font-weight: bold;
-          }
-
-          &.active {
-            background: #ffffff;
-            border-left: 1px solid #dcdee2;
-            border-top: 1px solid #dcdee2;
-            border-bottom: 1px solid #dcdee2;
-            border-right: 1px solid #ffffff;
-            border-top-left-radius: 5px;
-            border-bottom-left-radius: 5px;
-          }
-
-          &:hover {
-            color: #2d8cf0;
-          }
+        &.context_menu {
+          background: $background-color-highlight-blue;
         }
-      }
 
-      .left_tab_main {
-        height: 100%;
-        background: #ffffff;
-        flex-grow: 1;
-        border-top: 1px solid #dcdee2;
-        border-right: 1px solid #dcdee2;
-        border-bottom: 1px solid #dcdee2;
-
-        .config_list {
-          padding: 5px;
-
-          .config_item {
-            cursor: pointer;
-            padding: 5px;
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            border: 1px solid #ffffff;
-            box-sizing: border-box;
-
-            &.context_menu {
-              border: 1px dashed #dcdee2;
-            }
-
-            &:hover, &.context_menu {
-              background: #f8f8f9;
-            }
-          }
+        &:hover, &.context_menu {
+          /*background: #f8f8f9;*/
         }
       }
     }

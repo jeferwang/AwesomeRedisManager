@@ -29,17 +29,20 @@ export default {
 
 <style scoped lang="scss">
   .left_ext_menu {
-    position: absolute;
-    border: 1px solid #dcdee2;
-    background: #ffffff;
+    position: fixed;
+    border: 1px solid $border-color;
+    background: $background-color;
+    box-shadow: $shadow-normal;
 
     .menu_item {
-      min-width: 100px;
-      padding: 5px 10px;
-      border-bottom: 1px solid #dcdee2;
+      min-width: 150px;
+      padding: 0 10px;
+      height: $grid-height-small;
+      line-height: $grid-height-small;
+      border-bottom: 1px solid $border-color;
       cursor: pointer;
 
-      .fa{
+      .fa {
         margin-right: 5px;
       }
 
@@ -48,8 +51,8 @@ export default {
       }
 
       &:hover {
-        background: #2d8cf0;
-        color: #ffffff;
+        background: $background-color-highlight-blue;
+        color: $text-color-light;
       }
     }
   }

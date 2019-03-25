@@ -29,6 +29,6 @@ export default {
 
 <style scoped lang="scss">
   .data_view_list{
-    height: calc(100% - 30px);
+    /*height: 100%;*/
   }
 </style>

@@ -44,11 +44,12 @@ export default {
 
 <style scoped lang="scss">
   .toolbar {
-    border-bottom: 1px solid #e8eaec;
     display: flex;
     flex-direction: row;
     align-items: center;
     padding: 5px;
+    border-bottom: 1px solid #464646;
+    box-sizing: border-box;
 
     .tool_item {
       cursor: pointer;
@@ -61,6 +62,7 @@ export default {
       align-items: center;
       box-sizing: border-box;
       border: 1px solid rgba(0, 0, 0, 0);
+      color: #cacaca;
 
       .tool_icon {
         text-align: center;
@@ -72,9 +74,7 @@ export default {
       }
 
       &:hover {
-        background: #ffffff;
-        border-radius: 4px;
-        border: 1px solid #dcdee2;
+        color: #eaeaea;
       }
     }
   }

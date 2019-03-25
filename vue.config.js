@@ -6,5 +6,12 @@ module.exports = {
       localeDir: 'locales',
       enableInSFC: false
     }
+  },
+  css: {
+    loaderOptions: {
+      sass: {
+        data: `@import "@/style/variable.scss";`
+      }
+    }
   }
 }
