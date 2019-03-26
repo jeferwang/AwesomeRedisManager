@@ -1,6 +1,6 @@
 <template>
   <!--标签列表-->
-  <div class="tabs">
+  <div class="tabs" v-show="allTabs.length">
     <div class="mask_left" v-show="showLeft"></div>
     <div class="tab_list noselect" ref="tab_list" @mousewheel="onTabScroll">
       <div class="tab_item" v-for="(tab,tidx) in allTabs" :key="tidx" :class="{active:tab.active}">
@@ -121,6 +121,7 @@ export default {
     color: $text-color-normal;
     overflow: hidden;
     overflow-x: scroll;
+    border-bottom: 1px solid $border-color;
 
     &::-webkit-scrollbar {
       display: none
@@ -138,7 +139,7 @@ export default {
       justify-content: center;
       align-items: center;
       border-right: 1px solid $border-color;
-      border-bottom: 1px solid $border-color;
+      // border-bottom: 1px solid $border-color;
 
       &.active {
         border-bottom: 1px solid $background-color-highlight-blue;

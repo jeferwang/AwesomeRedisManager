@@ -167,13 +167,14 @@ export default {
         justify-content: space-between;
         box-sizing: border-box;
 
+        &:hover{
+          background: $background-color-highlight-blue;
+        }
+
         &.context_menu {
           background: $background-color-highlight-blue;
         }
 
-        &:hover, &.context_menu {
-          /*background: #f8f8f9;*/
-        }
       }
     }
   }

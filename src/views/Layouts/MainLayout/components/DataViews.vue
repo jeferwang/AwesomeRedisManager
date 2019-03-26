@@ -1,5 +1,5 @@
 <template>
-  <div class="data_view_list">
+  <div>
     <DataView v-for="(tab,tidx) in allTabs" :key="tidx" v-show="tab.active" :tab="tab"></DataView>
   </div>
 </template>
@@ -28,7 +28,4 @@ export default {
 </script>
 
 <style scoped lang="scss">
-  .data_view_list{
-    /*height: 100%;*/
-  }
 </style>

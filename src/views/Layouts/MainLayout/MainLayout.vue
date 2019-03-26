@@ -5,7 +5,7 @@
       <Left class="left" @start-connect="loading=true" @end-connect="loading=false"></Left>
       <Right class="right">
         <Tabs class="tabs"></Tabs>
-        <!--<DataViews class="data_views"></DataViews>-->
+        <DataViews class="data_views"></DataViews>
       </Right>
     </div>
     <StatusBar class="status_bar"></StatusBar>
@@ -32,7 +32,7 @@ export default {
     Left,
     Right,
     Tabs,
-    // DataViews,
+    DataViews,
     StatusBar
   }
 }
@@ -76,18 +76,17 @@ export default {
       }
 
       .right {
-        width: 75vw;
+        width: 80vw;
         height: 100%;
 
         .tabs {
           height: $grid-height-normal;
         }
 
-        /*.data_views {*/
-          /*flex-grow: 1;*/
-          /*flex-shrink: 0;*/
-          /*overflow: hidden;*/
-        /*}*/
+        .data_views {
+          width: 80vw;
+          height: calc(100% - #{$grid-height-normal});
+        }
       }
     }
   }

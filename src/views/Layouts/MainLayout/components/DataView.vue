@@ -1,31 +1,35 @@
 <template>
-  <div class="data_view_item">
-    <div class="data_view_main">
-      <div class="left">
-        <!--<div class="db_selector">-->
-        <!--<Select v-model="currDb" @on-change="onChangeDb" size="small">-->
-        <!--<Option v-for="dbi in dbNum" :value="dbi-1" :key="dbi-1">DB{{ dbi-1 }}</Option>-->
-        <!--</Select>-->
-        <!--</div>-->
-        <div class="key_list" @scroll="onScrollKeyList">
-          <div class="key_item" v-for="mainKey in mainKeyList" :key="mainKey">{{mainKey}}</div>
-        </div>
+  <div class="data_view_main">
+    <div class="left">
+      <div class="search_box">
+        <div class="tip">筛选Key</div>
+        <input
+          type="text"
+          class="com-input"
+          placeholder="输入筛选表达式"
+          v-model="mainMatch"
+          @input="onInputKeyCondition"
+        >
       </div>
-      <div class="right"></div>
+      <!--<div class="db_selector">-->
+      <!--<Select v-model="currDb" @on-change="onChangeDb" size="small">-->
+      <!--<Option v-for="dbi in dbNum" :value="dbi-1" :key="dbi-1">DB{{ dbi-1 }}</Option>-->
+      <!--</Select>-->
+      <!--</div>-->
+      <div class="key_list" @scroll="onScrollKeyList">
+        <div class="key_item" v-for="mainKey in mainKeyList" :key="mainKey">{{mainKey}}</div>
+      </div>
     </div>
-    <StatusBar></StatusBar>
+    <div class="right"></div>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import StatusBar from './StatusBar'
 
 export default {
   name: 'DataView',
-  components: {
-    StatusBar
-  },
+  components: {},
   props: {
     tab: {
       type: Object,
@@ -45,6 +49,10 @@ export default {
     }
   },
   methods: {
+    // 输入内容变化的时候，即时刷新
+    async onInputKeyCondition () {
+      this.loadDbKeys({ reload: true })
+    },
     // 加载当前选择的数据库中的key
     async loadDbKeys ({ reload = false } = {}) {
       if (this.loading || !this.hasMore) {
@@ -113,24 +121,50 @@ export default {
 </script>
 
 <style scoped lang="scss">
-  .data_view_item {
-    position: relative;
 
-    .data_view_main {
+  .data_view_main {
+    height: 100%;
 
-      .left {
-        width: 200px;
-        padding: 5px;
+    .left {
+      height: 100%;
+      width: 20vw;
+      box-sizing: border-box;
+      border-right: 1px solid $border-color;
+
+      .search_box {
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
+        font-size: 14px;
 
-        .key_list {
-          flex-grow: 1;
-          border: 1px solid #eee;
+        .tip {
+          background: $background-color-dark;
+          line-height: $grid-height-normal;
           padding: 0 10px;
-          background: #fff;
-          overflow: hidden;
-          overflow-y: auto;
+        }
+
+        .com-input {
+          flex-grow: 1;
+          height: $grid-height-normal;
+          padding: 0 10px;
+        }
+      }
+
+      .key_list {
+        height: calc(100% - #{$grid-height-normal});
+        overflow: hidden;
+        overflow-y: auto;
+
+        .key_item {
+          height: $grid-height-normal;
+          line-height: $grid-height-normal;
+          padding-left: 10px;
+          box-sizing: border-box;
+          border-bottom: 1px solid $border-color;
+          cursor: pointer;
+
+          &:hover {
+            background: $background-color-highlight-blue;
+          }
         }
       }
     }
