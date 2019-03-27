@@ -1,17 +1,17 @@
 <template>
   <div>
-    <DataView v-for="(tab,tidx) in allTabs" :key="tidx" v-show="tab.active" :tab="tab"></DataView>
+    <TabView v-for="(tab,tidx) in allTabs" :key="tidx" v-show="tab.active" :tab="tab"></TabView>
   </div>
 </template>
 
 <script>
-import DataView from './DataView'
+import TabView from './TabView'
 import { mapGetters } from 'vuex'
 
 export default {
-  name: 'DataViews',
+  name: 'TabViews',
   components: {
-    DataView
+    TabView
   },
   data () {
     return {}

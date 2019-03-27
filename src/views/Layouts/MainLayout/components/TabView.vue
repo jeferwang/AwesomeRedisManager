@@ -28,7 +28,7 @@
 import { mapGetters } from 'vuex'
 
 export default {
-  name: 'DataView',
+  name: 'TabView',
   components: {},
   props: {
     tab: {
@@ -74,10 +74,6 @@ export default {
       }
       this.mainKeyList.push(...res[1])
       this.loading = false
-
-      // for (let i = 0; i < 500; i++) {
-      //   await this.connect.set(`demoKey_${i}`, i)
-      // }
     },
     // 执行切换数据库
     async changeDb (dbIndex) {

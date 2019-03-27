@@ -80,7 +80,6 @@ export default {
   },
   watch: {
     allTabs () {
-      console.log('allTa')
       this.getScrollInfo()
     }
   }

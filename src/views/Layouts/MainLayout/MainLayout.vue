@@ -5,7 +5,7 @@
       <Left class="left" @start-connect="loading=true" @end-connect="loading=false"></Left>
       <Right class="right">
         <Tabs class="tabs"></Tabs>
-        <DataViews class="data_views"></DataViews>
+        <TabViews class="tab_views"></TabViews>
       </Right>
     </div>
     <StatusBar class="status_bar"></StatusBar>
@@ -17,7 +17,7 @@ import Toolbar from './components/Toolbar'
 import Left from './components/Left'
 import Right from './components/Right'
 import Tabs from './components/Tabs'
-import DataViews from './components/DataViews'
+import TabViews from './components/TabViews'
 import StatusBar from './components/StatusBar'
 
 export default {
@@ -32,7 +32,7 @@ export default {
     Left,
     Right,
     Tabs,
-    DataViews,
+    TabViews,
     StatusBar
   }
 }
@@ -83,7 +83,7 @@ export default {
           height: $grid-height-normal;
         }
 
-        .data_views {
+        .tab_views {
           width: 80vw;
           height: calc(100% - #{$grid-height-normal});
         }
