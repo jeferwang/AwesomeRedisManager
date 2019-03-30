@@ -1,0 +1,95 @@
+<template>
+  <div class="main_box">
+    <div class="value_box">
+      <div>值</div>
+      <div class="input_box">
+        <textarea
+          v-model="val"
+          class="com-input value_input"
+        ></textarea>
+        <div class="opt_group">
+          <div class="com-btn com-btn-primary">格式化</div>
+          <div class="com-btn com-btn-success">保存</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'TypeString',
+  props: {
+    tab: {
+      type: Object,
+      default: null
+    },
+    mainKey: {
+      type: String,
+      default: null
+    }
+  },
+  data () {
+    return {
+      originVal: null,
+      val: null
+    }
+  },
+  methods: {
+    async initData () {
+      let val = await this.tab.connect.get(this.mainKey)
+      this.originVal = val
+      this.val = val
+    }
+  },
+  async mounted () {
+    await this.initData()
+  },
+  watch: {
+    mainKey: {
+      handler (newVal, oldVal) {
+        this.initData()
+      },
+      deep: true
+    }
+  }
+}
+</script>
+
+<style scoped lang="scss">
+.main_box {
+  padding: 10px;
+
+  .value_box {
+    font-size: 14px;
+
+    .input_box {
+      display: flex;
+      flex-direction: row;
+      margin-top: 10px;
+
+      .value_input {
+        flex-grow: 1;
+        width: 100%;
+        padding: 10px;
+        line-height: 18px;
+        display: block;
+        height: 300px;
+      }
+
+      .opt_group {
+        display: flex;
+        flex-direction: column;
+        flex-shrink: 0;
+        & > div {
+          width: 100px;
+          flex-grow: 1;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+      }
+    }
+  }
+}
+</style>

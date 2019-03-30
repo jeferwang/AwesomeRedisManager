@@ -18,12 +18,14 @@
       </div>
       <div class="tool_name">导出</div>
     </div>
+    <!--
     <div class="tool_item" @click="onClickNew">
       <div class="tool_icon">
         <span class="fa fa-cloud"></span>
       </div>
       <div class="tool_name">云备份</div>
     </div>
+    -->
   </div>
 </template>
 

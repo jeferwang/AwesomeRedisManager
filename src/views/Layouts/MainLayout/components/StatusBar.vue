@@ -15,7 +15,7 @@ export default {
     display: flex;
     flex-direction: row;
     align-items: center;
-    background: #2c85c7;
+    background: #007ACC;
     color: #ffffff;
   }
 </style>
