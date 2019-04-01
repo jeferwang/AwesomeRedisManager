@@ -1,8 +1,12 @@
 <template>
-  <div class="main_layout" v-loading="loading">
+  <div class="main_layout">
     <Toolbar class="tool_bar"></Toolbar>
     <div class="page_main">
-      <Left class="left" @start-connect="loading=true" @end-connect="loading=false"></Left>
+      <Left
+        class="left"
+        @start-connect="loading=true"
+        @end-connect="loading=false"
+      ></Left>
       <Right class="right">
         <Tabs class="tabs"></Tabs>
         <TabViews class="tab_views"></TabViews>
@@ -39,55 +43,55 @@ export default {
 </script>
 
 <style scoped lang="scss">
-  .main_layout {
-    display: flex;
-    flex-direction: column;
+.main_layout {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+
+  .tool_bar {
+    height: 60px;
     width: 100vw;
-    height: 100vh;
     position: absolute;
+    left: 0;
+    top: 0;
+  }
 
-    .tool_bar {
-      height: 60px;
-      width: 100vw;
-      position: absolute;
-      left: 0;
-      top: 0;
+  .status_bar {
+    width: 100vw;
+    height: 25px;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+  }
+
+  .page_main {
+    position: absolute;
+    top: 60px;
+    width: 100vw;
+    height: calc(100vh - 60px - 25px);
+    display: flex;
+    flex-direction: row;
+
+    .left {
+      width: 20vw;
+      height: 100%;
     }
 
-    .status_bar {
-      width: 100vw;
-      height: 25px;
-      position: absolute;
-      left: 0;
-      bottom: 0;
-    }
+    .right {
+      width: 80vw;
+      height: 100%;
 
-    .page_main {
-      position: absolute;
-      top: 60px;
-      width: 100vw;
-      height: calc(100vh - 60px - 25px);
-      display: flex;
-      flex-direction: row;
-
-      .left {
-        width: 20vw;
-        height: 100%;
+      .tabs {
+        height: $grid-height-normal;
       }
 
-      .right {
+      .tab_views {
         width: 80vw;
-        height: 100%;
-
-        .tabs {
-          height: $grid-height-normal;
-        }
-
-        .tab_views {
-          width: 80vw;
-          height: calc(100% - #{$grid-height-normal});
-        }
+        height: calc(100% - #{$grid-height-normal});
       }
     }
   }
+}
 </style>

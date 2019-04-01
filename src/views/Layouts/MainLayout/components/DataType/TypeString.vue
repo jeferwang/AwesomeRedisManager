@@ -8,8 +8,18 @@
           class="com-input value_input"
         ></textarea>
         <div class="opt_group">
-          <div class="com-btn com-btn-primary">格式化</div>
-          <div class="com-btn com-btn-success">保存</div>
+          <div
+            class="com-btn com-btn-primary"
+            @click="onFormat"
+          >
+            格式化
+          </div>
+          <div
+            class="com-btn com-btn-success"
+            @click="onSave"
+          >
+            保存
+          </div>
         </div>
       </div>
     </div>
@@ -36,6 +46,17 @@ export default {
     }
   },
   methods: {
+    onFormat () {
+      // this.val = this.$formatXML(this.val)
+      // this.val = this.$formatJSON(this.val)
+    },
+    async onSave () {
+      if (this.val === this.originVal) {
+        return false
+      }
+      await this.tab.connect.set(this.mainKey, this.val)
+      // TODO 保存成功的提示
+    },
     async initData () {
       let val = await this.tab.connect.get(this.mainKey)
       this.originVal = val

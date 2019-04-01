@@ -10,7 +10,8 @@ import electronPlugin from './plugins/electronPlugin'
 import redisPlugin from './plugins/redisPlugin'
 import storagePlugin from './plugins/storagePlugin'
 import windowsPlugin from './plugins/windowsPlugin'
-import './plugins/elementPlugin.js'
+import formatterPlugin from './plugins/formatterPlugin'
+// import './plugins/elementPlugin.js'
 import './plugins/iviewPlugin.js'
 import './style/style.scss'
 
@@ -20,6 +21,7 @@ Vue.use(electronPlugin)
 Vue.use(redisPlugin)
 Vue.use(storagePlugin)
 Vue.use(windowsPlugin)
+Vue.use(formatterPlugin)
 
 new Vue({
   router,
