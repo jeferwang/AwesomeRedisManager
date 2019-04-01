@@ -47,8 +47,27 @@ export default {
   },
   methods: {
     onFormat () {
-      // this.val = this.$formatXML(this.val)
-      // this.val = this.$formatJSON(this.val)
+      if (!this.val || !this.val.length) {
+        return false
+      }
+      let val = null
+      this.$popup.actionList({ actionList: ['XML', 'JSON'], tipText: '请选择格式' })
+        .then(res => {
+          switch (res.action) {
+            case 'XML':
+              val = this.$formatXML(this.val)
+              break
+            case 'JSON':
+              val = this.$formatJSON(this.val)
+              break
+          }
+          if (!val || !val.length) {
+            // todo 报错提示
+            console.warn('格式化失败')
+            return false
+          }
+          this.val = val
+        })
     },
     async onSave () {
       if (this.val === this.originVal) {

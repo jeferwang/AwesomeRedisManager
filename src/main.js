@@ -11,7 +11,8 @@ import redisPlugin from './plugins/redisPlugin'
 import storagePlugin from './plugins/storagePlugin'
 import windowsPlugin from './plugins/windowsPlugin'
 import formatterPlugin from './plugins/formatterPlugin'
-// import './plugins/elementPlugin.js'
+import popupPlugin from './plugins/popupPlugin'
+import './plugins/keyCodePlugin.js'
 import './plugins/iviewPlugin.js'
 import './style/style.scss'
 
@@ -21,6 +22,7 @@ Vue.use(electronPlugin)
 Vue.use(redisPlugin)
 Vue.use(storagePlugin)
 Vue.use(windowsPlugin)
+Vue.use(popupPlugin)
 Vue.use(formatterPlugin)
 
 new Vue({
