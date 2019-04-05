@@ -11,12 +11,18 @@
       :tab="tab"
       :main-key="mainKey"
     ></TypeString>
+    <TypeHash
+      v-if="keyType==='hash'"
+      :tab="tab"
+      :main-key="mainKey"
+    ></TypeHash>
   </div>
 </template>
 
 <script>
 import KeyBox from './KeyBox'
 import TypeString from './DataType/TypeString'
+import TypeHash from './DataType/TypeHash'
 
 const supportedTypes = ['string', 'list', 'set', 'zset', 'hash']
 
@@ -34,7 +40,8 @@ export default {
   },
   components: {
     KeyBox,
-    TypeString
+    TypeString,
+    TypeHash
   },
   data () {
     return {

@@ -12,9 +12,11 @@ import storagePlugin from './plugins/storagePlugin'
 import windowsPlugin from './plugins/windowsPlugin'
 import formatterPlugin from './plugins/formatterPlugin'
 import popupPlugin from './plugins/popupPlugin'
+import msgPlugin from './plugins/msgPlugin'
 import './plugins/keyCodePlugin.js'
 import './plugins/iviewPlugin.js'
 import './style/style.scss'
+import animate from 'animate.css'
 
 Vue.config.productionTip = false
 
@@ -23,7 +25,9 @@ Vue.use(redisPlugin)
 Vue.use(storagePlugin)
 Vue.use(windowsPlugin)
 Vue.use(popupPlugin)
+Vue.use(msgPlugin)
 Vue.use(formatterPlugin)
+Vue.use(animate)
 
 new Vue({
   router,

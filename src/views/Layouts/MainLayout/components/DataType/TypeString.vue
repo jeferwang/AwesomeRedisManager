@@ -62,10 +62,11 @@ export default {
               break
           }
           if (!val || !val.length) {
-            // todo 报错提示
-            console.warn('格式化失败')
+            // 报错提示
+            this.$msg.msgBox({ msg: '格式化失败', type: 'warning' })
             return false
           }
+          this.$msg.msgBox({ msg: '格式化完成', type: 'success', duration: 1000 })
           this.val = val
         })
     },
@@ -74,7 +75,8 @@ export default {
         return false
       }
       await this.tab.connect.set(this.mainKey, this.val)
-      // TODO 保存成功的提示
+      // 保存成功的提示
+      this.$msg.msgBox({ msg: '保存成功', type: 'success', duration: 1500 })
     },
     async initData () {
       let val = await this.tab.connect.get(this.mainKey)

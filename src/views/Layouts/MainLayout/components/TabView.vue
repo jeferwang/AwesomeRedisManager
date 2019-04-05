@@ -2,13 +2,14 @@
   <div class="data_view_main">
     <div class="left">
       <div class="search_box">
-        <div class="tip noselect">筛选Key</div>
+        <div class="tip noselect">筛选 DB Key</div>
         <input
           type="text"
           class="com-input"
           placeholder="输入筛选表达式"
           v-model="mainMatch"
           @input="onInputKeyCondition"
+          @keydown.esc="onCleanKeyCondition"
         >
       </div>
       <!--todo 选择db功能-->
@@ -77,6 +78,10 @@ export default {
     }
   },
   methods: {
+    async onCleanKeyCondition () {
+      this.mainMatch = ''
+      this.loadDbKeys({ reload: true })
+    },
     async renameKey (oldKey, newKey, index) {
       console.log('执行重命名', oldKey, newKey, index)
       try {
@@ -84,13 +89,13 @@ export default {
       } catch (e) {
         console.error(e)
         if (e.message.includes('no such key')) {
-          // todo 弹出提示，key不存在
-          console.log('不存在')
+          this.$msg.msgBox({ msg: '重命名的Key不存在', type: 'warning' })
         }
         return false
       }
       // 修改列表
       this.mainKeyList[index] = newKey
+      this.$msg.msgBox({ msg: '重命名成功', type: 'success' })
     },
     async onRenameCurrent (e) {
       await this.renameKey(e.oldKey, e.newKey, this.detail.idx)
@@ -101,6 +106,7 @@ export default {
       console.log('执行删除', key, index)
       await this.tab.connect.del(key)
       this.mainKeyList.splice(index, 1)
+      this.$msg.msgBox({ msg: '删除成功', type: 'success' })
     },
     // 收到子组件的删除事件
     async onDeleteCurrent () {
@@ -189,6 +195,12 @@ export default {
     this.dbNum = ~~dbNum[1]
     // 页面数据初始化操作
     this.changeDb(0)
+    // for (let i = 0; i < 20; i++) {
+    //   for (let j = 0; j < 1000; j++) {
+    //     console.log(i, j)
+    //     await this.tab.connect.hset(`hash_${i}`, `hash_${i}_${j}`, `${i}-${j}`)
+    //   }
+    // }
   },
   async created () {
 
@@ -215,7 +227,7 @@ export default {
     .search_box {
       display: flex;
       flex-direction: row;
-      font-size: 14px;
+      // font-size: 14px;
 
       .tip {
         background: $background-color-dark;

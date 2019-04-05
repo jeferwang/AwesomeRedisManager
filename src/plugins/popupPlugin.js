@@ -1,4 +1,4 @@
-import actionList from './popups/actionList'
+import actionList from './popup/actionList'
 
 const popup = {}
 popup.actionList = actionList
