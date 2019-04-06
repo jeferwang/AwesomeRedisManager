@@ -27,14 +27,22 @@
           </div>
         </div>
       </div>
-      <div class="hdetail_box">
+      <div
+        class="hdetail_box"
+        v-if="detail.oldKey.length"
+      >
         <div class="hkey_box">
           <input
             type="text"
             class="hkey_input com-input"
             v-model="detail.newKey"
           >
-          <div class="btn_rename_hkey com-btn com-btn-primary">重命名</div>
+          <div
+            class="btn_rename_hkey com-btn com-btn-primary"
+            @click="onRenameHKey"
+          >
+            重命名
+          </div>
         </div>
         <div class="hval_box">
           <textarea
@@ -42,10 +50,16 @@
             v-model="detail.newVal"
           ></textarea>
           <div class="opt_group">
-            <div class="com-btn com-btn-warning">
+            <div
+              class="com-btn com-btn-warning"
+              @click="onFormat"
+            >
               格式化
             </div>
-            <div class="com-btn com-btn-success">
+            <div
+              class="com-btn com-btn-success"
+              @click="onSave"
+            >
               保存
             </div>
           </div>
@@ -76,17 +90,81 @@ export default {
       hCursor: 0,
       hMatch: '',
       detail: {
-        oldKkey: '',
+        oldKey: '',
         newKey: '',
         oldVal: '',
-        newVal: '',
-        idx: -1
+        newVal: ''
       }
     }
   },
   methods: {
-    async onShowHkeyDetail (hkey, hkIdx) {
-      console.log(hkey, hkIdx)
+    async onSave () {
+      if (this.detail.oldVal === this.detail.newVal) {
+        return false
+      }
+      if (this.detail.oldKey !== this.detail.newKey) {
+        // 丢弃key的修改
+        this.detail.newKey = this.detail.oldKey
+      }
+      try {
+        await this.tab.connect.hset(this.mainKey, this.detail.newKey, this.detail.newVal)
+        this.detail.oldVal = this.detail.newVal
+        this.$msg.msgBox({ msg: '保存成功', type: 'success', duration: 1000 })
+      } catch (e) {
+        this.$msg.msgBox({ msg: '保存失败', type: 'warning', duration: 1000 })
+        console.warn(e)
+        return false
+      }
+    },
+    onFormat () {
+      if (!this.detail.newVal) {
+        return false
+      }
+      let val = null
+      this.$popup.actionList({ actionList: ['XML', 'JSON'], tipText: '请选择格式' })
+        .then(res => {
+          switch (res.action) {
+            case 'XML':
+              val = this.$formatXML(this.detail.newVal)
+              break
+            case 'JSON':
+              val = this.$formatJSON(this.detail.newVal)
+              break
+          }
+          if (!val || !val.length) {
+            // 报错提示
+            this.$msg.msgBox({ msg: '格式化失败', type: 'warning' })
+            return false
+          }
+          this.$msg.msgBox({ msg: '格式化完成', type: 'success', duration: 1000 })
+          this.detail.newVal = val
+        })
+    },
+    async onRenameHKey () {
+      if (this.detail.oldKey === this.detail.newKey) {
+        return false
+      }
+      // 丢弃对val的修改
+      this.detail.newVal = this.detail.oldVal
+      // 创建新的key，赋值oldVal
+      try {
+        await this.tab.connect.hset(this.mainKey, this.detail.newKey, this.detail.oldVal)
+        await this.tab.connect.hdel(this.mainKey, this.detail.oldKey)
+        // 查找列表是否存在此key并进行修改
+        for (let i = 0; i < this.hkeyList.length; i++) {
+          if (this.hkeyList[i] === this.detail.oldKey) {
+            this.$set(this.hkeyList, i, this.detail.newKey)
+            break
+          }
+        }
+        this.detail.oldKey = this.detail.newKey
+        this.$msg.msgBox({ msg: '重命名成功', type: 'success' })
+      } catch (e) {
+        console.warn(e)
+        return false
+      }
+    },
+    async onShowHkeyDetail (hkey) {
       // 检查是否存在
       let hVal
       try {
@@ -101,7 +179,6 @@ export default {
       }
       this.detail.oldKey = hkey
       this.detail.newKey = hkey
-      this.detail.idx = hkIdx
       this.detail.oldVal = hVal
       this.detail.newVal = hVal
     },
@@ -159,7 +236,7 @@ export default {
     },
     async initData () {
       this.detail = {
-        oldKkey: '',
+        oldKey: '',
         newKey: '',
         oldVal: '',
         newVal: '',
@@ -197,7 +274,7 @@ export default {
     flex-direction: row;
     margin-top: 10px;
     .hkeys_box {
-      width: calc(100% / 2 - 10px / 2);
+      flex-grow: 1;
       flex-shrink: 0;
       margin-right: 10px;
       .hsearch_box {
