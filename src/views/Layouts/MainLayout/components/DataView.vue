@@ -16,6 +16,11 @@
       :tab="tab"
       :main-key="mainKey"
     ></TypeHash>
+    <TypeList
+      v-if="keyType==='list'"
+      :tab="tab"
+      :main-key="mainKey"
+    ></TypeList>
   </div>
 </template>
 
@@ -23,8 +28,9 @@
 import KeyBox from './KeyBox'
 import TypeString from './DataType/TypeString'
 import TypeHash from './DataType/TypeHash'
+import TypeList from './DataType/TypeList'
 
-const supportedTypes = ['string', 'list', 'set', 'zset', 'hash']
+const supportedTypes = ['string', 'hash', 'list', 'set', 'zset']
 
 export default {
   name: 'DataView',
@@ -41,7 +47,8 @@ export default {
   components: {
     KeyBox,
     TypeString,
-    TypeHash
+    TypeHash,
+    TypeList
   },
   data () {
     return {

@@ -198,7 +198,7 @@ export default {
     // for (let i = 0; i < 20; i++) {
     //   for (let j = 0; j < 1000; j++) {
     //     console.log(i, j)
-    //     await this.tab.connect.hset(`hash_${i}`, `hash_${i}_${j}`, `${i}-${j}`)
+    //     await this.tab.connect.rpush(`list_${i}`, `list_${i}_${j}`)
     //   }
     // }
   },
