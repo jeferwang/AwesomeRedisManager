@@ -21,6 +21,11 @@
       :tab="tab"
       :main-key="mainKey"
     ></TypeList>
+    <TypeSet
+      v-if="keyType==='set'"
+      :tab="tab"
+      :main-key="mainKey"
+    ></TypeSet>
   </div>
 </template>
 
@@ -29,6 +34,7 @@ import KeyBox from './KeyBox'
 import TypeString from './DataType/TypeString'
 import TypeHash from './DataType/TypeHash'
 import TypeList from './DataType/TypeList'
+import TypeSet from './DataType/TypeSet'
 
 const supportedTypes = ['string', 'hash', 'list', 'set', 'zset']
 
@@ -48,7 +54,8 @@ export default {
     KeyBox,
     TypeString,
     TypeHash,
-    TypeList
+    TypeList,
+    TypeSet
   },
   data () {
     return {
@@ -91,7 +98,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.main {
-  height: 100%;
-}
+  .main {
+    height: 100%;
+  }
 </style>

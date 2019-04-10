@@ -195,11 +195,14 @@ export default {
     this.dbNum = ~~dbNum[1]
     // 页面数据初始化操作
     this.changeDb(0)
-    // for (let i = 0; i < 20; i++) {
-    //   for (let j = 0; j < 1000; j++) {
-    //     console.log(i, j)
-    //     await this.tab.connect.rpush(`list_${i}`, `list_${i}_${j}`)
+    // for (let i = 0; i < 10; i++) {
+    //   let ls = []
+    //   for (let j = 0; j < 2000; j++) {
+    //     ls.push(`set_${i}_${j}_1234567890abcdefghijklmnopqrstuvwxyz_1234567890abcdefghijklmnopqrstuvwxyz`)
     //   }
+    //   console.log(i)
+    //   await this.tab.connect.sadd(`set_${i}_1234567890abcdefghijklmnopqrstuvwxyz_1234567890abcdefghijklmnopqrstuvwxyz`, ...ls)
+    //   console.log(i)
     // }
   },
   async created () {
@@ -227,7 +230,6 @@ export default {
     .search_box {
       display: flex;
       flex-direction: row;
-      // font-size: 14px;
 
       .tip {
         background: $background-color-dark;
@@ -254,6 +256,10 @@ export default {
         box-sizing: border-box;
         border-bottom: 1px solid $border-color;
         cursor: pointer;
+        width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
 
         &:hover {
           background: $background-color-highlight-blue;
