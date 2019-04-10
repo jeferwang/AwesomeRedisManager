@@ -1,0 +1,369 @@
+<template>
+  <div class="main_box">
+    <div class="title">数据</div>
+    <div class="data_box">
+      <div class="list_box">
+        <div class="search_box">
+          <div class="tip_text">筛选 Hash Key</div>
+          <input
+            type="text"
+            class="com-input"
+            v-model="match"
+            @input="onInputCondition"
+            @keydown.esc="onClearCondition"
+          >
+        </div>
+        <div
+          class="val_list noselect"
+          @scroll="onScrollList"
+        >
+          <div
+            class="val_item"
+            v-for="(obj,idx) in dataList"
+            :key="idx"
+            @click="onShowDetail(obj.val,obj.score,idx)"
+          >
+            {{obj.val}}
+          </div>
+        </div>
+      </div>
+      <div
+        class="detail_box"
+        v-if="detail.oldScore.length"
+      >
+        <div class="score_box">
+          <div class="score_tip_text">score</div>
+          <input
+            type="text"
+            class="score_input com-input"
+            v-model="detail.newScore"
+          >
+        </div>
+        <div class="hval_box">
+          <textarea
+            class="com-input"
+            v-model="detail.newVal"
+          ></textarea>
+          <div class="opt_group">
+            <div
+              class="com-btn com-btn-warning"
+              @click="onFormat"
+            >
+              格式化
+            </div>
+            <div
+              class="com-btn com-btn-success"
+              @click="onSave"
+            >
+              保存
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'TypeZset',
+  props: {
+    tab: {
+      type: Object,
+      default: null
+    },
+    mainKey: {
+      type: String,
+      default: null
+    }
+  },
+  data () {
+    return {
+      loading: false,
+      hasMore: true,
+      dataList: [],
+      cursor: 0,
+      match: '',
+      detail: {
+        oldScore: '',
+        newScore: '',
+        oldVal: '',
+        newVal: '',
+        idx: -1
+      }
+    }
+  },
+  methods: {
+    async onSave () {
+      if (this.detail.oldVal === this.detail.newVal && this.detail.oldScore === this.detail.newScore) {
+        return false
+      }
+      this.detail.newScore = `${this.detail.newScore}`
+      try {
+        // 先删除旧值
+        await this.tab.connect.zrem(this.mainKey, this.detail.oldVal)
+        // 然后添加新值
+        await this.tab.connect.zadd(this.mainKey, this.detail.newScore, this.detail.newVal)
+        this.detail.oldVal = this.detail.newVal
+        this.detail.oldScore = this.detail.newScore
+        this.$set(this.dataList, this.detail.idx, { val: this.detail.newVal, score: this.detail.newScore })
+        this.$msg.msgBox({ msg: '保存成功', type: 'success', duration: 1000 })
+      } catch (e) {
+        this.$msg.msgBox({ msg: '保存失败', type: 'warning', duration: 1000 })
+        console.warn(e)
+        return false
+      }
+    },
+    onFormat () {
+      if (!this.detail.newVal) {
+        return false
+      }
+      let val = null
+      this.$popup.actionList({ actionList: ['XML', 'JSON'], tipText: '请选择格式' })
+        .then(res => {
+          switch (res.action) {
+            case 'XML':
+              val = this.$formatXML(this.detail.newVal)
+              break
+            case 'JSON':
+              val = this.$formatJSON(this.detail.newVal)
+              break
+          }
+          if (!val || !val.length) {
+            // 报错提示
+            this.$msg.msgBox({ msg: '格式化失败', type: 'warning' })
+            return false
+          }
+          this.$msg.msgBox({ msg: '格式化完成', type: 'success', duration: 1000 })
+          this.detail.newVal = val
+        })
+    },
+    async onShowDetail (val, score, idx) {
+      this.detail.oldScore = score
+      this.detail.newScore = score
+      this.detail.oldVal = val
+      this.detail.newVal = val
+      this.detail.idx = idx
+    },
+    async onClearCondition () {
+      this.match = ''
+      this.loadData({ reload: true })
+    },
+    async onInputCondition () {
+      this.loadData({ reload: true })
+    },
+    async onScrollList (e) {
+      let sHeight = e.target.scrollHeight
+      let boxHeight = e.target.offsetHeight
+      let scrollTop = e.target.scrollTop
+      if (sHeight - (boxHeight + scrollTop) < 20) {
+        this.loadData()
+      }
+    },
+    async loadData ({ reload = false } = {}) {
+      if (this.loading) {
+        return false
+      }
+      if (!this.hasMore && !reload) {
+        return false
+      }
+      if (reload) {
+        this.dataList = []
+        this.cursor = 0
+        this.hasMore = true
+      }
+      this.loading = true
+      let extParams = ['count', 100]
+      if (this.match.length) {
+        extParams.push(...['match', `*${this.match}*`])
+      }
+      let res
+      let cursor = this.cursor
+      console.log('cursor', cursor)
+      while (true) {
+        res = await this.tab.connect.zscan(this.mainKey, cursor, ...extParams)
+        cursor = parseInt(res[0])
+        if (res[1] && res[1].length) {
+          for (let i = 0; i < res[1].length; i += 2) {
+            this.dataList.push({
+              val: res[1][i],
+              score: res[1][i + 1]
+            })
+          }
+        }
+        if (parseInt(res[0]) === 0 || this.dataList.length > 100) {
+          // 到结尾或者拿到了想要的数量
+          break
+        }
+      }
+      this.cursor = cursor
+      if (this.cursor === 0) {
+        this.hasMore = false
+      }
+      this.loading = false
+    },
+    async initData () {
+      this.detail = {
+        oldScore: '',
+        newScore: '',
+        oldVal: '',
+        newVal: '',
+        idx: -1
+      }
+      this.loadData({ reload: true })
+    }
+  },
+  async mounted () {
+    await this.initData()
+  },
+  watch: {
+    mainKey: {
+      handler (newVal, oldVal) {
+        this.initData()
+      },
+      deep: true
+    }
+  }
+}
+</script>
+
+<style scoped lang="scss">
+  .main_box {
+    padding: 10px;
+    height: calc(100% - 124px);
+
+    .title {
+      font-size: 14px;
+      line-height: 14px;
+    }
+
+    .data_box {
+      height: calc(100% - 24px);
+      display: flex;
+      flex-direction: row;
+      margin-top: 10px;
+
+      .list_box {
+        flex-grow: 1;
+        flex-shrink: 0;
+        margin-right: 10px;
+        width: calc(100% / 2 - 10px / 2);
+
+        .search_box {
+          width: 100%;
+          display: flex;
+          flex-direction: row;
+
+          .tip_text {
+            height: $grid-height-normal;
+            line-height: $grid-height-normal;
+            flex-grow: 0;
+            flex-shrink: 0;
+            padding: 0 10px;
+            background-color: $background-color-dark;
+          }
+
+          .com-input {
+            flex-grow: 1;
+            background-color: $background-color-lighter;
+            width: 100%;
+            height: $grid-height-normal;
+            line-height: $grid-height-normal;
+            display: block;
+            padding: 0 10px;
+          }
+        }
+
+        .val_list {
+          border: 1px solid $border-color;
+          // background-color: $background-color-lighter;
+          margin-top: 10px;
+          height: calc(100% - 10px - #{$grid-height-normal});
+          overflow: hidden;
+          overflow-y: auto;
+
+          .val_item {
+            height: $grid-height-normal;
+            line-height: $grid-height-normal;
+            padding-left: 10px;
+            box-sizing: border-box;
+            border-bottom: 1px solid $border-color;
+            cursor: pointer;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+
+            &:last-child {
+              border-bottom: none;
+            }
+
+            &:hover {
+              background: $background-color-highlight-blue;
+            }
+          }
+        }
+      }
+
+      .detail_box {
+        width: calc(100% / 2 - 10px / 2);
+
+        .score_box {
+          display: flex;
+          flex-direction: row;
+
+          .score_tip_text {
+            height: $grid-height-normal;
+            line-height: $grid-height-normal;
+            text-align: center;
+            padding: 0 10px;
+            background: $background-color-dark;
+          }
+
+          .score_input {
+            flex-grow: 1;
+            flex-shrink: 0;
+            display: block;
+            height: $grid-height-normal;
+            line-height: $grid-height-normal;
+            padding: 0 10px;
+          }
+
+          .btn_rename_hkey {
+            flex-grow: 0;
+            flex-shrink: 0;
+            height: $grid-height-normal;
+            line-height: $grid-height-normal;
+            width: 100px;
+            text-align: center;
+          }
+        }
+
+        .hval_box {
+          display: flex;
+          margin-top: 10px;
+          height: calc(100% - 10px - #{$grid-height-normal});
+
+          textarea.com-input {
+            flex-grow: 1;
+            padding: 10px;
+          }
+
+          .opt_group {
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+            width: 100px;
+
+            & > div {
+              width: 100px;
+              flex-grow: 1;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            }
+          }
+        }
+      }
+    }
+  }
+</style>

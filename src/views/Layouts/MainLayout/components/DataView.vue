@@ -26,6 +26,11 @@
       :tab="tab"
       :main-key="mainKey"
     ></TypeSet>
+    <TypeZset
+      v-if="keyType==='zset'"
+      :tab="tab"
+      :main-key="mainKey"
+    ></TypeZset>
   </div>
 </template>
 
@@ -35,6 +40,7 @@ import TypeString from './DataType/TypeString'
 import TypeHash from './DataType/TypeHash'
 import TypeList from './DataType/TypeList'
 import TypeSet from './DataType/TypeSet'
+import TypeZset from './DataType/TypeZset'
 
 const supportedTypes = ['string', 'hash', 'list', 'set', 'zset']
 
@@ -55,7 +61,8 @@ export default {
     TypeString,
     TypeHash,
     TypeList,
-    TypeSet
+    TypeSet,
+    TypeZset
   },
   data () {
     return {

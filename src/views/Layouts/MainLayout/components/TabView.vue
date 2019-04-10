@@ -198,10 +198,10 @@ export default {
     // for (let i = 0; i < 10; i++) {
     //   let ls = []
     //   for (let j = 0; j < 2000; j++) {
-    //     ls.push(`set_${i}_${j}_1234567890abcdefghijklmnopqrstuvwxyz_1234567890abcdefghijklmnopqrstuvwxyz`)
+    //     ls.push(j, `zset_${i}_${j}_1234567890abcdefghijklmnopqrstuvwxyz_1234567890abcdefghijklmnopqrstuvwxyz`)
     //   }
     //   console.log(i)
-    //   await this.tab.connect.sadd(`set_${i}_1234567890abcdefghijklmnopqrstuvwxyz_1234567890abcdefghijklmnopqrstuvwxyz`, ...ls)
+    //   await this.tab.connect.zadd(`zset_${i}_1234567890abcdefghijklmnopqrstuvwxyz_1234567890abcdefghijklmnopqrstuvwxyz`, ...ls)
     //   console.log(i)
     // }
   },
@@ -217,60 +217,61 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.data_view_main {
-  height: 100%;
-  display: flex;
-
-  .left {
+  .data_view_main {
     height: 100%;
-    width: 20vw;
-    box-sizing: border-box;
-    border-right: 1px solid $border-color;
+    display: flex;
 
-    .search_box {
-      display: flex;
-      flex-direction: row;
+    .left {
+      height: 100%;
+      width: 20vw;
+      box-sizing: border-box;
+      border-right: 1px solid $border-color;
 
-      .tip {
-        background: $background-color-dark;
-        line-height: $grid-height-normal;
-        padding: 0 10px;
+      .search_box {
+        display: flex;
+        flex-direction: row;
+
+        .tip {
+          background: $background-color-dark;
+          line-height: $grid-height-normal;
+          padding: 0 10px;
+        }
+
+        .com-input {
+          flex-grow: 1;
+          height: $grid-height-normal;
+          padding: 0 10px;
+        }
       }
 
-      .com-input {
-        flex-grow: 1;
-        height: $grid-height-normal;
-        padding: 0 10px;
-      }
-    }
-
-    .key_list {
-      height: calc(100% - #{$grid-height-normal});
-      overflow: hidden;
-      overflow-y: auto;
-
-      .key_item {
-        height: $grid-height-normal;
-        line-height: $grid-height-normal;
-        padding-left: 10px;
-        box-sizing: border-box;
-        border-bottom: 1px solid $border-color;
-        cursor: pointer;
-        width: 100%;
+      .key_list {
+        height: calc(100% - #{$grid-height-normal});
         overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
+        overflow-y: auto;
 
-        &:hover {
-          background: $background-color-highlight-blue;
+        .key_item {
+          height: $grid-height-normal;
+          line-height: $grid-height-normal;
+          padding-left: 10px;
+          box-sizing: border-box;
+          border-bottom: 1px solid $border-color;
+          cursor: pointer;
+          width: 100%;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+
+          &:hover {
+            background: $background-color-highlight-blue;
+          }
         }
       }
     }
+
+    .right {
+      height: 100%;
+      width: 60vw;
+      box-sizing: border-box;
+    }
   }
-  .right {
-    height: 100%;
-    width: 60vw;
-    box-sizing: border-box;
-  }
-}
 </style>
