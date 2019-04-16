@@ -58,7 +58,7 @@ export default {
       this.$emit('start-connect')
       const res = await this.$store.dispatch('tabs/addTabByConfig', config)
       if (!res) {
-        this.$Message.warning('连接失败')
+        this.$msg.msgBox({ msg: '连接失败', type: 'warning' })
       }
       this.$emit('end-connect')
     },

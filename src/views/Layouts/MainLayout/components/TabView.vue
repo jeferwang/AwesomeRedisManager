@@ -2,7 +2,6 @@
   <div class="data_view_main">
     <div class="left">
       <div class="search_box">
-        <div class="tip noselect">筛选 DB Key</div>
         <input
           type="text"
           class="com-input"
@@ -11,6 +10,10 @@
           @input="onInputKeyCondition"
           @keydown.esc="onCleanKeyCondition"
         >
+        <div class="add_key noselect">
+          <i class="fa fa-plus"></i>
+          <span> 新增</span>
+        </div>
       </div>
       <!--todo 选择db功能-->
       <!--<div class="db_selector">-->
@@ -231,10 +234,11 @@ export default {
         display: flex;
         flex-direction: row;
 
-        .tip {
+        .add_key {
           background: $background-color-dark;
           line-height: $grid-height-normal;
           padding: 0 10px;
+          cursor: pointer;
         }
 
         .com-input {

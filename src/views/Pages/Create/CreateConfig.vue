@@ -61,7 +61,7 @@ export default {
         await client.select(0)
         this.$Message.success('连接成功')
       } catch (e) {
-        this.$Message.warning('连接失败')
+        this.$msg.msgBox({ msg: '连接失败', type: 'warning' })
       }
       client.disconnect(false)
     },
