@@ -38,7 +38,9 @@ export default {
   },
   methods: {
     onClickNew () {
-      this.$windowsManager.openCreateConfig()
+      // this.$windowsManager.openCreateConfig()
+      // 调用自己实现的弹窗
+      this.$emit('show-create-config')
     }
   }
 }

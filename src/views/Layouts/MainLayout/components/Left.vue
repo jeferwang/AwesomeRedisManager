@@ -65,7 +65,8 @@ export default {
     onEditConfig () {
       if (!this.tmpConfig) return false
       this.$storage.local.set('tmpEditConfig', this.tmpConfig)
-      this.$windowsManager.openCreateConfig({ title: '编辑连接' })
+      // this.$windowsManager.openCreateConfig({ title: '编辑连接' })
+      this.$emit('show-create-config')
     },
     onFavoriteConfig () {
       if (!this.tmpConfig) return false
@@ -112,10 +113,6 @@ export default {
     ])
   },
   mounted () {
-    this.$getElectronApp()
-      .on('refreshConfigData', () => {
-        this.$store.dispatch('redisConfig/readConfigs')
-      })
     window.addEventListener('click', (e) => {
       e.preventDefault()
       this.extMenu.show = false
