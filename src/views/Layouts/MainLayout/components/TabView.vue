@@ -10,7 +10,7 @@
           @input="onInputKeyCondition"
           @keydown.esc="onCleanKeyCondition"
         >
-        <div class="add_key noselect">
+        <div class="add_key noselect" @click="onCreateKey">
           <i class="fa fa-plus"></i>
           <span> 新增</span>
         </div>
@@ -44,17 +44,20 @@
         @rename-key="onRenameCurrent"
       ></DataView>
     </div>
+    <CreateMainKey></CreateMainKey>
   </div>
 </template>
 
 <script>
-import DataView from './DataView'
 import { mapGetters } from 'vuex'
+import DataView from './DataView'
+import CreateMainKey from './Dialog/CreateMainKey'
 
 export default {
   name: 'TabView',
   components: {
-    DataView
+    DataView,
+    CreateMainKey
   },
   props: {
     tab: {
@@ -81,6 +84,10 @@ export default {
     }
   },
   methods: {
+    // 显示创建Key的弹窗
+    onCreateKey () {
+
+    },
     async onCleanKeyCondition () {
       this.mainMatch = ''
       this.loadDbKeys({ reload: true })

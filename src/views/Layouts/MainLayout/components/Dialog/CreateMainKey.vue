@@ -3,53 +3,47 @@
     <div class="main_card" @click.stop="e=>e.preventDefault()">
       <div class="header">添加Redis配置</div>
       <div class="main_form">
-        <!--名称-->
+        <!--Key-->
         <div class="form_item">
-          <div class="item_label">连接名称</div>
+          <div class="item_label">Key</div>
           <div class="item_body">
-            <input v-model="formData.name" type="text" class="com-input" placeholder="127.0.0.1">
+            <input v-model="key" type="text" class="com-input">
           </div>
         </div>
-        <!--地址-->
+        <!--类型-->
         <div class="form_item">
-          <div class="item_label">服务器地址</div>
+          <div class="item_label">Type</div>
           <div class="item_body">
-            <input v-model="formData.host" type="text" class="com-input" placeholder="127.0.0.1">
-          </div>
-        </div>
-        <!--端口-->
-        <div class="form_item">
-          <div class="item_label">服务器端口</div>
-          <div class="item_body">
-            <input v-model="formData.port" type="text" class="com-input" style="width: 100px;" placeholder="6379">
-          </div>
-        </div>
-        <!--密码-->
-        <div class="form_item">
-          <div class="item_label">密码</div>
-          <div class="item_body">
-            <input v-model="formData.password" type="text" class="com-input" placeholder="无">
+            <SelectList v-model="type" placeholder="选择类型" :options="supportedTypes"></SelectList>
           </div>
         </div>
       </div>
       <div class="footer">
-        <div class="com-btn com-btn-primary btn_test" @click="testConfig">测试连接</div>
-        <div class="com-btn com-btn-success btn_save" @click="saveConfig">保存</div>
+        <div class="com-btn com-btn-success btn_save" @click="saveConfig">
+          <i class="fa fa-plus"></i>
+          <span> 创建</span>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import SelectList from '../../../../../components/Form/SelectList'
+
 export default {
-  name: 'CreateConfig',
+  name: 'CreateMainKey',
+  components: { SelectList },
   data () {
     return {
-      formData: {
-        name: null,
-        host: null,
-        port: null,
-        password: null
+      key: '',
+      type: '',
+      supportedTypes: {
+        string: 'String',
+        hash: 'HashMap',
+        list: 'List',
+        set: 'Set',
+        zset: 'SortedSet'
       }
     }
   },
@@ -155,6 +149,10 @@ export default {
               height: $grid-height-small;
               width: 100%;
               padding: 0 10px;
+            }
+
+            .com-select {
+              height: $grid-height-small;
             }
           }
         }

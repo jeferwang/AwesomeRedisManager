@@ -31,7 +31,7 @@ import Right from './components/Right'
 import Tabs from './components/Tabs'
 import TabViews from './components/TabViews'
 import StatusBar from './components/StatusBar'
-import CreateConfig from './components/CreateConfig'
+import CreateConfig from './components/Dialog/CreateRedisConfig'
 
 export default {
   name: 'MainLayout',
