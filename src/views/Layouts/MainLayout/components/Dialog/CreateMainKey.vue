@@ -70,6 +70,64 @@
             </div>
           </template>
           <!--/hash-->
+          <!--list-->
+          <template v-if="type==='list'">
+            <div
+              class="form_item"
+              v-for="(listItem,listIdx) in listData"
+              :key="listIdx"
+            >
+              <div class="item_label">List Item</div>
+              <div class="item_body">
+                <input v-model="listData[listIdx]" type="text" class="com-input">
+                <div
+                  class="del_hash_key_btn com-btn com-btn-danger"
+                  @click="listData.splice(listIdx,1)"
+                >
+                  <span class="fa fa-close"></span>
+                </div>
+              </div>
+            </div>
+            <div class="add_btn_wrapper">
+              <div
+                class="com-btn com-btn-primary add_btn"
+                @click="listData.push('')"
+              >
+                <span class="fa fa-plus"></span>
+                <span> 添加 List Item</span>
+              </div>
+            </div>
+          </template>
+          <!--/list-->
+          <!--list-->
+          <template v-if="type==='set'">
+            <div
+              class="form_item"
+              v-for="(setItem,setIdx) in setData"
+              :key="setIdx"
+            >
+              <div class="item_label">Set Item</div>
+              <div class="item_body">
+                <input v-model="setData[setIdx]" type="text" class="com-input">
+                <div
+                  class="del_hash_key_btn com-btn com-btn-danger"
+                  @click="setData.splice(setIdx,1)"
+                >
+                  <span class="fa fa-close"></span>
+                </div>
+              </div>
+            </div>
+            <div class="add_btn_wrapper">
+              <div
+                class="com-btn com-btn-primary add_btn"
+                @click="setData.push('')"
+              >
+                <span class="fa fa-plus"></span>
+                <span> 添加 Set Item</span>
+              </div>
+            </div>
+          </template>
+          <!--/list-->
         </div>
       </div>
       <div class="footer">
@@ -100,6 +158,8 @@ export default {
       type: '',
       stringValue: '', // string类型的value
       hashData: [],
+      listData: [],
+      setData: [],
       supportedTypes: {
         string: 'String',
         hash: 'HashMap',
@@ -122,8 +182,10 @@ export default {
             await this.saveHashData()
             break
           case 'list':
+            await this.saveListData()
             break
           case 'set':
+            await this.saveSetData()
             break
           case 'zset':
             break
@@ -135,6 +197,36 @@ export default {
       } catch (e) {
         this.$msg.msgBox({ type: 'warning', msg: e.message })
       }
+    },
+    async saveSetData () {
+      let conn = this.tab.connect
+      if (!this.setData.length) {
+        throw new Error('请添加Set具体数据')
+      }
+      let args = []
+      // 验证hashData的有效性
+      for (let i = 0; i < this.setData.length; i++) {
+        if (!this.setData[i].length) {
+          throw new Error('请完整填写Set数据')
+        }
+        args.push(this.setData[i])
+      }
+      await conn.sadd(this.key, ...args)
+    },
+    async saveListData () {
+      let conn = this.tab.connect
+      if (!this.listData.length) {
+        throw new Error('请添加List具体数据')
+      }
+      let args = []
+      // 验证hashData的有效性
+      for (let i = 0; i < this.listData.length; i++) {
+        if (!this.listData[i].length) {
+          throw new Error('请完整填写List数据')
+        }
+        args.push(this.listData[i])
+      }
+      await conn.rpush(this.key, ...args)
     },
     async saveHashData () {
       let conn = this.tab.connect
@@ -251,7 +343,7 @@ export default {
             align-items: center;
             padding: 0 10px;
 
-            .add_hash_key {
+            .add_btn {
               display: block;
               width: fit-content;
               height: $grid-height-small;
