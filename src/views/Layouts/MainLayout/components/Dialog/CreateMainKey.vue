@@ -61,7 +61,7 @@
             </div>
             <div class="add_btn_wrapper">
               <div
-                class="com-btn com-btn-primary add_hash_key"
+                class="com-btn com-btn-primary add_btn"
                 @click="hashData.push({key:'',value:''})"
               >
                 <span class="fa fa-plus"></span>
@@ -99,7 +99,7 @@
             </div>
           </template>
           <!--/list-->
-          <!--list-->
+          <!--set-->
           <template v-if="type==='set'">
             <div
               class="form_item"
@@ -127,7 +127,44 @@
               </div>
             </div>
           </template>
-          <!--/list-->
+          <!--/set-->
+          <!--zset-->
+          <template v-if="type==='zset'">
+            <div
+              class="zset_group"
+              v-for="(zsetItem,zsetIdx) in zsetData"
+              :key="zsetIdx"
+            >
+              <div class="form_item">
+                <div class="item_label">Zset Score</div>
+                <div class="item_body">
+                  <input v-model="zsetData[zsetIdx].score" type="text" class="com-input">
+                  <div
+                    class="del_zset_key_btn com-btn com-btn-danger"
+                    @click="zsetData.splice(zsetIdx,1)"
+                  >
+                    <span class="fa fa-close"></span>
+                  </div>
+                </div>
+              </div>
+              <div class="form_item">
+                <div class="item_label">Zset Value</div>
+                <div class="item_body">
+                  <input v-model="zsetData[zsetIdx].value" type="text" class="com-input">
+                </div>
+              </div>
+            </div>
+            <div class="add_btn_wrapper">
+              <div
+                class="com-btn com-btn-primary add_btn"
+                @click="zsetData.push({score:'',value:''})"
+              >
+                <span class="fa fa-plus"></span>
+                <span> 添加 Zset Item</span>
+              </div>
+            </div>
+          </template>
+          <!--/zset-->
         </div>
       </div>
       <div class="footer">
@@ -160,6 +197,7 @@ export default {
       hashData: [],
       listData: [],
       setData: [],
+      zsetData: [],
       supportedTypes: {
         string: 'String',
         hash: 'HashMap',
@@ -188,6 +226,7 @@ export default {
             await this.saveSetData()
             break
           case 'zset':
+            await this.saveZsetData()
             break
           default:
             return false
@@ -197,6 +236,21 @@ export default {
       } catch (e) {
         this.$msg.msgBox({ type: 'warning', msg: e.message })
       }
+    },
+    async saveZsetData () {
+      let conn = this.tab.connect
+      if (!this.zsetData.length) {
+        throw new Error('请添加Zset具体数据')
+      }
+      let args = []
+      // 验证zsetData的有效性
+      for (let i = 0; i < this.zsetData.length; i++) {
+        if (!this.zsetData[i].score.length || !this.zsetData[i].value.length) {
+          throw new Error('请完整填写Zset数据')
+        }
+        args.push(this.zsetData[i].score, this.zsetData[i].value)
+      }
+      await conn.hmset(this.key, ...args)
     },
     async saveSetData () {
       let conn = this.tab.connect
