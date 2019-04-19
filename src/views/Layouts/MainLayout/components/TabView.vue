@@ -44,7 +44,11 @@
         @rename-key="onRenameCurrent"
       ></DataView>
     </div>
-    <CreateMainKey></CreateMainKey>
+    <CreateMainKey
+      v-if="showAddKey"
+      :tab="tab"
+      @save="onSaveNewData"
+    ></CreateMainKey>
   </div>
 </template>
 
@@ -68,6 +72,7 @@ export default {
   data () {
     return {
       loading: false,
+      showAddKey: false, // 是否显示添加key的弹出
       connect: null,
       dbNum: 0,
       currDb: 0,
@@ -84,9 +89,13 @@ export default {
     }
   },
   methods: {
+    onSaveNewData () {
+      this.showAddKey = false
+      this.loadDbKeys({ reload: true })
+    },
     // 显示创建Key的弹窗
     onCreateKey () {
-
+      this.showAddKey = true
     },
     async onCleanKeyCondition () {
       this.mainMatch = ''

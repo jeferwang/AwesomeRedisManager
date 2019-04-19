@@ -14,14 +14,27 @@
         <div class="form_item">
           <div class="item_label">Type</div>
           <div class="item_body">
-            <SelectList v-model="type" placeholder="选择类型" :options="supportedTypes"></SelectList>
+            <SelectList
+              v-model="type"
+              placeholder="选择类型"
+              :options="supportedTypes"
+            ></SelectList>
           </div>
         </div>
+        <!--按照不同类型显示不同的添加表单-->
+        <template v-if="type==='string'">
+          <div class="form_item">
+            <div class="item_label">Value</div>
+            <div class="item_body">
+              <input v-model="stringValue" type="text" class="com-input">
+            </div>
+          </div>
+        </template>
       </div>
       <div class="footer">
-        <div class="com-btn com-btn-success btn_save" @click="saveConfig">
-          <i class="fa fa-plus"></i>
-          <span> 创建</span>
+        <div class="com-btn com-btn-success btn_save" @click="saveData">
+          <i class="fa fa-save"></i>
+          <span> 保存</span>
         </div>
       </div>
     </div>
@@ -33,11 +46,18 @@ import SelectList from '../../../../../components/Form/SelectList'
 
 export default {
   name: 'CreateMainKey',
+  props: {
+    tab: {
+      type: Object,
+      default: null
+    }
+  },
   components: { SelectList },
   data () {
     return {
       key: '',
       type: '',
+      stringValue: '', // string类型的value
       supportedTypes: {
         string: 'String',
         hash: 'HashMap',
@@ -48,46 +68,42 @@ export default {
     }
   },
   methods: {
-    getConfig () {
-      return {
-        name: this.formData.name || this.formData.host || '127.0.0.1',
-        host: this.formData.host || '127.0.0.1',
-        port: this.formData.port || 6379,
-        password: this.formData.password || null,
-        createdAt: this.formData.createdAt || Date.now(),
-        isFavorite: this.formData.isFavorite || false
+    async saveData () {
+      if (!this.key.length) {
+        this.$msg.msgBox({ type: 'warning', msg: '请输入Key' })
+        return false
       }
-    },
-    async testConfig () {
-      const config = this.getConfig()
-      let client = await this.$connectRedis(config)
-      try {
-        await client.select(0)
-        this.$msg.msgBox({ msg: '连接成功', type: 'success' })
-      } catch (e) {
-        this.$msg.msgBox({ msg: '连接失败', type: 'warning' })
+      if (!this.type.length) {
+        this.$msg.msgBox({ type: 'warning', msg: '请选择类型' })
+        return false
       }
-      client.disconnect(false)
-    },
-    saveConfig () {
-      const config = this.getConfig()
-      this.$store.dispatch('redisConfig/saveConfig', config)
-        .then(() => {
-          this.$storage.local.remove('tmpEditConfig')
-          this.$msg.msgBox({ msg: '保存成功', type: 'success' })
-          this.$emit('close')
-        })
-        .catch(err => {
-          console.log(err)
-          this.$msg.msgBox({ msg: '保存失败', type: 'warning' })
-        })
+      let conn = this.tab.connect
+      switch (this.type) {
+        case 'string':
+          if (!this.stringValue.length) {
+            this.$msg.msgBox({ type: 'warning', msg: '请输入Value' })
+            return false
+          }
+          await conn.set(this.key, this.stringValue)
+          break
+        case 'hash':
+          break
+        case 'list':
+          break
+        case 'set':
+          break
+        case 'zset':
+          break
+        default:
+          this.$msg.msgBox({ type: 'warning', msg: '类型错误' })
+          return false
+      }
+      this.$msg.msgBox({ type: 'success', msg: '保存成功' })
+      this.$emit('save') // 抛出保存数据的事件
+      return true
     }
   },
   mounted () {
-    const tmp = this.$storage.local.get('tmpEditConfig')
-    if (tmp) {
-      this.formData = tmp
-    }
   }
 }
 </script>

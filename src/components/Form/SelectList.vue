@@ -64,7 +64,7 @@ export default {
     onSelectItem (option) {
       console.log(option)
       this.$set(this, 'showText', option.value)
-      this.$emit('change', option)
+      this.$emit('change', option.key)
       this.$emit('input', option.key)
     },
     onHideSelectList () {
