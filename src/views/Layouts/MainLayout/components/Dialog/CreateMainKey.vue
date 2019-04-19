@@ -22,14 +22,55 @@
           </div>
         </div>
         <!--按照不同类型显示不同的添加表单-->
-        <template v-if="type==='string'">
-          <div class="form_item">
-            <div class="item_label">Value</div>
-            <div class="item_body">
-              <input v-model="stringValue" type="text" class="com-input">
+        <div class="child_form no-scroll-bar">
+          <!--string-->
+          <template v-if="type==='string'">
+            <div class="form_item">
+              <div class="item_label">Value</div>
+              <div class="item_body">
+                <input v-model="stringValue" type="text" class="com-input">
+              </div>
             </div>
-          </div>
-        </template>
+          </template>
+          <!--/string-->
+          <!--hash-->
+          <template v-if="type==='hash'">
+            <div
+              class="hash_group"
+              v-for="(hashItem,hashIdx) in hashData"
+              :key="hashIdx"
+            >
+              <div class="form_item">
+                <div class="item_label">Hash Key</div>
+                <div class="item_body">
+                  <input v-model="hashData[hashIdx].key" type="text" class="com-input">
+                  <div
+                    class="del_hash_key_btn com-btn com-btn-danger"
+                    @click="hashData.splice(hashIdx,1)"
+                  >
+                    <span class="fa fa-close"></span>
+                  </div>
+                </div>
+              </div>
+              <div class="form_item">
+                <div class="item_label">Hash Value</div>
+                <div class="item_body">
+                  <input v-model="hashData[hashIdx].value" type="text" class="com-input">
+                </div>
+              </div>
+            </div>
+            <div class="add_btn_wrapper">
+              <div
+                class="com-btn com-btn-primary add_hash_key"
+                @click="hashData.push({key:'',value:''})"
+              >
+                <span class="fa fa-plus"></span>
+                <span> 添加 Hash Item</span>
+              </div>
+            </div>
+          </template>
+          <!--/hash-->
+        </div>
       </div>
       <div class="footer">
         <div class="com-btn com-btn-success btn_save" @click="saveData">
@@ -58,6 +99,7 @@ export default {
       key: '',
       type: '',
       stringValue: '', // string类型的value
+      hashData: [],
       supportedTypes: {
         string: 'String',
         hash: 'HashMap',
@@ -69,38 +111,52 @@ export default {
   },
   methods: {
     async saveData () {
-      if (!this.key.length) {
-        this.$msg.msgBox({ type: 'warning', msg: '请输入Key' })
-        return false
-      }
-      if (!this.type.length) {
-        this.$msg.msgBox({ type: 'warning', msg: '请选择类型' })
-        return false
-      }
-      let conn = this.tab.connect
-      switch (this.type) {
-        case 'string':
-          if (!this.stringValue.length) {
-            this.$msg.msgBox({ type: 'warning', msg: '请输入Value' })
+      try {
+        if (!this.key.length) throw new Error('请输入Key')
+        if (!this.type.length) throw new Error('请选择类型')
+        switch (this.type) {
+          case 'string':
+            await this.saveStringData()
+            break
+          case 'hash':
+            await this.saveHashData()
+            break
+          case 'list':
+            break
+          case 'set':
+            break
+          case 'zset':
+            break
+          default:
             return false
-          }
-          await conn.set(this.key, this.stringValue)
-          break
-        case 'hash':
-          break
-        case 'list':
-          break
-        case 'set':
-          break
-        case 'zset':
-          break
-        default:
-          this.$msg.msgBox({ type: 'warning', msg: '类型错误' })
-          return false
+        }
+        this.$msg.msgBox({ type: 'success', msg: '保存成功' })
+        this.$emit('save') // 抛出保存数据的事件
+      } catch (e) {
+        this.$msg.msgBox({ type: 'warning', msg: e.message })
       }
-      this.$msg.msgBox({ type: 'success', msg: '保存成功' })
-      this.$emit('save') // 抛出保存数据的事件
-      return true
+    },
+    async saveHashData () {
+      let conn = this.tab.connect
+      if (!this.hashData.length) {
+        throw new Error('请添加HashMap具体数据')
+      }
+      let args = []
+      // 验证hashData的有效性
+      for (let i = 0; i < this.hashData.length; i++) {
+        if (!this.hashData[i].key.length || !this.hashData[i].value.length) {
+          throw new Error('请完整填写HashMap数据')
+        }
+        args.push(this.hashData[i].key, this.hashData[i].value)
+      }
+      await conn.hmset(this.key, ...args)
+    },
+    async saveStringData () {
+      let conn = this.tab.connect
+      if (!this.stringValue.length) {
+        throw new Error('请输入Value')
+      }
+      await conn.set(this.key, this.stringValue)
     }
   },
   mounted () {
@@ -147,10 +203,6 @@ export default {
           align-items: center;
           border-bottom: 1px solid $border-color;
 
-          &:last-child {
-            border-bottom: none;
-          }
-
           .item_label {
             line-height: $grid-height-normal;
             width: 100px;
@@ -160,8 +212,12 @@ export default {
           .item_body {
             padding: 0 10px;
             flex-grow: 1;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
 
             .com-input {
+              display: block;
               height: $grid-height-small;
               width: 100%;
               padding: 0 10px;
@@ -169,6 +225,38 @@ export default {
 
             .com-select {
               height: $grid-height-small;
+            }
+
+            .del_hash_key_btn {
+              width: $grid-height-small;
+              height: $grid-height-small;
+              line-height: $grid-height-small;
+              text-align: center;
+              flex-shrink: 0;
+            }
+          }
+        }
+
+        .child_form {
+          background-color: $background-color-dark;
+          max-height: 300px;
+          overflow: hidden;
+          overflow-y: auto;
+
+          .add_btn_wrapper {
+            height: $grid-height-normal;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            padding: 0 10px;
+
+            .add_hash_key {
+              display: block;
+              width: fit-content;
+              height: $grid-height-small;
+              line-height: $grid-height-small;
+              padding: 0 10px;
             }
           }
         }

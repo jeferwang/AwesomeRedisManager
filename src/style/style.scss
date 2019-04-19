@@ -34,6 +34,11 @@ textarea {
     //border-radius: 10px;
     //background: #EDEDED;
   }
+  &.no-scroll-bar{
+    &::-webkit-scrollbar {
+      width: 0;
+    }
+  }
 }
 
 //禁止选择
