@@ -2,34 +2,34 @@
   <div class="main">
     <KeyBox
       :tab="tab"
-      :main-key="mainKey"
+      :main-key="tmpKey"
       @delete-key="onDelete"
       @rename-key="onRename"
     ></KeyBox>
     <TypeString
       v-if="keyType==='string'"
       :tab="tab"
-      :main-key="mainKey"
+      :main-key="tmpKey"
     ></TypeString>
     <TypeHash
       v-if="keyType==='hash'"
       :tab="tab"
-      :main-key="mainKey"
+      :main-key="tmpKey"
     ></TypeHash>
     <TypeList
       v-if="keyType==='list'"
       :tab="tab"
-      :main-key="mainKey"
+      :main-key="tmpKey"
     ></TypeList>
     <TypeSet
       v-if="keyType==='set'"
       :tab="tab"
-      :main-key="mainKey"
+      :main-key="tmpKey"
     ></TypeSet>
     <TypeZset
       v-if="keyType==='zset'"
       :tab="tab"
-      :main-key="mainKey"
+      :main-key="tmpKey"
     ></TypeZset>
   </div>
 </template>
@@ -66,7 +66,8 @@ export default {
   },
   data () {
     return {
-      keyType: '' // mainKey的数据类型
+      keyType: '', // mainKey的数据类型
+      tmpKey: ''
     }
   },
   methods: {
@@ -82,12 +83,12 @@ export default {
         this.$emit('error', { code: -1, message: `${this.mainKey}不存在` })
         return false
       }
-      console.log(keyType)
       if (!supportedTypes.includes(keyType)) {
         this.$emit('error', { code: -2, message: `不支持的数据类型${keyType}` })
         return false
       }
       this.keyType = keyType
+      this.tmpKey = this.mainKey
     }
   },
   watch: {
