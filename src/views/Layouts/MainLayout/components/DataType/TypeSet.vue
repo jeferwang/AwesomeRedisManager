@@ -27,6 +27,7 @@
             v-for="(val,idx) in dataList"
             :key="idx"
             @click="onShowDetail(val,idx)"
+            @contextmenu="e=>onShowContextMenu(e,val,idx)"
           >
             {{val}}
           </div>
@@ -63,16 +64,24 @@
       @close="showAddDialog=false"
       @save="onAddDataComplete"
     ></CreateMainKey>
+    <CommonExtMenu
+      v-if="extMenu.show"
+      :style="{left:`${extMenu.x}px`,top:`${extMenu.y}px`}"
+      :menu-list="extMenu.menuList"
+      @select="onSelectExtMenu"
+    ></CommonExtMenu>
   </div>
 </template>
 
 <script>
 import CreateMainKey from '../Dialog/CreateMainKey'
+import CommonExtMenu from '../CommonExtMenu'
 
 export default {
   name: 'TypeSet',
   components: {
-    CreateMainKey
+    CreateMainKey,
+    CommonExtMenu
   },
   props: {
     tab: {
@@ -96,10 +105,45 @@ export default {
         oldVal: '',
         newVal: '',
         idx: -1
+      },
+      extMenu: {
+        menuList: [
+          {
+            key: 'delete',
+            icon: 'fa-close',
+            value: '删除'
+          }
+        ],
+        show: false,
+        x: 0,
+        y: 0,
+        tmpVal: '',
+        tmpIdx: -1
       }
     }
   },
   methods: {
+    async onSelectExtMenu (e) {
+      switch (e) {
+        case 'delete':
+          await this.tab.connect.srem(this.mainKey, this.extMenu.tmpVal)
+          this.dataList.splice(this.extMenu.tmpIdx, 1)
+          if (this.extMenu.tmpVal === this.detail.oldVal) {
+            this.detail.oldVal = ''
+          }
+          break
+        default:
+          break
+      }
+    },
+    onShowContextMenu (e, val, idx) {
+      e.preventDefault()
+      this.extMenu.tmpVal = val
+      this.extMenu.tmpIdx = idx
+      this.extMenu.x = e.x + 5
+      this.extMenu.y = e.y + 5
+      this.extMenu.show = true
+    },
     onAddDataComplete () {
       this.showAddDialog = false
       this.initData()
@@ -209,10 +253,19 @@ export default {
         idx: -1
       }
       this.loadData({ reload: true })
+    },
+    hideExtMenuListener (e) {
+      if (this.extMenu.show) {
+        this.extMenu.show = false
+      }
     }
   },
   async mounted () {
+    window.addEventListener('click', this.hideExtMenuListener)
     await this.initData()
+  },
+  beforeDestroy () {
+    window.removeEventListener('click', this.hideExtMenuListener)
   },
   watch: {
     mainKey: {
