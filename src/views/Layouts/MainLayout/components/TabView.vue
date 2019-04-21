@@ -30,6 +30,7 @@
           v-for="(mainKey,mkIdx) in mainKeyList"
           :key="mkIdx"
           @click="onShowDetail(mainKey,mkIdx)"
+          @contextmenu="e=>onShowContextMenu(e,mainKey,mkIdx)"
         >
           {{mainKey}}
         </div>
@@ -50,6 +51,12 @@
       @save="onSaveNewData"
       @close="showAddKey=false"
     ></CreateMainKey>
+    <CommonExtMenu
+      v-if="extMenu.show"
+      :style="{left:`${extMenu.x}px`,top:`${extMenu.y}px`}"
+      :menu-list="extMenu.menuList"
+      @select="onSelectExtMenu"
+    ></CommonExtMenu>
   </div>
 </template>
 
@@ -57,12 +64,14 @@
 import { mapGetters } from 'vuex'
 import DataView from './DataView'
 import CreateMainKey from './Dialog/CreateMainKey'
+import CommonExtMenu from './CommonExtMenu'
 
 export default {
   name: 'TabView',
   components: {
     DataView,
-    CreateMainKey
+    CreateMainKey,
+    CommonExtMenu
   },
   props: {
     tab: {
@@ -86,10 +95,45 @@ export default {
         show: false,
         key: null,
         idx: -1
+      },
+      extMenu: {
+        menuList: [
+          {
+            key: 'delete',
+            icon: 'fa-close',
+            value: 'Delete'
+          }
+        ],
+        show: false,
+        x: 0,
+        y: 0,
+        tmpKey: '',
+        tmpIdx: -1
       }
     }
   },
   methods: {
+    async onSelectExtMenu (e) {
+      switch (e) {
+        case 'delete':
+          await this.tab.connect.del(this.extMenu.tmpKey)
+          this.mainKeyList.splice(this.extMenu.tmpIdx, 1)
+          if (this.extMenu.tmpKey === this.detail.key) {
+            this.detail.show = false
+          }
+          break
+        default:
+          break
+      }
+    },
+    onShowContextMenu (e, key, idx) {
+      e.preventDefault()
+      this.extMenu.tmpKey = key
+      this.extMenu.tmpIdx = idx
+      this.extMenu.x = e.x + 5
+      this.extMenu.y = e.y + 5
+      this.extMenu.show = true
+    },
     onSaveNewData () {
       this.showAddKey = false
       this.loadDbKeys({ reload: true })
@@ -204,9 +248,15 @@ export default {
       if (sHeight - (boxHeight + scrollTop) < 20) {
         this.loadDbKeys()
       }
+    },
+    hideExtMenuListener (e) {
+      if (this.extMenu.show) {
+        this.extMenu.show = false
+      }
     }
   },
   async mounted () {
+    window.addEventListener('click', this.hideExtMenuListener)
     // 读取数据库的数量
     this.connect = this.tab.connect
     let dbNum = await this.tab.connect.config('get', 'databases')
@@ -218,6 +268,7 @@ export default {
     })
   },
   beforeDestroy () {
+    window.removeEventListener('click', this.hideExtMenuListener)
     this.$eventBus.$off('change-db')
   },
   computed: {

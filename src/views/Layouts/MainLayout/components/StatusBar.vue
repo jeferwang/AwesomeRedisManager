@@ -3,11 +3,11 @@
     <div class="left"></div>
     <div class="right">
       <div class="current_db" v-if="this.activeTab">
-        <span>Current DB </span>
-        <span class="btn_change_db" @click="onSelectDb">
+        <div>Current DB </div>
+        <div class="btn_change_db" @click="onSelectDb">
           <span>{{currentDb}}</span>
           <span class="fa fa-arrows-v"></span>
-        </span>
+        </div>
       </div>
     </div>
   </div>
@@ -57,14 +57,17 @@ export default {
     align-items: center;
 
     .right {
+      height: 100%;
       .current_db {
+        height: 100%;
+        display: flex;
+        align-items: center;
         .btn_change_db {
-          display: inline-block;
           cursor: pointer;
           padding: 0 10px;
           height: 100%;
-          line-height: 25px;
-
+          display: flex;
+          align-items: center;
           .fa {
             margin-left: 5px;
           }

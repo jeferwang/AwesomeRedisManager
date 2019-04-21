@@ -47,6 +47,9 @@ const mutations = {
   },
   removeTab (state, tabIndex) {
     state.tabs.splice(tabIndex, 1)
+    if (!state.tabs.length) {
+      state.activeTab = null
+    }
   }
 }
 const actions = {
