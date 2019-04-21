@@ -6,7 +6,7 @@
         class="list_box"
         @scroll="onScrollHkeyList"
       >
-        <div class="list noselect">
+        <div class="list no-select">
           <div
             class="item"
             v-for="(item,idx) in dataList"

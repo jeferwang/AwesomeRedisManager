@@ -67,7 +67,7 @@ export default {
   data () {
     return {
       keyType: '', // mainKey的数据类型
-      tmpKey: ''
+      tmpKey: '' // 用作缓冲，keyType和tmpKey需要同时进行修改
     }
   },
   methods: {

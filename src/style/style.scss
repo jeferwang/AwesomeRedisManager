@@ -42,7 +42,7 @@ textarea {
 }
 
 //禁止选择
-.noselect {
+.no-select {
   -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none; /* Chrome/Safari/Opera */
   -moz-user-select: none; /* Firefox */
@@ -59,7 +59,7 @@ textarea {
 }
 
 .com-btn {
-  @extend .noselect;
+  @extend .no-select;
   color: #ffffff;
   cursor: pointer;
   font-size: 14px;

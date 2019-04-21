@@ -1,5 +1,5 @@
 <template>
-  <div class="left noselect">
+  <div class="left no-select">
     <div class="input_search_box">
       <div class="tip_text">筛选服务器</div>
       <input type="text" class="com-input input_search" v-model="searchText" placeholder="输入筛选条件">

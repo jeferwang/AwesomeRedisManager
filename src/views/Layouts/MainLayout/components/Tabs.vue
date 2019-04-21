@@ -2,7 +2,7 @@
   <!--标签列表-->
   <div class="tabs" v-show="allTabs.length">
     <div class="mask_left" v-show="showLeft"></div>
-    <div class="tab_list noselect" ref="tab_list" @mousewheel="onTabScroll">
+    <div class="tab_list no-select" ref="tab_list" @mousewheel="onTabScroll">
       <div class="tab_item" v-for="(tab,tidx) in allTabs" :key="tidx" :class="{active:tab.active}">
         <div
           class="tab_name"

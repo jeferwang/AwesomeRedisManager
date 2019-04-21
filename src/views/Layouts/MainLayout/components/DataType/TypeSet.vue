@@ -14,7 +14,7 @@
           >
         </div>
         <div
-          class="val_list noselect"
+          class="val_list no-select"
           @scroll="onScrollDataList"
         >
           <div

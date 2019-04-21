@@ -1,5 +1,5 @@
 <template>
-  <div class="toolbar noselect">
+  <div class="toolbar no-select">
     <div class="tool_item" @click="onClickNew">
       <div class="tool_icon">
         <span class="fa fa-plus"></span>

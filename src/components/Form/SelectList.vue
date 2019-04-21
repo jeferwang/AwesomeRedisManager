@@ -18,7 +18,7 @@
       :duration="100"
     >
       <div class="select_list_box" v-if="showList">
-        <div class="select_list noselect">
+        <div class="select_list no-select">
           <template v-for="option in optionList">
             <div
               class="select_item"

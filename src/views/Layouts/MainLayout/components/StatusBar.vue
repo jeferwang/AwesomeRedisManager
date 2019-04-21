@@ -1,5 +1,5 @@
 <template>
-  <div class="status_bar noselect">
+  <div class="status_bar no-select">
     123
   </div>
 </template>

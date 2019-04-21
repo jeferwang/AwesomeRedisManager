@@ -10,7 +10,7 @@
       @click="onHide"
       v-show="show"
     >
-      <div class="icon noselect">
+      <div class="icon no-select">
         <i
           class="fa fa-check-circle"
           v-if="type==='success'"

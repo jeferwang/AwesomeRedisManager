@@ -4,7 +4,7 @@
     <div class="data_box">
       <div class="list_box">
         <div class="search_box">
-          <div class="tip_text">筛选 Hash Key</div>
+          <div class="tip_text">筛选</div>
           <input
             type="text"
             class="com-input"
@@ -14,7 +14,7 @@
           >
         </div>
         <div
-          class="val_list noselect"
+          class="val_list no-select"
           @scroll="onScrollList"
         >
           <div

@@ -19,13 +19,13 @@
       </div>
       <!-- 提示文字 -->
       <div
-        class="tip_text noselect"
+        class="tip_text no-select"
         v-if="tipText.length"
       >
         {{tipText}}
       </div>
       <!-- 选项列表 -->
-      <div class="actions noselect">
+      <div class="actions no-select">
         <template v-for="(action,idx) in actionList">
           <div
             class="action"

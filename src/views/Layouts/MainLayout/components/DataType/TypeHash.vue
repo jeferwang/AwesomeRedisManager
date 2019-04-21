@@ -4,7 +4,13 @@
     <div class="data_box">
       <div class="hkeys_box">
         <div class="hsearch_box">
-          <div class="tip_text">筛选 Hash Key</div>
+          <div
+            class="add_key no-select"
+            @click="onAddHashKey"
+          >
+            <i class="fa fa-plus"></i>
+            <span> 添加</span>
+          </div>
           <input
             type="text"
             class="com-input"
@@ -14,7 +20,7 @@
           >
         </div>
         <div
-          class="hkey_list noselect"
+          class="hkey_list no-select"
           @scroll="onScrollHkeyList"
         >
           <div
@@ -260,112 +266,128 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.main_box {
-  padding: 10px;
-  height: calc(100% - 124px);
-  padding-bottom: 10px;
-  .title {
-    font-size: 14px;
-    line-height: 14px;
-  }
-  .data_box {
-    height: calc(100% - 24px);
-    display: flex;
-    flex-direction: row;
-    margin-top: 10px;
-    .hkeys_box {
-      flex-grow: 1;
-      flex-shrink: 0;
-      margin-right: 10px;
-      .hsearch_box {
-        width: 100%;
-        display: flex;
-        flex-direction: row;
-        .tip_text {
-          height: $grid-height-normal;
-          line-height: $grid-height-normal;
-          flex-grow: 0;
-          flex-shrink: 0;
-          padding: 0 10px;
-          background-color: $background-color-dark;
-        }
-        .com-input {
-          flex-grow: 1;
-          background-color: $background-color-lighter;
+  .main_box {
+    padding: 10px;
+    height: calc(100% - 124px);
+    padding-bottom: 10px;
+
+    .title {
+      font-size: 14px;
+      line-height: 14px;
+    }
+
+    .data_box {
+      height: calc(100% - 24px);
+      display: flex;
+      flex-direction: row;
+      margin-top: 10px;
+
+      .hkeys_box {
+        flex-grow: 1;
+        flex-shrink: 0;
+        margin-right: 10px;
+
+        .hsearch_box {
           width: 100%;
-          height: $grid-height-normal;
-          line-height: $grid-height-normal;
-          display: block;
-          padding: 0 10px;
-        }
-      }
-      .hkey_list {
-        border: 1px solid $border-color;
-        // background-color: $background-color-lighter;
-        margin-top: 10px;
-        height: calc(100% - 10px - #{$grid-height-normal});
-        overflow: hidden;
-        overflow-y: auto;
-        .hkey_item {
-          height: $grid-height-normal;
-          line-height: $grid-height-normal;
-          padding-left: 10px;
-          box-sizing: border-box;
-          border-bottom: 1px solid $border-color;
-          cursor: pointer;
+          display: flex;
+          flex-direction: row;
 
-          &:hover {
-            background: $background-color-highlight-blue;
+          .add_key {
+            height: $grid-height-normal;
+            line-height: $grid-height-normal;
+            flex-grow: 0;
+            flex-shrink: 0;
+            padding: 0 10px;
+            background-color: $background-color-dark;
+            cursor: pointer;
+          }
+
+          .com-input {
+            flex-grow: 1;
+            background-color: $background-color-lighter;
+            width: 100%;
+            height: $grid-height-normal;
+            line-height: $grid-height-normal;
+            display: block;
+            padding: 0 10px;
+          }
+        }
+
+        .hkey_list {
+          border: 1px solid $border-color;
+          // background-color: $background-color-lighter;
+          margin-top: 10px;
+          height: calc(100% - 10px - #{$grid-height-normal});
+          overflow: hidden;
+          overflow-y: auto;
+
+          .hkey_item {
+            height: $grid-height-normal;
+            line-height: $grid-height-normal;
+            padding-left: 10px;
+            box-sizing: border-box;
+            border-bottom: 1px solid $border-color;
+            cursor: pointer;
+
+            &:hover {
+              background: $background-color-highlight-blue;
+            }
           }
         }
       }
-    }
 
-    .hdetail_box {
-      width: calc(100% / 2 - 10px / 2);
-      .hkey_box {
-        display: flex;
-        flex-direction: row;
-        .hkey_input {
-          flex-grow: 1;
-          flex-shrink: 0;
-          display: block;
-          height: $grid-height-normal;
-          line-height: $grid-height-normal;
-          padding: 0 10px;
-        }
-        .btn_rename_hkey {
-          flex-grow: 0;
-          flex-shrink: 0;
-          height: $grid-height-normal;
-          line-height: $grid-height-normal;
-          width: 100px;
-          text-align: center;
-        }
-      }
-      .hval_box {
-        display: flex;
-        margin-top: 10px;
-        height: calc(100% - 10px - #{$grid-height-normal});
-        textarea.com-input {
-          flex-grow: 1;
-          padding: 10px;
-        }
-        .opt_group {
+      .hdetail_box {
+        width: calc(100% / 2 - 10px / 2);
+
+        .hkey_box {
           display: flex;
-          flex-direction: column;
-          flex-shrink: 0;
-          width: 100px;
-          & > div {
-            width: 100px;
+          flex-direction: row;
+
+          .hkey_input {
             flex-grow: 1;
+            flex-shrink: 0;
+            display: block;
+            height: $grid-height-normal;
+            line-height: $grid-height-normal;
+            padding: 0 10px;
+          }
+
+          .btn_rename_hkey {
+            flex-grow: 0;
+            flex-shrink: 0;
+            height: $grid-height-normal;
+            line-height: $grid-height-normal;
+            width: 100px;
+            text-align: center;
+          }
+        }
+
+        .hval_box {
+          display: flex;
+          margin-top: 10px;
+          height: calc(100% - 10px - #{$grid-height-normal});
+
+          textarea.com-input {
+            flex-grow: 1;
+            padding: 10px;
+          }
+
+          .opt_group {
             display: flex;
-            justify-content: center;
-            align-items: center;
+            flex-direction: column;
+            flex-shrink: 0;
+            width: 100px;
+
+            & > div {
+              width: 100px;
+              flex-grow: 1;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            }
           }
         }
       }
     }
   }
-}
 </style>

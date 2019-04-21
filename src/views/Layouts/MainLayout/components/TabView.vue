@@ -10,7 +10,7 @@
           @input="onInputKeyCondition"
           @keydown.esc="onCleanKeyCondition"
         >
-        <div class="add_key noselect" @click="onCreateKey">
+        <div class="add_key no-select" @click="onCreateKey">
           <i class="fa fa-plus"></i>
           <span> 新增</span>
         </div>
@@ -22,7 +22,7 @@
       <!--</Select>-->
       <!--</div>-->
       <div
-        class="key_list noselect"
+        class="key_list no-select"
         @scroll="onScrollKeyList"
       >
         <div
