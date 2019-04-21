@@ -261,7 +261,7 @@ export default {
         }
         args.push(this.zsetData[i].score, this.zsetData[i].value)
       }
-      await conn.hmset(this.key, ...args)
+      await conn.zadd(this.key, ...args)
     },
     async saveSetData () {
       let conn = this.tab.connect

@@ -1,10 +1,9 @@
 <template>
   <div class="main_box">
-    <div class="title">数据</div>
+    <div class="title">Zset Data</div>
     <div class="data_box">
       <div class="list_box">
         <div class="search_box">
-          <div class="tip_text">筛选</div>
           <input
             type="text"
             class="com-input"
@@ -12,6 +11,10 @@
             @input="onInputCondition"
             @keydown.esc="onClearCondition"
           >
+          <div class="add_btn" @click="showAddDialog=true">
+            <i class="fa fa-plus"></i>
+            <span> Add Items</span>
+          </div>
         </div>
         <div
           class="val_list no-select"
@@ -32,7 +35,7 @@
         v-if="detail.oldScore.length"
       >
         <div class="score_box">
-          <div class="score_tip_text">score</div>
+          <div class="score_tip_text">Score</div>
           <input
             type="text"
             class="score_input com-input"
@@ -61,12 +64,25 @@
         </div>
       </div>
     </div>
+    <CreateMainKey
+      v-if="showAddDialog"
+      :tab="tab"
+      :lock-key="mainKey"
+      lock-type="zset"
+      @close="showAddDialog=false"
+      @save="onAddDataComplete"
+    ></CreateMainKey>
   </div>
 </template>
 
 <script>
+import CreateMainKey from '../Dialog/CreateMainKey'
+
 export default {
   name: 'TypeZset',
+  components: {
+    CreateMainKey
+  },
   props: {
     tab: {
       type: Object,
@@ -79,6 +95,7 @@ export default {
   },
   data () {
     return {
+      showAddDialog: false,
       loading: false,
       hasMore: true,
       dataList: [],
@@ -94,6 +111,10 @@ export default {
     }
   },
   methods: {
+    onAddDataComplete () {
+      this.showAddDialog = false
+      this.initData()
+    },
     async onSave () {
       if (this.detail.oldVal === this.detail.newVal && this.detail.oldScore === this.detail.newScore) {
         return false
@@ -254,13 +275,14 @@ export default {
           display: flex;
           flex-direction: row;
 
-          .tip_text {
+          .add_btn {
             height: $grid-height-normal;
             line-height: $grid-height-normal;
             flex-grow: 0;
             flex-shrink: 0;
             padding: 0 10px;
             background-color: $background-color-dark;
+            cursor: pointer;
           }
 
           .com-input {

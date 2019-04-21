@@ -15,7 +15,7 @@
           >
           <div class="add_btn" @click="showAddDialog=true">
             <i class="fa fa-plus"></i>
-            <span>Add Items</span>
+            <span> Add Items</span>
           </div>
         </div>
         <div
