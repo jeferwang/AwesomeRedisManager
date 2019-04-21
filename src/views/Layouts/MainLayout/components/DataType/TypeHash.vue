@@ -48,7 +48,7 @@
             class="btn_rename_hkey com-btn com-btn-primary"
             @click="onRenameHKey"
           >
-            重命名
+            Rename
           </div>
         </div>
         <div class="hval_box">
@@ -61,13 +61,13 @@
               class="com-btn com-btn-warning"
               @click="onFormat"
             >
-              格式化
+              Format
             </div>
             <div
               class="com-btn com-btn-success"
               @click="onSave"
             >
-              保存
+              Save
             </div>
           </div>
         </div>
@@ -129,7 +129,7 @@ export default {
           {
             key: 'delete',
             icon: 'fa-close',
-            value: '删除'
+            value: 'Delete'
           }
         ],
         show: false,
@@ -189,7 +189,7 @@ export default {
         return false
       }
       let val = null
-      this.$popup.actionList({ actionList: ['XML', 'JSON'], tipText: '请选择格式' })
+      this.$popup.actionList({ actionList: ['XML', 'JSON'], tipText: 'Please choose the format' })
         .then(res => {
           switch (res.action) {
             case 'XML':
@@ -201,10 +201,10 @@ export default {
           }
           if (!val || !val.length) {
             // 报错提示
-            this.$msg.msgBox({ msg: '格式化失败', type: 'warning' })
+            this.$msg.msgBox({ msg: 'Format failure', type: 'warning' })
             return false
           }
-          this.$msg.msgBox({ msg: '格式化完成', type: 'success', duration: 1000 })
+          this.$msg.msgBox({ msg: 'Format complete', type: 'success', duration: 1000 })
           this.detail.newVal = val
         })
     },
@@ -226,7 +226,7 @@ export default {
           }
         }
         this.detail.oldKey = this.detail.newKey
-        this.$msg.msgBox({ msg: '重命名成功', type: 'success' })
+        this.$msg.msgBox({ msg: 'Rename successfully', type: 'success' })
       } catch (e) {
         console.warn(e)
         return false
@@ -238,7 +238,7 @@ export default {
       try {
         hVal = await this.tab.connect.hget(this.mainKey, hkey)
         if (hVal === null) {
-          this.$msg.msgBox({ msg: `HashMap ${this.mainKey} 不存在 ${hkey}` })
+          this.$msg.msgBox({ msg: `The key ${hkey} doesn't exists in hash map ${this.mainKey}` })
           return false
         }
       } catch (e) {

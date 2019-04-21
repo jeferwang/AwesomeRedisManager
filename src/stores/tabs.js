@@ -16,11 +16,15 @@ async function configToTab (config) {
 }
 
 const state = {
-  tabs: []
+  tabs: [],
+  activeTab: null
 }
 const getters = {
   allTabs () {
     return state.tabs
+  },
+  activeTab () {
+    return state.activeTab
   }
 }
 const mutations = {
@@ -32,12 +36,14 @@ const mutations = {
       tab.active = false
       return tab
     })
+    state.activeTab = null
   },
   setActive (state, tabIndex) {
     if (state.tabs.length <= tabIndex) {
       return false
     }
     state.tabs[tabIndex].active = true
+    state.activeTab = state.tabs[tabIndex]
   },
   removeTab (state, tabIndex) {
     state.tabs.splice(tabIndex, 1)
@@ -51,12 +57,10 @@ const actions = {
       if (!tab) {
         return false
       }
-      // 设置当前的为active
-      tab.active = true
-      // 设置其他的为非active
-      context.commit('setAllInactive')
       // 添加到tabs列表
       context.commit('addTab', tab)
+      context.commit('setAllInactive')
+      context.commit('setActive', context.state.tabs.length - 1)
       return true
     } catch (e) {
       // 连接失败

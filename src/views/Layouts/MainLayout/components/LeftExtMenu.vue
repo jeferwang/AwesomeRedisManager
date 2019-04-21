@@ -2,15 +2,15 @@
   <div class="left_ext_menu">
     <div class="menu_item" @click="$emit('favorite')">
       <span class="fa fa-star-o"></span>
-      <span>{{config && config.isFavorite?'取消收藏':'收藏'}}</span>
+      <span>{{config && config.isFavorite?'Cancel collection':'Collection'}}</span>
     </div>
     <div class="menu_item" @click="$emit('edit')">
       <span class="fa fa-pencil-square-o"></span>
-      <span>编辑</span>
+      <span>Edit</span>
     </div>
     <div class="menu_item" @click="$emit('delete')">
       <span class="fa fa-trash-o"></span>
-      <span>删除</span>
+      <span>Delete</span>
     </div>
   </div>
 </template>

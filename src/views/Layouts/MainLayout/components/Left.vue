@@ -1,8 +1,8 @@
 <template>
   <div class="left no-select">
     <div class="input_search_box">
-      <div class="tip_text">筛选服务器</div>
-      <input type="text" class="com-input input_search" v-model="searchText" placeholder="输入筛选条件">
+      <div class="tip_text">Filter</div>
+      <input type="text" class="com-input input_search" v-model="searchText" placeholder="Please input filter">
     </div>
     <div class="config_list">
       <template v-for="config in configList()">
@@ -77,8 +77,8 @@ export default {
       if (!this.tmpConfig) return false
       return new Promise(resolve => {
         this.$Modal.confirm({
-          title: '警告',
-          content: '确定删除配置吗？',
+          title: 'Warning',
+          content: 'Are you sure you want to delete it？',
           onOk () {
             resolve()
           }

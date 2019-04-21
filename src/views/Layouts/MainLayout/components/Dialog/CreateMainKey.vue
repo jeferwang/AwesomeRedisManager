@@ -221,8 +221,8 @@ export default {
   methods: {
     async saveData () {
       try {
-        if (!this.key.length) throw new Error('请输入Key')
-        if (!this.type.length) throw new Error('请选择类型')
+        if (!this.key.length) throw new Error('Please input a key')
+        if (!this.type.length) throw new Error('Please select data type')
         switch (this.type) {
           case 'string':
             await this.saveStringData()

@@ -1,23 +1,43 @@
 <template>
   <div class="toolbar no-select">
-    <div class="tool_item" @click="onClickNew">
-      <div class="tool_icon">
-        <span class="fa fa-plus"></span>
+    <!--left-->
+    <div class="left">
+      <div class="tool_item" @click="onClickNew">
+        <div class="tool_icon">
+          <span class="fa fa-plus"></span>
+        </div>
+        <div class="tool_name">New</div>
       </div>
-      <div class="tool_name">新建</div>
-    </div>
-    <div class="tool_item" @click="onClickNew">
-      <div class="tool_icon">
-        <span class="fa fa-download"></span>
+      <div class="tool_item" @click="onClickNew">
+        <div class="tool_icon">
+          <span class="fa fa-download"></span>
+        </div>
+        <div class="tool_name">Import</div>
       </div>
-      <div class="tool_name">导入</div>
-    </div>
-    <div class="tool_item" @click="onClickNew">
-      <div class="tool_icon">
-        <span class="fa fa-upload"></span>
+      <div class="tool_item" @click="onClickNew">
+        <div class="tool_icon">
+          <span class="fa fa-upload"></span>
+        </div>
+        <div class="tool_name">Export</div>
       </div>
-      <div class="tool_name">导出</div>
     </div>
+    <!--/left-->
+    <!--right-->
+    <div class="right">
+      <div class="tool_item" @click="onClickNew">
+        <div class="tool_icon">
+          <span class="fa fa-refresh"></span>
+        </div>
+        <div class="tool_name">Refresh</div>
+      </div>
+      <div class="tool_item" @click="onClickNew">
+        <div class="tool_icon">
+          <span class="fa fa-file-text-o"></span>
+        </div>
+        <div class="tool_name">Script</div>
+      </div>
+    </div>
+    <!--/right-->
     <!--
     <div class="tool_item" @click="onClickNew">
       <div class="tool_icon">
@@ -54,31 +74,37 @@ export default {
     padding: 5px;
     border-bottom: 1px solid #464646;
     box-sizing: border-box;
+    justify-content: space-between;
 
-    .tool_item {
-      cursor: pointer;
-      width: 60px;
-      height: 50px;
-      margin-right: 10px;
+    .left, .right {
       display: flex;
-      flex-direction: column;
-      justify-content: space-between;
+      flex-direction: row;
       align-items: center;
-      box-sizing: border-box;
-      border: 1px solid rgba(0, 0, 0, 0);
-      color: #cacaca;
+      .tool_item {
+        cursor: pointer;
+        width: 60px;
+        height: 50px;
+        margin-right: 10px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        box-sizing: border-box;
+        border: 1px solid rgba(0, 0, 0, 0);
+        color: #cacaca;
 
-      .tool_icon {
-        text-align: center;
-        font-size: 20px;
-      }
+        .tool_icon {
+          text-align: center;
+          font-size: 20px;
+        }
 
-      .tool_name {
-        text-align: center;
-      }
+        .tool_name {
+          text-align: center;
+        }
 
-      &:hover {
-        color: #eaeaea;
+        &:hover {
+          color: #eaeaea;
+        }
       }
     }
   }

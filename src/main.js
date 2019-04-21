@@ -13,6 +13,7 @@ import windowsPlugin from './plugins/windowsPlugin'
 import formatterPlugin from './plugins/formatterPlugin'
 import popupPlugin from './plugins/popupPlugin'
 import msgPlugin from './plugins/msgPlugin'
+import eventBusPlugin from './plugins/eventBusPlugin'
 import './plugins/keyCodePlugin.js'
 import './plugins/iviewPlugin.js'
 import './style/style.scss'
@@ -26,6 +27,7 @@ Vue.use(storagePlugin)
 Vue.use(windowsPlugin)
 Vue.use(popupPlugin)
 Vue.use(msgPlugin)
+Vue.use(eventBusPlugin)
 Vue.use(formatterPlugin)
 Vue.use(animate)
 

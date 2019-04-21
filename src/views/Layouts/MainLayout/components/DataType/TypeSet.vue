@@ -44,13 +44,13 @@
               class="com-btn com-btn-warning"
               @click="onFormat"
             >
-              格式化
+              Format
             </div>
             <div
               class="com-btn com-btn-success"
               @click="onSave"
             >
-              保存
+              Save
             </div>
           </div>
         </div>
@@ -111,7 +111,7 @@ export default {
           {
             key: 'delete',
             icon: 'fa-close',
-            value: '删除'
+            value: 'Delete'
           }
         ],
         show: false,
@@ -171,7 +171,7 @@ export default {
         return false
       }
       let val = null
-      this.$popup.actionList({ actionList: ['XML', 'JSON'], tipText: '请选择格式' })
+      this.$popup.actionList({ actionList: ['XML', 'JSON'], tipText: 'Please choose the format' })
         .then(res => {
           switch (res.action) {
             case 'XML':
@@ -183,10 +183,10 @@ export default {
           }
           if (!val || !val.length) {
             // 报错提示
-            this.$msg.msgBox({ msg: '格式化失败', type: 'warning' })
+            this.$msg.msgBox({ msg: 'Format failure', type: 'warning' })
             return false
           }
-          this.$msg.msgBox({ msg: '格式化完成', type: 'success', duration: 1000 })
+          this.$msg.msgBox({ msg: 'Format complete', type: 'success', duration: 1000 })
           this.detail.newVal = val
         })
     },

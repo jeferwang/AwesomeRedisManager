@@ -5,7 +5,7 @@
         <input
           type="text"
           class="com-input"
-          placeholder="输入筛选表达式"
+          placeholder="Please input filter"
           v-model="mainMatch"
           @input="onInputKeyCondition"
           @keydown.esc="onCleanKeyCondition"
@@ -103,19 +103,18 @@ export default {
       this.loadDbKeys({ reload: true })
     },
     async renameKey (oldKey, newKey, index) {
-      console.log('执行重命名', oldKey, newKey, index)
       try {
         await this.tab.connect.rename(oldKey, newKey)
       } catch (e) {
         console.error(e)
         if (e.message.includes('no such key')) {
-          this.$msg.msgBox({ msg: '重命名的Key不存在', type: 'warning' })
+          this.$msg.msgBox({ msg: 'The key to be renamed does not exist', type: 'warning' })
         }
         return false
       }
       // 修改列表
       this.mainKeyList[index] = newKey
-      this.$msg.msgBox({ msg: '重命名成功', type: 'success' })
+      this.$msg.msgBox({ msg: 'Rename successfully', type: 'success' })
     },
     async onRenameCurrent (e) {
       await this.renameKey(e.oldKey, e.newKey, this.detail.idx)
@@ -123,10 +122,9 @@ export default {
     },
     // 执行删除的函数
     async deleteKey (key, index) {
-      console.log('执行删除', key, index)
       await this.tab.connect.del(key)
       this.mainKeyList.splice(index, 1)
-      this.$msg.msgBox({ msg: '删除成功', type: 'success' })
+      this.$msg.msgBox({ msg: 'Delete successfully', type: 'success' })
     },
     // 收到子组件的删除事件
     async onDeleteCurrent () {
@@ -215,18 +213,12 @@ export default {
     this.dbNum = ~~dbNum[1]
     // 页面数据初始化操作
     this.changeDb(0)
-    // for (let i = 0; i < 10; i++) {
-    //   let ls = []
-    //   for (let j = 0; j < 2000; j++) {
-    //     ls.push(j, `zset_${i}_${j}_1234567890abcdefghijklmnopqrstuvwxyz_1234567890abcdefghijklmnopqrstuvwxyz`)
-    //   }
-    //   console.log(i)
-    //   await this.tab.connect.zadd(`zset_${i}_1234567890abcdefghijklmnopqrstuvwxyz_1234567890abcdefghijklmnopqrstuvwxyz`, ...ls)
-    //   console.log(i)
-    // }
+    this.$eventBus.$on('change-db', () => {
+      this.loadDbKeys({ reload: true })
+    })
   },
-  async created () {
-
+  beforeDestroy () {
+    this.$eventBus.$off('change-db')
   },
   computed: {
     ...mapGetters('tabs', [

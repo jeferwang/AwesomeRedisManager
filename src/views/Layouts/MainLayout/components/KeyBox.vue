@@ -14,13 +14,13 @@
           class="com-btn com-btn-primary"
           @click="onClickRename"
         >
-          重命名
+          Rename
         </div>
         <div
           class="com-btn com-btn-danger"
           @click="onClickDelete"
         >
-          删除
+          Delete
         </div>
       </div>
     </div>
