@@ -28,6 +28,7 @@
             v-for="(hkey,hkIdx) in hkeyList"
             :key="hkIdx"
             @click="onShowHkeyDetail(hkey,hkIdx)"
+            @contextmenu="e=>onShowContextMenu(e,hkey,hkIdx)"
           >
             {{hkey}}
           </div>
@@ -80,16 +81,24 @@
       @close="showAddDialog=false"
       @save="onAddDataComplete"
     ></CreateMainKey>
+    <CommonExtMenu
+      v-if="extMenu.show"
+      :style="{left:`${extMenu.x}px`,top:`${extMenu.y}px`}"
+      :menu-list="extMenu.menuList"
+      @select="onSelectExtMenu"
+    ></CommonExtMenu>
   </div>
 </template>
 
 <script>
 import CreateMainKey from '../Dialog/CreateMainKey'
+import CommonExtMenu from '../CommonExtMenu'
 
 export default {
   name: 'TypeHash',
   components: {
-    CreateMainKey
+    CreateMainKey,
+    CommonExtMenu
   },
   props: {
     tab: {
@@ -114,10 +123,45 @@ export default {
         newKey: '',
         oldVal: '',
         newVal: ''
+      },
+      extMenu: {
+        menuList: [
+          {
+            key: 'delete',
+            icon: 'fa-close',
+            value: '删除'
+          }
+        ],
+        show: false,
+        x: 0,
+        y: 0,
+        tmpHkey: '',
+        tmpHkIdx: -1
       }
     }
   },
   methods: {
+    async onSelectExtMenu (e) {
+      switch (e) {
+        case 'delete':
+          await this.tab.connect.hdel(this.mainKey, this.extMenu.tmpHkey)
+          this.hkeyList.splice(this.extMenu.tmpHkIdx, 1)
+          if (this.extMenu.tmpHkey === this.detail.oldKey) {
+            this.detail.oldKey = ''
+          }
+          break
+        default:
+          break
+      }
+    },
+    onShowContextMenu (e, hkey, hkIdx) {
+      e.preventDefault()
+      this.extMenu.tmpHkey = hkey
+      this.extMenu.tmpHkIdx = hkIdx
+      this.extMenu.x = e.x + 5
+      this.extMenu.y = e.y + 5
+      this.extMenu.show = true
+    },
     onAddDataComplete () {
       this.showAddDialog = false
       this.loadHkeys({ reload: true })
@@ -258,6 +302,11 @@ export default {
       }
       this.loading = false
     },
+    hideExtMenuListener (e) {
+      if (this.extMenu.show) {
+        this.extMenu.show = false
+      }
+    },
     async initData () {
       this.detail = {
         oldKey: '',
@@ -270,7 +319,11 @@ export default {
     }
   },
   async mounted () {
+    window.addEventListener('click', this.hideExtMenuListener)
     await this.initData()
+  },
+  beforeDestroy () {
+    window.removeEventListener('click', this.hideExtMenuListener)
   },
   watch: {
     mainKey: {

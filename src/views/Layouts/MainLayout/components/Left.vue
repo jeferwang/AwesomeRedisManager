@@ -90,7 +90,6 @@ export default {
       })
     },
     onShowContextMenu (e, config) {
-      console.log(e)
       e.preventDefault()
       this.tmpConfig = config
       this.extMenu.x = e.x + 5
@@ -104,6 +103,11 @@ export default {
         case 'favorite':
           return this.getFavoriteConfigs
       }
+    },
+    hideExtMenuListener (e) {
+      if (this.extMenu.show) {
+        this.extMenu.show = false
+      }
     }
   },
   computed: {
@@ -113,10 +117,10 @@ export default {
     ])
   },
   mounted () {
-    window.addEventListener('click', (e) => {
-      e.preventDefault()
-      this.extMenu.show = false
-    })
+    window.addEventListener('click', this.hideExtMenuListener)
+  },
+  beforeDestroy () {
+    window.removeEventListener('click', this.hideExtMenuListener)
   }
 }
 </script>
@@ -153,6 +157,7 @@ export default {
 
     .config_list {
       color: $text-color-light;
+
       .config_item {
         padding: 0 10px;
         height: $grid-height-normal;
@@ -164,7 +169,7 @@ export default {
         justify-content: space-between;
         box-sizing: border-box;
 
-        &:hover{
+        &:hover {
           background: $background-color-highlight-blue;
         }
 
