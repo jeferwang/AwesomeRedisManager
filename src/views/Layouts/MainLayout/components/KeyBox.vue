@@ -1,7 +1,7 @@
 <template>
   <div class="key_box_main">
     <div class="key_label">
-      键名
+      Key Name
     </div>
     <div class="input_box">
       <textarea

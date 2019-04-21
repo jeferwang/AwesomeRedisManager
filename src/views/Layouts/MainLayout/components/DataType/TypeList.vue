@@ -1,6 +1,15 @@
 <template>
   <div class="main_box">
-    <div class="title">数据</div>
+    <div class="title">
+      <div class="title_text">List Data</div>
+      <div
+        class="title_add_btn"
+        @click="showAddDialog=true"
+      >
+        <i class="fa fa-plus"></i>
+        <span>Add Items</span>
+      </div>
+    </div>
     <div class="data_box">
       <div
         class="list_box"
@@ -43,12 +52,25 @@
         </div>
       </div>
     </div>
+    <CreateMainKey
+      v-if="showAddDialog"
+      :tab="tab"
+      :lock-key="mainKey"
+      lock-type="list"
+      @close="showAddDialog=false"
+      @save="onAddDataComplete"
+    ></CreateMainKey>
   </div>
 </template>
 
 <script>
+import CreateMainKey from '../Dialog/CreateMainKey'
+
 export default {
   name: 'TypeString',
+  components: {
+    CreateMainKey
+  },
   props: {
     tab: {
       type: Object,
@@ -61,6 +83,7 @@ export default {
   },
   data () {
     return {
+      showAddDialog: false,
       dataCount: 0,
       dataList: [],
       perPage: 200,
@@ -73,6 +96,10 @@ export default {
     }
   },
   methods: {
+    onAddDataComplete () {
+      this.showAddDialog = false
+      this.initData()
+    },
     async onSave () {
       if (this.detail.oldVal === this.detail.newVal) {
         return false
@@ -185,78 +212,102 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.main_box {
-  padding: 10px;
-  height: calc(100% - 124px);
-  padding-bottom: 10px;
-  width: 100%;
-  .title {
-    font-size: 14px;
-    line-height: 14px;
-  }
-  .data_box {
+  .main_box {
+    padding: 10px;
+    height: calc(100% - 124px);
     width: 100%;
-    height: calc(100% - 24px);
-    display: flex;
-    flex-direction: row;
-    margin-top: 10px;
-    .list_box {
-      width: calc(100% / 2 - 10px / 2);
-      flex-grow: 1;
-      flex-shrink: 0;
-      margin-right: 10px;
-      overflow: hidden;
-      overflow-y: auto;
-      height: 100%;
-      border: 1px solid $border-color;
-      .list {
-        width: 100%;
-        .item {
-          width: 100%;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          height: $grid-height-normal;
-          line-height: $grid-height-normal;
-          padding: 0 10px;
-          box-sizing: border-box;
-          border-bottom: 1px solid $border-color;
-          cursor: pointer;
 
-          &:hover {
-            background: $background-color-highlight-blue;
-          }
-          &:last-child {
-            border-bottom: none;
-          }
+    .title {
+      font-size: 14px;
+      line-height: 14px;
+      display: flex;
+      justify-content: space-between;
+
+      .title_add_btn {
+        color: $text-color-dark;
+        cursor: pointer;
+
+        .fa {
+          margin-right: 5px;
+        }
+
+        &:hover {
+          color: $text-color-light;
         }
       }
     }
 
-    .detail_box {
-      width: calc(100% / 2 - 10px / 2);
-      .val_box {
-        display: flex;
+    .data_box {
+      width: 100%;
+      height: calc(100% - 24px);
+      display: flex;
+      flex-direction: row;
+      margin-top: 10px;
+
+      .list_box {
+        width: calc(100% / 2 - 10px / 2);
+        flex-grow: 1;
+        flex-shrink: 0;
+        margin-right: 10px;
+        overflow: hidden;
+        overflow-y: auto;
         height: 100%;
-        textarea.com-input {
-          flex-grow: 1;
-          padding: 10px;
+        border: 1px solid $border-color;
+
+        .list {
+          width: 100%;
+
+          .item {
+            width: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            height: $grid-height-normal;
+            line-height: $grid-height-normal;
+            padding: 0 10px;
+            box-sizing: border-box;
+            border-bottom: 1px solid $border-color;
+            cursor: pointer;
+
+            &:hover {
+              background: $background-color-highlight-blue;
+            }
+
+            &:last-child {
+              /*border-bottom: none;*/
+            }
+          }
         }
-        .opt_group {
+      }
+
+      .detail_box {
+        width: calc(100% / 2 - 10px / 2);
+
+        .val_box {
           display: flex;
-          flex-direction: column;
-          flex-shrink: 0;
-          width: 100px;
-          & > div {
-            width: 100px;
+          height: 100%;
+
+          textarea.com-input {
             flex-grow: 1;
+            padding: 10px;
+          }
+
+          .opt_group {
             display: flex;
-            justify-content: center;
-            align-items: center;
+            flex-direction: column;
+            flex-shrink: 0;
+            width: 100px;
+
+            & > div {
+              width: 100px;
+              flex-grow: 1;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            }
           }
         }
       }
     }
   }
-}
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div class="main_box">
-    <div class="title">数据</div>
+    <div class="title">Hash Data</div>
     <div class="data_box">
       <div class="hkeys_box">
         <div class="hsearch_box">
