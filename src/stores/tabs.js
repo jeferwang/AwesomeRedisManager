@@ -9,6 +9,7 @@ async function configToTab (config) {
     return null
   }
   return {
+    markId: Math.random(),
     config: config,
     connect: connect,
     active: false
@@ -76,6 +77,7 @@ const actions = {
     context.commit('setActive', tabIndex)
   },
   async closeTab (context, tabIndex) {
+    console.log('关闭', tabIndex)
     if (context.state.tabs.length <= tabIndex) {
       return false
     }

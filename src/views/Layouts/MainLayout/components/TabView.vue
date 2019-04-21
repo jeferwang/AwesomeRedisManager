@@ -203,6 +203,7 @@ export default {
         this.mainKeyList = []
         this.mainCursor = 0
         this.hasMore = true
+        this.detail.show = false
       }
       this.loading = true
       let extParams = ['count', 100]
@@ -263,13 +264,19 @@ export default {
     this.dbNum = ~~dbNum[1]
     // 页面数据初始化操作
     this.changeDb(0)
+    // 切换了数据库，需要刷新数据
     this.$eventBus.$on('change-db', () => {
       this.loadDbKeys({ reload: true })
+    })
+    // 刷新当前标签页
+    this.$eventBus.$on('reload-current-tab', () => {
+      if (this.tab.active) {
+        this.loadDbKeys({ reload: true })
+      }
     })
   },
   beforeDestroy () {
     window.removeEventListener('click', this.hideExtMenuListener)
-    this.$eventBus.$off('change-db')
   },
   computed: {
     ...mapGetters('tabs', [

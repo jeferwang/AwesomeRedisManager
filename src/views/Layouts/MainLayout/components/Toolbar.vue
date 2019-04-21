@@ -24,7 +24,7 @@
     <!--/left-->
     <!--right-->
     <div class="right">
-      <div class="tool_item" @click="onClickNew">
+      <div class="tool_item" @click="onClickRefresh">
         <div class="tool_icon">
           <span class="fa fa-refresh"></span>
         </div>
@@ -57,9 +57,10 @@ export default {
     return {}
   },
   methods: {
+    onClickRefresh () {
+      this.$eventBus.$emit('reload-current-tab')
+    },
     onClickNew () {
-      // this.$windowsManager.openCreateConfig()
-      // 调用自己实现的弹窗
       this.$emit('show-create-config')
     }
   }
@@ -80,6 +81,7 @@ export default {
       display: flex;
       flex-direction: row;
       align-items: center;
+
       .tool_item {
         cursor: pointer;
         width: 60px;

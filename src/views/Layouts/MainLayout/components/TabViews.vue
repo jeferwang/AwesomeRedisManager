@@ -1,6 +1,6 @@
 <template>
   <div>
-    <TabView v-for="(tab,tidx) in allTabs" :key="tidx" v-show="tab.active" :tab="tab"></TabView>
+    <TabView v-for="tab in allTabs" :key="tab.markId" v-show="tab.active" :tab="tab"></TabView>
   </div>
 </template>
 
