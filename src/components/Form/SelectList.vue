@@ -10,6 +10,7 @@
         @blur="onHideSelectList"
         v-model="showText"
         readonly
+        :disabled="disabled"
       >
     </div>
     <transition
@@ -51,6 +52,10 @@ export default {
       default: () => {
         return {}
       }
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
@@ -71,6 +76,22 @@ export default {
       setTimeout(() => {
         this.showList = false
       }, 100)
+    },
+    initData () {
+      // 初始值
+      if (this.value) {
+        let showText = null
+        let optionList = this.optionList
+        for (let i = 0; i < optionList.length; i++) {
+          if (optionList[i].key === `${this.value}`) {
+            showText = optionList[i].value
+            break
+          }
+        }
+        if (showText !== null) {
+          this.showText = showText
+        }
+      }
     }
   },
   mounted () {
@@ -85,20 +106,13 @@ export default {
         optionList.push({ key: `${key}`, value: `${this.options[key]}` })
       })
     }
-    // 找出初始值
-    if (this.value) {
-      let showText = null
-      for (let i = 0; i < optionList.length; i++) {
-        if (optionList[i].key === `${this.value}`) {
-          showText = optionList[i].value
-          break
-        }
-      }
-      if (showText !== null) {
-        this.showText = showText
-      }
-    }
     this.$set(this, 'optionList', optionList)
+    this.initData()
+  },
+  watch: {
+    value () {
+      this.initData()
+    }
   }
 }
 </script>

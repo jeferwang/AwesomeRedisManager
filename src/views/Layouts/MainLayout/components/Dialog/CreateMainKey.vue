@@ -1,13 +1,13 @@
 <template>
   <div class="create_config_mask" @click="$emit('close')">
     <div class="main_card" @click.stop="e=>e.preventDefault()">
-      <div class="header">添加Redis配置</div>
+      <div class="header">新增数据</div>
       <div class="main_form">
         <!--Key-->
         <div class="form_item">
           <div class="item_label">Key</div>
           <div class="item_body">
-            <input v-model="key" type="text" class="com-input">
+            <input v-model="key" type="text" class="com-input" :disabled="keyDisabled">
           </div>
         </div>
         <!--类型-->
@@ -18,6 +18,7 @@
               v-model="type"
               placeholder="选择类型"
               :options="supportedTypes"
+              :disabled="typeDisabled"
             ></SelectList>
           </div>
         </div>
@@ -186,13 +187,23 @@ export default {
     tab: {
       type: Object,
       default: null
+    },
+    lockKey: {
+      type: String,
+      default: ''
+    },
+    lockType: {
+      type: String,
+      default: ''
     }
   },
   components: { SelectList },
   data () {
     return {
       key: '',
+      keyDisabled: false,
       type: '',
+      typeDisabled: false,
       stringValue: '', // string类型的value
       hashData: [],
       listData: [],
@@ -306,6 +317,14 @@ export default {
     }
   },
   mounted () {
+    if (this.lockKey.length) {
+      this.key = this.lockKey
+      this.keyDisabled = true
+    }
+    if (this.lockType.length) {
+      this.type = this.lockType
+      this.typeDisabled = true
+    }
   }
 }
 </script>

@@ -12,7 +12,7 @@
         >
         <div class="add_key no-select" @click="onCreateKey">
           <i class="fa fa-plus"></i>
-          <span> 新增</span>
+          <span> Add Key</span>
         </div>
       </div>
       <!--todo 选择db功能-->
@@ -48,6 +48,7 @@
       v-if="showAddKey"
       :tab="tab"
       @save="onSaveNewData"
+      @close="showAddKey=false"
     ></CreateMainKey>
   </div>
 </template>

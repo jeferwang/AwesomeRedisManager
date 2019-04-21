@@ -4,13 +4,6 @@
     <div class="data_box">
       <div class="hkeys_box">
         <div class="hsearch_box">
-          <div
-            class="add_key no-select"
-            @click="onAddHashKey"
-          >
-            <i class="fa fa-plus"></i>
-            <span> 添加</span>
-          </div>
           <input
             type="text"
             class="com-input"
@@ -18,6 +11,13 @@
             @input="onInputKeyCondition"
             @keydown.esc="onClearHkeyCondition"
           >
+          <div
+            class="add_key no-select"
+            @click="showAddDialog=true"
+          >
+            <i class="fa fa-plus"></i>
+            <span> Add Key</span>
+          </div>
         </div>
         <div
           class="hkey_list no-select"
@@ -72,12 +72,25 @@
         </div>
       </div>
     </div>
+    <CreateMainKey
+      v-if="showAddDialog"
+      :tab="tab"
+      :lock-key="mainKey"
+      lock-type="hash"
+      @close="showAddDialog=false"
+      @save="onAddDataComplete"
+    ></CreateMainKey>
   </div>
 </template>
 
 <script>
+import CreateMainKey from '../Dialog/CreateMainKey'
+
 export default {
   name: 'TypeHash',
+  components: {
+    CreateMainKey
+  },
   props: {
     tab: {
       type: Object,
@@ -91,6 +104,7 @@ export default {
   data () {
     return {
       loading: false,
+      showAddDialog: false,
       hasMore: true,
       hkeyList: [],
       hCursor: 0,
@@ -104,6 +118,10 @@ export default {
     }
   },
   methods: {
+    onAddDataComplete () {
+      this.showAddDialog = false
+      this.loadHkeys({ reload: true })
+    },
     async onSave () {
       if (this.detail.oldVal === this.detail.newVal) {
         return false
