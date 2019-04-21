@@ -1,10 +1,11 @@
 <template>
   <div class="main_box">
-    <div class="title">数据</div>
+    <div class="title">
+      <div class="title_text">Set Data</div>
+    </div>
     <div class="data_box">
       <div class="list_box">
         <div class="search_box">
-          <div class="tip_text">筛选</div>
           <input
             type="text"
             class="com-input"
@@ -12,6 +13,10 @@
             @input="onInputCondition"
             @keydown.esc="onClearCondition"
           >
+          <div class="add_btn" @click="showAddDialog=true">
+            <i class="fa fa-plus"></i>
+            <span>Add Items</span>
+          </div>
         </div>
         <div
           class="val_list no-select"
@@ -50,12 +55,25 @@
         </div>
       </div>
     </div>
+    <CreateMainKey
+      v-if="showAddDialog"
+      :tab="tab"
+      :lock-key="mainKey"
+      lock-type="set"
+      @close="showAddDialog=false"
+      @save="onAddDataComplete"
+    ></CreateMainKey>
   </div>
 </template>
 
 <script>
+import CreateMainKey from '../Dialog/CreateMainKey'
+
 export default {
   name: 'TypeSet',
+  components: {
+    CreateMainKey
+  },
   props: {
     tab: {
       type: Object,
@@ -68,6 +86,7 @@ export default {
   },
   data () {
     return {
+      showAddDialog: false,
       loading: false,
       hasMore: true,
       dataList: [],
@@ -81,6 +100,10 @@ export default {
     }
   },
   methods: {
+    onAddDataComplete () {
+      this.showAddDialog = false
+      this.initData()
+    },
     async onSave () {
       if (this.detail.oldVal === this.detail.newVal) {
         return false
@@ -210,6 +233,21 @@ export default {
     .title {
       font-size: 14px;
       line-height: 14px;
+      display: flex;
+      justify-content: space-between;
+
+      .title_add_btn {
+        color: $text-color-dark;
+        cursor: pointer;
+
+        .fa {
+          margin-right: 5px;
+        }
+
+        &:hover {
+          color: $text-color-light;
+        }
+      }
     }
 
     .data_box {
@@ -229,13 +267,14 @@ export default {
           display: flex;
           flex-direction: row;
 
-          .tip_text {
+          .add_btn {
             height: $grid-height-normal;
             line-height: $grid-height-normal;
             flex-grow: 0;
             flex-shrink: 0;
             padding: 0 10px;
             background-color: $background-color-dark;
+            cursor: pointer;
           }
 
           .com-input {
@@ -266,9 +305,11 @@ export default {
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            &:last-child{
-              border-bottom: none;
+
+            &:last-child {
+              /*border-bottom: none;*/
             }
+
             &:hover {
               background: $background-color-highlight-blue;
             }
