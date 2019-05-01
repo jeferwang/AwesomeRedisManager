@@ -96,3 +96,7 @@ textarea {
     background-color: $common-color-success-light;
   }
 }
+
+textarea.no_resize{
+  resize: none;
+}

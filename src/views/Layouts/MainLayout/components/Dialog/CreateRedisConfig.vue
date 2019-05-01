@@ -1,5 +1,5 @@
 <template>
-  <div class="create_config_mask" @click="$emit('close')">
+  <FullScreenMask class="create_config_mask" @click="$emit('close')">
     <div class="main_card" @click.stop="e=>e.preventDefault()">
       <div class="header">添加Redis配置</div>
       <div class="main_form">
@@ -37,12 +37,17 @@
         <div class="com-btn com-btn-success btn_save" @click="saveConfig">保存</div>
       </div>
     </div>
-  </div>
+  </FullScreenMask>
 </template>
 
 <script>
+import FullScreenMask from '../../../../../components/FullScreenMask'
+
 export default {
   name: 'CreateRedisConfig',
+  components: {
+    FullScreenMask
+  },
   data () {
     return {
       formData: {
@@ -100,12 +105,6 @@ export default {
 
 <style scoped lang="scss">
   .create_config_mask {
-    position: fixed;
-    left: 0;
-    top: 0;
-    width: 100vw;
-    height: 100vh;
-    background: $background-color-mask;
     display: flex;
     flex-direction: column;
     align-items: center;

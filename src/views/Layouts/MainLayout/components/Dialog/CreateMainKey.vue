@@ -1,5 +1,5 @@
 <template>
-  <div class="create_config_mask" @click="$emit('close')">
+  <FullScreenMask class="create_config_mask" @click="$emit('close')">
     <div class="main_card" @click.stop="e=>e.preventDefault()">
       <div class="header">新增数据</div>
       <div class="main_form">
@@ -175,11 +175,12 @@
         </div>
       </div>
     </div>
-  </div>
+  </FullScreenMask>
 </template>
 
 <script>
 import SelectList from '../../../../../components/Form/SelectList'
+import FullScreenMask from '../../../../../components/FullScreenMask'
 
 export default {
   name: 'CreateMainKey',
@@ -197,7 +198,7 @@ export default {
       default: ''
     }
   },
-  components: { SelectList },
+  components: { SelectList, FullScreenMask },
   data () {
     return {
       key: '',
@@ -331,12 +332,6 @@ export default {
 
 <style scoped lang="scss">
   .create_config_mask {
-    position: fixed;
-    left: 0;
-    top: 0;
-    width: 100vw;
-    height: 100vh;
-    background: $background-color-mask;
     display: flex;
     flex-direction: column;
     align-items: center;

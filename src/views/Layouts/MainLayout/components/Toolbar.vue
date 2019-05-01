@@ -2,19 +2,19 @@
   <div class="toolbar no-select">
     <!--left-->
     <div class="left">
-      <div class="tool_item" @click="onClickNew">
+      <div class="tool_item" @click="onClick('new')">
         <div class="tool_icon">
           <span class="fa fa-plus"></span>
         </div>
         <div class="tool_name">New</div>
       </div>
-      <div class="tool_item" @click="onClickNew">
+      <div class="tool_item" @click="onClick('import')">
         <div class="tool_icon">
           <span class="fa fa-download"></span>
         </div>
         <div class="tool_name">Import</div>
       </div>
-      <div class="tool_item" @click="onClickNew">
+      <div class="tool_item" @click="onClick('export')">
         <div class="tool_icon">
           <span class="fa fa-upload"></span>
         </div>
@@ -24,13 +24,13 @@
     <!--/left-->
     <!--right-->
     <div class="right">
-      <div class="tool_item" @click="onClickRefresh">
+      <div class="tool_item" @click="onClick('refresh')">
         <div class="tool_icon">
           <span class="fa fa-refresh"></span>
         </div>
         <div class="tool_name">Refresh</div>
       </div>
-      <div class="tool_item" @click="onClickNew">
+      <div class="tool_item" @click="onClick('script')">
         <div class="tool_icon">
           <span class="fa fa-file-text-o"></span>
         </div>
@@ -39,7 +39,7 @@
     </div>
     <!--/right-->
     <!--
-    <div class="tool_item" @click="onClickNew">
+    <div class="tool_item" @click="onClick('new')">
       <div class="tool_icon">
         <span class="fa fa-cloud"></span>
       </div>
@@ -57,11 +57,25 @@ export default {
     return {}
   },
   methods: {
-    onClickRefresh () {
-      this.$eventBus.$emit('reload-current-tab')
-    },
-    onClickNew () {
-      this.$emit('show-create-config')
+    onClick (cmd) {
+      switch (cmd) {
+        case 'new':
+          this.$emit('show-create-config')
+          break
+        case 'import':
+          this.$msg.msgBox({ msg: '功能尚未完成，敬请期待', type: 'success' })
+          break
+        case 'export':
+          this.$msg.msgBox({ msg: '功能尚未完成，敬请期待', type: 'success' })
+          break
+        case 'refresh':
+          this.$eventBus.$emit('reload-current-tab')
+          break
+        case 'script':
+          // this.$msg.msgBox({ msg: '功能尚未完成，敬请期待', type: 'success' })
+          // 弹出脚本输入框
+          break
+      }
     }
   }
 }
