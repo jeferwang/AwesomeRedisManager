@@ -72,8 +72,7 @@ export default {
           this.$eventBus.$emit('reload-current-tab')
           break
         case 'script':
-          // this.$msg.msgBox({ msg: '功能尚未完成，敬请期待', type: 'success' })
-          // 弹出脚本输入框
+          this.$services.script.runLuaScript()
           break
       }
     }

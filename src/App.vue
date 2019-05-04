@@ -12,7 +12,6 @@ export default {
   mounted () {
     // 启动后加载配置数据
     this.$store.dispatch('redisConfig/readConfigs')
-    this.$services.script.runLuaScript()
   }
 }
 </script>

@@ -13,6 +13,7 @@ import windowsPlugin from './plugins/windowsPlugin'
 import formatterPlugin from './plugins/formatterPlugin'
 import popupPlugin from './plugins/popupPlugin'
 import msgPlugin from './plugins/msgPlugin'
+import hashPlugin from './plugins/hashPlugin'
 import eventBusPlugin from './plugins/eventBusPlugin'
 import services from './services'
 import './plugins/keyCodePlugin.js'
@@ -28,12 +29,13 @@ Vue.use(storagePlugin)
 Vue.use(windowsPlugin)
 Vue.use(popupPlugin)
 Vue.use(msgPlugin)
+Vue.use(hashPlugin)
 Vue.use(eventBusPlugin)
 Vue.use(services)
 Vue.use(formatterPlugin)
 Vue.use(animate)
 
-new Vue({
+export default new Vue({
   router,
   store,
   i18n,

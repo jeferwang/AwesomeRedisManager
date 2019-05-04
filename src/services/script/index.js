@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import RunLuaScript from './RunLuaScript'
+import store from '../../store'
 
 const RunLuaScriptConstructor = Vue.extend(RunLuaScript)
 
@@ -10,7 +11,8 @@ export default {
         el: document.createElement('div'),
         propsData: {
           resolve
-        }
+        },
+        store
       })
       instance.$on('close', () => {
         document.body.removeChild(instance.$el)
