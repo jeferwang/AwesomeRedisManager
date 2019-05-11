@@ -2,19 +2,28 @@
   <div class="toolbar no-select">
     <!--left-->
     <div class="left">
-      <div class="tool_item" @click="onClick('new')">
+      <div
+        class="tool_item"
+        @click="onClick('new')"
+      >
         <div class="tool_icon">
           <span class="fa fa-plus"></span>
         </div>
         <div class="tool_name">New</div>
       </div>
-      <div class="tool_item" @click="onClick('import')">
+      <div
+        class="tool_item"
+        @click="onClick('import')"
+      >
         <div class="tool_icon">
           <span class="fa fa-download"></span>
         </div>
         <div class="tool_name">Import</div>
       </div>
-      <div class="tool_item" @click="onClick('export')">
+      <div
+        class="tool_item"
+        @click="onClick('export')"
+      >
         <div class="tool_icon">
           <span class="fa fa-upload"></span>
         </div>
@@ -24,13 +33,19 @@
     <!--/left-->
     <!--right-->
     <div class="right">
-      <div class="tool_item" @click="onClick('refresh')">
+      <div
+        class="tool_item"
+        @click="onClick('refresh')"
+      >
         <div class="tool_icon">
           <span class="fa fa-refresh"></span>
         </div>
         <div class="tool_name">Refresh</div>
       </div>
-      <div class="tool_item" @click="onClick('script')">
+      <div
+        class="tool_item"
+        @click="onClick('script')"
+      >
         <div class="tool_icon">
           <span class="fa fa-file-text-o"></span>
         </div>
@@ -50,6 +65,9 @@
 </template>
 
 <script>
+import { ipcRenderer } from 'electron'
+import { mapGetters } from 'vuex'
+import * as fs from 'fs'
 
 export default {
   name: 'Toolbar',
@@ -66,7 +84,7 @@ export default {
           this.$msg.msgBox({ msg: '功能尚未完成，敬请期待', type: 'success' })
           break
         case 'export':
-          this.$msg.msgBox({ msg: '功能尚未完成，敬请期待', type: 'success' })
+          ipcRenderer.send('export-configs')
           break
         case 'refresh':
           this.$eventBus.$emit('reload-current-tab')
@@ -75,7 +93,29 @@ export default {
           this.$services.script.runLuaScript()
           break
       }
+    },
+    regEventListeners () {
+      ipcRenderer.on('export-configs', (e, fileName) => {
+        // console.log(fileName)
+        // 获取所有连接配置信息
+        const jsonData = JSON.stringify(this.getConfigs, null, '  ')
+        // 写入文件
+        try {
+          fs.writeFileSync(fileName, jsonData)
+          this.$msg.msgBox({ msg: 'Export Success', type: 'success' })
+        } catch (e) {
+          this.$msg.msgBox({ msg: 'Export Fail,Please check permission', type: 'warning' })
+        }
+      })
     }
+  },
+  computed: {
+    ...mapGetters('redisConfig', [
+      'getConfigs'
+    ])
+  },
+  mounted () {
+    this.regEventListeners()
   }
 }
 </script>
@@ -90,7 +130,8 @@ export default {
     box-sizing: border-box;
     justify-content: space-between;
 
-    .left, .right {
+    .left,
+    .right {
       display: flex;
       flex-direction: row;
       align-items: center;

@@ -2,6 +2,7 @@
 
 import { app, protocol, BrowserWindow } from 'electron'
 import { createProtocol, installVueDevtools } from 'vue-cli-plugin-electron-builder/lib'
+import { initIpcEvents } from './ipcEvents'
 
 const appName = 'Awesome Redis Manager'
 
@@ -50,6 +51,7 @@ function createMainWindow () {
     otherWindows = []
     mainWindow = null
   })
+  initIpcEvents()
 }
 
 // Quit when all windows are closed.
