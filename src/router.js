@@ -16,10 +16,6 @@ export default new Router({
           component: () => import('@/views/Pages/Welcome/Index')
         }
       ]
-    },
-    {
-      path: '/Create/CreateConfig',
-      component: () => import('@/views/Pages/Create/CreateConfig')
     }
   ]
 })

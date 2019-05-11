@@ -65,29 +65,18 @@ export default {
     onEditConfig () {
       if (!this.tmpConfig) return false
       this.$storage.local.set('tmpEditConfig', this.tmpConfig)
-      // this.$windowsManager.openCreateConfig({ title: '编辑连接' })
       this.$emit('show-create-config')
     },
     onFavoriteConfig () {
       if (!this.tmpConfig) return false
-      this.$store.dispatch('redisConfig/toggleFavConfig', this.tmpConfig.createdAt)
+      this.$store.dispatch('redisConfig/toggleFavConfig', this.tmpConfig.id)
       this.tmpConfig = null
     },
     onDeleteConfig () {
       if (!this.tmpConfig) return false
-      return new Promise(resolve => {
-        this.$Modal.confirm({
-          title: 'Warning',
-          content: 'Are you sure you want to delete it？',
-          onOk () {
-            resolve()
-          }
-        })
-      }).then(() => {
-        // todo 删除配置后同时关闭相关的连接
-        this.$store.dispatch('redisConfig/delConfig', this.tmpConfig.createdAt)
-        this.tmpConfig = null
-      })
+      // todo 删除配置后同时关闭相关的连接
+      this.$store.dispatch('redisConfig/delConfig', this.tmpConfig.id)
+      this.tmpConfig = null
     },
     onShowContextMenu (e, config) {
       e.preventDefault()

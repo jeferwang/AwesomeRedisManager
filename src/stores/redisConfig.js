@@ -4,9 +4,9 @@ function sortConfigs (a, b) {
   return a.createdAt - b.createdAt
 }
 
-function getConfigIdxByTime (timestamp) {
+function getConfigIdxById (id) {
   for (let i = 0; i < state.configs.length; i++) {
-    if (state.configs[i].createdAt === timestamp) {
+    if (state.configs[i].id === id) {
       return i
     }
   }
@@ -32,7 +32,7 @@ const mutations = {
   // configs数组添加一项
   addConfig (state, config) {
     let configs = state.configs
-    const configIdx = getConfigIdxByTime(config.createdAt)
+    const configIdx = getConfigIdxById(config.id)
     if (configIdx !== -1) {
       configs[configIdx] = config
     } else {
@@ -40,16 +40,16 @@ const mutations = {
     }
     state.configs = configs.sort(sortConfigs)
   },
-  delConfig (state, timestamp) {
-    const configIdx = getConfigIdxByTime(timestamp)
+  delConfig (state, id) {
+    const configIdx = getConfigIdxById(id)
     if (configIdx !== -1) {
       state.configs.splice(configIdx, 1)
       return true
     }
     return false
   },
-  toggleFavConfig (state, timestamp) {
-    const configIdx = getConfigIdxByTime(timestamp)
+  toggleFavConfig (state, id) {
+    const configIdx = getConfigIdxById(id)
     if (configIdx !== -1) {
       state.configs[configIdx].isFavorite = !state.configs[configIdx].isFavorite
       return true
@@ -67,12 +67,12 @@ const actions = {
     context.commit('addConfig', config)
     return writeRedisConfig(context.state.configs)
   },
-  async toggleFavConfig (context, timestamp) {
-    context.commit('toggleFavConfig', timestamp)
+  async toggleFavConfig (context, id) {
+    context.commit('toggleFavConfig', id)
     return writeRedisConfig(context.state.configs)
   },
-  async delConfig (context, timestamp) {
-    context.commit('delConfig', timestamp)
+  async delConfig (context, id) {
+    context.commit('delConfig', id)
     return writeRedisConfig(context.state.configs)
   }
 }

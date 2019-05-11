@@ -748,6 +748,18 @@
     error-stack-parser "^2.0.0"
     string-width "^2.0.0"
 
+"@types/node-uuid@^0.0.28":
+  version "0.0.28"
+  resolved "https://registry.npm.taobao.org/@types/node-uuid/download/@types/node-uuid-0.0.28.tgz#41655b5ce63b2f3374c4e826b4dd21e729058e3d"
+  integrity sha1-QWVbXOY7LzN0xOgmtN0h5ykFjj0=
+  dependencies:
+    "@types/node" "*"
+
+"@types/node@*":
+  version "12.0.0"
+  resolved "https://registry.npm.taobao.org/@types/node/download/@types/node-12.0.0.tgz#d11813b9c0ff8aaca29f04cbc12817f4c7d656e5"
+  integrity sha1-0RgTucD/iqyinwTLwSgX9MfWVuU=
+
 "@types/node@^10.12.18":
   version "10.12.27"
   resolved "http://registry.npm.taobao.org/@types/node/download/@types/node-10.12.27.tgz#eb3843f15d0ba0986cc7e4d734d2ee8b50709ef8"
@@ -6852,6 +6864,11 @@ node-releases@^1.1.8:
   integrity sha1-MqY//2PF5Rt+D1QKyVlH0iD8aGI=
   dependencies:
     semver "^5.3.0"
+
+node-uuid@^1.4.8:
+  version "1.4.8"
+  resolved "https://registry.npm.taobao.org/node-uuid/download/node-uuid-1.4.8.tgz#b040eb0923968afabf8d32fb1f17f1167fdab907"
+  integrity sha1-sEDrCSOWivq/jTL7HxfxFn/auQc=
 
 nopt@^4.0.1:
   version "4.0.1"

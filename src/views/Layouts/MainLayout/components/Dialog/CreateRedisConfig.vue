@@ -41,6 +41,7 @@
 </template>
 
 <script>
+import * as uuid from 'node-uuid'
 import FullScreenMask from '../../../../../components/FullScreenMask'
 
 export default {
@@ -51,6 +52,7 @@ export default {
   data () {
     return {
       formData: {
+        id: null,
         name: null,
         host: null,
         port: null,
@@ -61,6 +63,7 @@ export default {
   methods: {
     getConfig () {
       return {
+        id: this.formData.id || uuid.v1(),
         name: this.formData.name || this.formData.host || '127.0.0.1',
         host: this.formData.host || '127.0.0.1',
         port: this.formData.port || 6379,
@@ -98,6 +101,8 @@ export default {
     const tmp = this.$storage.local.get('tmpEditConfig')
     if (tmp) {
       this.formData = tmp
+    } else {
+      this.formData.id = uuid.v1()
     }
   }
 }

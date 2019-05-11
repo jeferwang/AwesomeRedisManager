@@ -81,7 +81,7 @@ export default {
           this.$emit('show-create-config')
           break
         case 'import':
-          this.$msg.msgBox({ msg: '功能尚未完成，敬请期待', type: 'success' })
+          ipcRenderer.send('import-configs')
           break
         case 'export':
           ipcRenderer.send('export-configs')
@@ -95,8 +95,8 @@ export default {
       }
     },
     regEventListeners () {
+      // 导出
       ipcRenderer.on('export-configs', (e, fileName) => {
-        // console.log(fileName)
         // 获取所有连接配置信息
         const jsonData = JSON.stringify(this.getConfigs, null, '  ')
         // 写入文件
@@ -105,6 +105,22 @@ export default {
           this.$msg.msgBox({ msg: 'Export Success', type: 'success' })
         } catch (e) {
           this.$msg.msgBox({ msg: 'Export Fail,Please check permission', type: 'warning' })
+        }
+      })
+      // 导入
+      ipcRenderer.on('import-configs', async (e, fileName) => {
+        try {
+          // 读取配置文件内容
+          const contents = fs.readFileSync(fileName).toString()
+          const configs = JSON.parse(contents)
+          if (configs && Array.isArray(configs)) {
+            for (let i = 0; i < configs.length; i++) {
+              await this.$store.dispatch('redisConfig/saveConfig', configs[i])
+            }
+          }
+          this.$msg.msgBox({ msg: 'Import Success', type: 'success' })
+        } catch (e) {
+          this.$msg.msgBox({ msg: 'Import Fail,Please check permission and config file contents', type: 'warning' })
         }
       })
     }
