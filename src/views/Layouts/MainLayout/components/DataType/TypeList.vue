@@ -113,9 +113,9 @@ export default {
         await this.tab.connect.lset(this.mainKey, this.detail.index, this.detail.newVal)
         this.detail.oldVal = this.detail.newVal
         this.$set(this.dataList, this.detail.index, this.detail.newVal)
-        this.$msg.msgBox({ msg: '保存成功', type: 'success', duration: 1000 })
+        this.$msg.msgBox({ msg: 'Save Successfully', type: 'success', duration: 1000 })
       } catch (e) {
-        this.$msg.msgBox({ msg: '保存失败', type: 'warning', duration: 1000 })
+        this.$msg.msgBox({ msg: 'Save Failed', type: 'warning', duration: 1000 })
         console.warn(e)
         return false
       }

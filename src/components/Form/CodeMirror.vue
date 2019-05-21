@@ -1,7 +1,7 @@
 <template>
   <div class="code_mirror">
     <textarea ref="textarea" style="display: none;"></textarea>
-    <div class="loading_text" v-if="loading">加载中...</div>
+    <div class="loading_text" v-if="loading">Loading...</div>
   </div>
 </template>
 

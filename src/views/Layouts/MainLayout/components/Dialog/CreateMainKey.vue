@@ -1,7 +1,7 @@
 <template>
   <FullScreenMask class="create_config_mask" @click="$emit('close')">
     <div class="main_card" @click.stop="e=>e.preventDefault()">
-      <div class="header">新增数据</div>
+      <div class="header">Create Data</div>
       <div class="main_form">
         <!--Key-->
         <div class="form_item">
@@ -16,7 +16,7 @@
           <div class="item_body">
             <SelectList
               v-model="type"
-              placeholder="选择类型"
+              placeholder="Select Data Type"
               :options="supportedTypes"
               :disabled="typeDisabled"
             ></SelectList>
@@ -66,7 +66,7 @@
                 @click="hashData.push({key:'',value:''})"
               >
                 <span class="fa fa-plus"></span>
-                <span> 添加 Hash Item</span>
+                <span> Create Hash Item</span>
               </div>
             </div>
           </template>
@@ -95,7 +95,7 @@
                 @click="listData.push('')"
               >
                 <span class="fa fa-plus"></span>
-                <span> 添加 List Item</span>
+                <span> Create List Item</span>
               </div>
             </div>
           </template>
@@ -124,7 +124,7 @@
                 @click="setData.push('')"
               >
                 <span class="fa fa-plus"></span>
-                <span> 添加 Set Item</span>
+                <span> Create Set Item</span>
               </div>
             </div>
           </template>
@@ -161,7 +161,7 @@
                 @click="zsetData.push({score:'',value:''})"
               >
                 <span class="fa fa-plus"></span>
-                <span> 添加 Zset Item</span>
+                <span> Create Zset Item</span>
               </div>
             </div>
           </template>
@@ -171,7 +171,7 @@
       <div class="footer">
         <div class="com-btn com-btn-success btn_save" @click="saveData">
           <i class="fa fa-save"></i>
-          <span> 保存</span>
+          <span> Save</span>
         </div>
       </div>
     </div>
@@ -243,7 +243,7 @@ export default {
           default:
             return false
         }
-        this.$msg.msgBox({ type: 'success', msg: '保存成功' })
+        this.$msg.msgBox({ type: 'success', msg: 'Save Successfully' })
         this.$emit('save') // 抛出保存数据的事件
       } catch (e) {
         this.$msg.msgBox({ type: 'warning', msg: e.message })
@@ -252,13 +252,13 @@ export default {
     async saveZsetData () {
       let conn = this.tab.connect
       if (!this.zsetData.length) {
-        throw new Error('请添加Zset具体数据')
+        throw new Error('Please input zset data')
       }
       let args = []
       // 验证zsetData的有效性
       for (let i = 0; i < this.zsetData.length; i++) {
         if (!this.zsetData[i].score.length || !this.zsetData[i].value.length) {
-          throw new Error('请完整填写Zset数据')
+          throw new Error('Please input zset full data')
         }
         args.push(this.zsetData[i].score, this.zsetData[i].value)
       }
@@ -267,13 +267,13 @@ export default {
     async saveSetData () {
       let conn = this.tab.connect
       if (!this.setData.length) {
-        throw new Error('请添加Set具体数据')
+        throw new Error('Please input set data')
       }
       let args = []
       // 验证hashData的有效性
       for (let i = 0; i < this.setData.length; i++) {
         if (!this.setData[i].length) {
-          throw new Error('请完整填写Set数据')
+          throw new Error('Please input set full data')
         }
         args.push(this.setData[i])
       }
@@ -282,13 +282,13 @@ export default {
     async saveListData () {
       let conn = this.tab.connect
       if (!this.listData.length) {
-        throw new Error('请添加List具体数据')
+        throw new Error('Please input list data')
       }
       let args = []
       // 验证hashData的有效性
       for (let i = 0; i < this.listData.length; i++) {
         if (!this.listData[i].length) {
-          throw new Error('请完整填写List数据')
+          throw new Error('Please input list full data')
         }
         args.push(this.listData[i])
       }
@@ -297,13 +297,13 @@ export default {
     async saveHashData () {
       let conn = this.tab.connect
       if (!this.hashData.length) {
-        throw new Error('请添加HashMap具体数据')
+        throw new Error('Please input hash map data')
       }
       let args = []
       // 验证hashData的有效性
       for (let i = 0; i < this.hashData.length; i++) {
         if (!this.hashData[i].key.length || !this.hashData[i].value.length) {
-          throw new Error('请完整填写HashMap数据')
+          throw new Error('Please input hash map full data')
         }
         args.push(this.hashData[i].key, this.hashData[i].value)
       }
@@ -312,7 +312,7 @@ export default {
     async saveStringData () {
       let conn = this.tab.connect
       if (!this.stringValue.length) {
-        throw new Error('请输入Value')
+        throw new Error('Please input Value')
       }
       await conn.set(this.key, this.stringValue)
     }

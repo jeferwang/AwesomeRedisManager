@@ -1,7 +1,7 @@
 <template>
   <div class="main_box">
     <div class="value_box">
-      <div>值</div>
+      <div>Value</div>
       <div class="input_box">
         <textarea
           v-model="val"
@@ -76,7 +76,7 @@ export default {
       }
       await this.tab.connect.set(this.mainKey, this.val)
       // 保存成功的提示
-      this.$msg.msgBox({ msg: '保存成功', type: 'success', duration: 1500 })
+      this.$msg.msgBox({ msg: 'Save Successfully', type: 'success', duration: 1500 })
     },
     async initData () {
       let val = await this.tab.connect.get(this.mainKey)

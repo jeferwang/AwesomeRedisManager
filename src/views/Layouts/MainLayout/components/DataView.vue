@@ -80,11 +80,11 @@ export default {
     async initData () {
       let keyType = await this.tab.connect.type(this.mainKey)
       if (keyType === 'none') {
-        this.$emit('error', { code: -1, message: `${this.mainKey}不存在` })
+        this.$emit('error', { code: -1, message: `${this.mainKey} not exists` })
         return false
       }
       if (!supportedTypes.includes(keyType)) {
-        this.$emit('error', { code: -2, message: `不支持的数据类型${keyType}` })
+        this.$emit('error', { code: -2, message: `Not Support ${keyType}` })
         return false
       }
       this.keyType = keyType

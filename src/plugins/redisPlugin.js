@@ -15,7 +15,6 @@ export function readRedisConfig () {
     }
     return data
   } catch (err) {
-    console.warn('读取配置失败', err)
     return []
   }
 }

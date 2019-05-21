@@ -2,13 +2,13 @@ export const Storage = {
   local: {
     set (key, value) {
       if (typeof key !== 'string') {
-        throw new Error('Key只能为字符串')
+        throw new Error('Key must be string')
       }
       localStorage.setItem(key, JSON.stringify(value))
     },
     get (key, value) {
       if (typeof key !== 'string') {
-        throw new Error('Key只能为字符串')
+        throw new Error('Key must be string')
       }
       const res = localStorage.getItem(key)
       if (res === null) {
@@ -19,7 +19,7 @@ export const Storage = {
     },
     remove (key) {
       if (typeof key !== 'string') {
-        throw new Error('Key只能为字符串')
+        throw new Error('Key must be string')
       }
       localStorage.removeItem(key)
     }

@@ -1,40 +1,40 @@
 <template>
   <FullScreenMask class="create_config_mask" @click="$emit('close')">
     <div class="main_card" @click.stop="e=>e.preventDefault()">
-      <div class="header">添加Redis配置</div>
+      <div class="header">Create Redis Config</div>
       <div class="main_form">
         <!--名称-->
         <div class="form_item">
-          <div class="item_label">连接名称</div>
+          <div class="item_label">Connect Name</div>
           <div class="item_body">
             <input v-model="formData.name" type="text" class="com-input" placeholder="127.0.0.1">
           </div>
         </div>
         <!--地址-->
         <div class="form_item">
-          <div class="item_label">服务器地址</div>
+          <div class="item_label">Host</div>
           <div class="item_body">
             <input v-model="formData.host" type="text" class="com-input" placeholder="127.0.0.1">
           </div>
         </div>
         <!--端口-->
         <div class="form_item">
-          <div class="item_label">服务器端口</div>
+          <div class="item_label">Port</div>
           <div class="item_body">
             <input v-model="formData.port" type="text" class="com-input" style="width: 100px;" placeholder="6379">
           </div>
         </div>
         <!--密码-->
         <div class="form_item">
-          <div class="item_label">密码</div>
+          <div class="item_label">Password</div>
           <div class="item_body">
-            <input v-model="formData.password" type="text" class="com-input" placeholder="无">
+            <input v-model="formData.password" type="text" class="com-input" placeholder="None">
           </div>
         </div>
       </div>
       <div class="footer">
-        <div class="com-btn com-btn-primary btn_test" @click="testConfig">测试连接</div>
-        <div class="com-btn com-btn-success btn_save" @click="saveConfig">保存</div>
+        <div class="com-btn com-btn-primary btn_test" @click="testConfig">Test Connect</div>
+        <div class="com-btn com-btn-success btn_save" @click="saveConfig">Save</div>
       </div>
     </div>
   </FullScreenMask>
@@ -77,9 +77,9 @@ export default {
       let client = await this.$connectRedis(config)
       try {
         await client.select(0)
-        this.$msg.msgBox({ msg: '连接成功', type: 'success' })
+        this.$msg.msgBox({ msg: 'Connect Successfully', type: 'success' })
       } catch (e) {
-        this.$msg.msgBox({ msg: '连接失败', type: 'warning' })
+        this.$msg.msgBox({ msg: 'Connect Failed', type: 'warning' })
       }
       client.disconnect(false)
     },
@@ -88,12 +88,12 @@ export default {
       this.$store.dispatch('redisConfig/saveConfig', config)
         .then(() => {
           this.$storage.local.remove('tmpEditConfig')
-          this.$msg.msgBox({ msg: '保存成功', type: 'success' })
+          this.$msg.msgBox({ msg: 'Save Successfully', type: 'success' })
           this.$emit('close')
         })
         .catch(err => {
           console.log(err)
-          this.$msg.msgBox({ msg: '保存失败', type: 'warning' })
+          this.$msg.msgBox({ msg: 'Save Failed', type: 'warning' })
         })
     }
   },
