@@ -9,6 +9,7 @@ module.exports = {
     },
     electronBuilder: {
       builderOptions: {
+        productName: 'Awesome Redis Manager',
         win: {
           icon: 'public/icon.ico',
           artifactName: '${productName}_setup_${version}.${ext}'
