@@ -1,13 +1,24 @@
 <template>
-  <FullScreenMask class="create_config_mask" @click="$emit('close')">
-    <div class="main_card" @click.stop="e=>e.preventDefault()">
+  <FullScreenMask
+    class="create_config_mask"
+    @click="$emit('close')"
+  >
+    <div
+      class="main_card"
+      @click.stop="e=>e.preventDefault()"
+    >
       <div class="header">Create Data</div>
       <div class="main_form">
         <!--Key-->
         <div class="form_item">
           <div class="item_label">Key</div>
           <div class="item_body">
-            <input v-model="key" type="text" class="com-input" :disabled="keyDisabled">
+            <input
+              v-model="key"
+              type="text"
+              class="com-input"
+              :disabled="keyDisabled"
+            >
           </div>
         </div>
         <!--类型-->
@@ -29,7 +40,11 @@
             <div class="form_item">
               <div class="item_label">Value</div>
               <div class="item_body">
-                <input v-model="stringValue" type="text" class="com-input">
+                <input
+                  v-model="stringValue"
+                  type="text"
+                  class="com-input"
+                >
               </div>
             </div>
           </template>
@@ -44,7 +59,11 @@
               <div class="form_item">
                 <div class="item_label">Hash Key</div>
                 <div class="item_body">
-                  <input v-model="hashData[hashIdx].key" type="text" class="com-input">
+                  <input
+                    v-model="hashData[hashIdx].key"
+                    type="text"
+                    class="com-input"
+                  >
                   <div
                     class="del_hash_key_btn com-btn com-btn-danger"
                     @click="hashData.splice(hashIdx,1)"
@@ -56,7 +75,11 @@
               <div class="form_item">
                 <div class="item_label">Hash Value</div>
                 <div class="item_body">
-                  <input v-model="hashData[hashIdx].value" type="text" class="com-input">
+                  <input
+                    v-model="hashData[hashIdx].value"
+                    type="text"
+                    class="com-input"
+                  >
                 </div>
               </div>
             </div>
@@ -80,7 +103,11 @@
             >
               <div class="item_label">List Item</div>
               <div class="item_body">
-                <input v-model="listData[listIdx]" type="text" class="com-input">
+                <input
+                  v-model="listData[listIdx]"
+                  type="text"
+                  class="com-input"
+                >
                 <div
                   class="del_hash_key_btn com-btn com-btn-danger"
                   @click="listData.splice(listIdx,1)"
@@ -109,7 +136,11 @@
             >
               <div class="item_label">Set Item</div>
               <div class="item_body">
-                <input v-model="setData[setIdx]" type="text" class="com-input">
+                <input
+                  v-model="setData[setIdx]"
+                  type="text"
+                  class="com-input"
+                >
                 <div
                   class="del_hash_key_btn com-btn com-btn-danger"
                   @click="setData.splice(setIdx,1)"
@@ -139,9 +170,13 @@
               <div class="form_item">
                 <div class="item_label">Zset Score</div>
                 <div class="item_body">
-                  <input v-model="zsetData[zsetIdx].score" type="text" class="com-input">
+                  <input
+                    v-model="zsetData[zsetIdx].score"
+                    type="text"
+                    class="com-input"
+                  >
                   <div
-                    class="del_zset_key_btn com-btn com-btn-danger"
+                    class="del_hash_key_btn com-btn com-btn-danger"
                     @click="zsetData.splice(zsetIdx,1)"
                   >
                     <span class="fa fa-close"></span>
@@ -151,7 +186,11 @@
               <div class="form_item">
                 <div class="item_label">Zset Value</div>
                 <div class="item_body">
-                  <input v-model="zsetData[zsetIdx].value" type="text" class="com-input">
+                  <input
+                    v-model="zsetData[zsetIdx].value"
+                    type="text"
+                    class="com-input"
+                  >
                 </div>
               </div>
             </div>
@@ -169,7 +208,10 @@
         </div>
       </div>
       <div class="footer">
-        <div class="com-btn com-btn-success btn_save" @click="saveData">
+        <div
+          class="com-btn com-btn-success btn_save"
+          @click="saveData"
+        >
           <i class="fa fa-save"></i>
           <span> Save</span>
         </div>
@@ -331,112 +373,112 @@ export default {
 </script>
 
 <style scoped lang="scss">
-  .create_config_mask {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.create_config_mask {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
-    .main_card {
-      margin-top: 10px;
-      box-shadow: $shadow-normal;
-      background: $background-color;
-      width: 30%;
+  .main_card {
+    margin-top: 10px;
+    box-shadow: $shadow-normal;
+    background: $background-color;
+    width: 30%;
 
-      .header {
-        border-bottom: 2px solid $border-color;
+    .header {
+      border-bottom: 2px solid $border-color;
+      box-sizing: border-box;
+      font-size: 16px;
+      font-weight: bold;
+      height: $grid-height-normal;
+      line-height: $grid-height-normal;
+      padding-left: 10px;
+    }
+
+    .main_form {
+      /*padding: 10px;*/
+
+      .form_item {
         box-sizing: border-box;
-        font-size: 16px;
-        font-weight: bold;
         height: $grid-height-normal;
-        line-height: $grid-height-normal;
-        padding-left: 10px;
-      }
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        border-bottom: 1px solid $border-color;
 
-      .main_form {
-        /*padding: 10px;*/
+        .item_label {
+          line-height: $grid-height-normal;
+          width: 100px;
+          text-align: right;
+        }
 
-        .form_item {
-          box-sizing: border-box;
-          height: $grid-height-normal;
+        .item_body {
+          padding: 0 10px;
+          flex-grow: 1;
           display: flex;
           flex-direction: row;
           align-items: center;
-          border-bottom: 1px solid $border-color;
 
-          .item_label {
-            line-height: $grid-height-normal;
-            width: 100px;
-            text-align: right;
+          .com-input {
+            display: block;
+            height: $grid-height-small;
+            width: 100%;
+            padding: 0 10px;
           }
 
-          .item_body {
-            padding: 0 10px;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-
-            .com-input {
-              display: block;
-              height: $grid-height-small;
-              width: 100%;
-              padding: 0 10px;
-            }
-
-            .com-select {
-              height: $grid-height-small;
-            }
-
-            .del_hash_key_btn {
-              width: $grid-height-small;
-              height: $grid-height-small;
-              line-height: $grid-height-small;
-              text-align: center;
-              flex-shrink: 0;
-            }
+          .com-select {
+            height: $grid-height-small;
           }
-        }
 
-        .child_form {
-          background-color: $background-color-dark;
-          max-height: 300px;
-          overflow: hidden;
-          overflow-y: auto;
-
-          .add_btn_wrapper {
-            height: $grid-height-normal;
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            align-items: center;
-            padding: 0 10px;
-
-            .add_btn {
-              display: block;
-              width: fit-content;
-              height: $grid-height-small;
-              line-height: $grid-height-small;
-              padding: 0 10px;
-            }
+          .del_hash_key_btn {
+            width: $grid-height-small;
+            height: $grid-height-small;
+            line-height: $grid-height-small;
+            text-align: center;
+            flex-shrink: 0;
           }
         }
       }
 
-      .footer {
-        border-top: 2px solid $border-color;
-        display: flex;
-        height: $grid-height-normal;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
+      .child_form {
+        background-color: $background-color-dark;
+        max-height: 300px;
+        overflow: hidden;
+        overflow-y: auto;
 
-        .com-btn {
-          height: $grid-height-small;
-          line-height: $grid-height-small;
+        .add_btn_wrapper {
+          height: $grid-height-normal;
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+          align-items: center;
           padding: 0 10px;
-          margin-left: 10px;
+
+          .add_btn {
+            display: block;
+            width: fit-content;
+            height: $grid-height-small;
+            line-height: $grid-height-small;
+            padding: 0 10px;
+          }
         }
       }
     }
+
+    .footer {
+      border-top: 2px solid $border-color;
+      display: flex;
+      height: $grid-height-normal;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+
+      .com-btn {
+        height: $grid-height-small;
+        line-height: $grid-height-small;
+        padding: 0 10px;
+        margin-left: 10px;
+      }
+    }
   }
+}
 </style>
