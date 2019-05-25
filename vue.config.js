@@ -15,11 +15,11 @@ module.exports = {
           artifactName: '${productName}_setup_${version}.${ext}'
         },
         mac: {
-          icon: 'public/mac_512x512.icns',
+          icon: 'public/icon.icns',
           artifactName: '${productName}_setup_${version}.${ext}'
         },
         linux: {
-          icon: 'public/icon.ico',
+          // icon: 'public/icon.ico',
           artifactName: '${productName}_setup_${version}.${ext}'
         }
       }
