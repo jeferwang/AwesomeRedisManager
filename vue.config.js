@@ -9,18 +9,18 @@ module.exports = {
     },
     electronBuilder: {
       builderOptions: {
-        productName: 'Awesome Redis Manager',
+        productName: 'AwesomeRedisManager',
         win: {
           icon: 'public/icon.ico',
-          artifactName: '${productName}_setup_${version}.${ext}'
+          artifactName: 'Windows_${productName}Setup_${version}.${ext}'
         },
         mac: {
           icon: 'public/icon.icns',
-          artifactName: '${productName}_setup_${version}.${ext}'
+          artifactName: 'Mac_${productName}Setup_${version}.${ext}'
         },
         linux: {
           // icon: 'public/icon.ico',
-          artifactName: '${productName}_setup_${version}.${ext}'
+          artifactName: 'Linux_${productName}Setup_${version}.${ext}'
         }
       }
     }
