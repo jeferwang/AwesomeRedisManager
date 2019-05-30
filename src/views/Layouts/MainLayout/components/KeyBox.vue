@@ -5,9 +5,21 @@
         Key Name
       </div>
       <div class="ttl_box">
-        <div>TTL:</div>
-        <div>{{ttl}}&nbsp;({{expireDate}})</div>
-        <div class="btn_modify_ttl"><i class="fa fa-pencil-square-o"></i></div>
+        <div v-show="!editTTL" class="show_ttl">
+          <div>TTL:</div>
+          <div>{{TTL}}&nbsp;({{expireDate}})</div>
+          <div class="btn_modify_TTL" @click="onEditTTL"><i class="fa fa-pencil-square-o"></i></div>
+        </div>
+        <div v-show="editTTL" class="edit_ttl">
+          <div>Modify TTL:&nbsp;</div>
+          <input
+            ref="ttlEditBox"
+            type="text"
+            class="com-input ttl_input"
+            v-model="tmpTTL"
+            @blur="onSaveTTL"
+          >
+        </div>
       </div>
     </div>
     <div class="input_box">
@@ -53,18 +65,49 @@ export default {
     return {
       originKey: null,
       key: null,
-      ttl: 0
+      TTL: 0,
+      tmpTTL: 0,
+      editTTL: true
     }
   },
   computed: {
     expireDate () {
-      if (this.ttl === -1) {
+      if (this.TTL === -1) {
         return 'Expires after the end of the world'
       }
-      return `Expires on ${moment(Date.now() + this.ttl * 1000).format('YYYY-MM-DD hh:mm:ss')}`
+      return `Expires on ${moment(Date.now() + this.TTL * 1000).format('YYYY-MM-DD hh:mm:ss')}`
     }
   },
   methods: {
+    async onEditTTL () {
+      await this.refreshTTL()
+      this.editTTL = true
+      this.$refs.ttlEditBox.focus()
+    },
+    async onSaveTTL () {
+      console.log(this.TTL, this.tmpTTL)
+      if (this.TTL.toString() !== this.tmpTTL.toString()) {
+        // 检查值的有效性
+        if (!/^-?\d+$/.test(this.tmpTTL)) {
+          return this.$msg.msgBox({ msg: 'TTL must be integer', type: 'warning' })
+        }
+        if (parseInt(this.tmpTTL) < -1) {
+          return this.$msg.msgBox({ msg: 'TTL must be greater than -1', type: 'warning' })
+        }
+        if (this.tmpTTL.toString() !== '-1') {
+          if (this.tmpTTL.toString() === '0') {
+            // todo 删除提示
+            this.$emit('delete-key')
+          } else {
+            await this.tab.connect.expire(this.mainKey, this.tmpTTL)
+          }
+        } else {
+          await this.tab.connect.persist(this.mainKey)
+        }
+      }
+      this.refreshTTL()
+      this.editTTL = false
+    },
     onClickRename () {
       if (this.key === this.originKey) {
         return false
@@ -76,14 +119,19 @@ export default {
     onClickDelete () {
       this.$emit('delete-key')
     },
+    async refreshTTL () {
+      // 获取TTL
+      const TTL = await this.tab.connect.ttl(this.mainKey)
+      if (TTL) {
+        this.TTL = TTL
+        this.tmpTTL = TTL
+      }
+    },
     async initData () {
       this.originKey = this.mainKey
       this.key = this.mainKey
-      // 获取ttl
-      const ttl = await this.tab.connect.ttl(this.mainKey)
-      if (ttl) {
-        this.ttl = ttl
-      }
+      this.editTTL = false
+      this.refreshTTL()
     }
   },
   mounted () {
@@ -128,23 +176,36 @@ export default {
       }
 
       .ttl_box {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
+        .show_ttl {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
 
-        .btn_modify_ttl {
-          margin-left: 5px;
-          height: 20px;
-          width: 20px;
-          text-align: center;
-          line-height: 20px;
-          cursor: pointer;
-          transition: color .5s;
-          border-radius: 2px;
+          .btn_modify_TTL {
+            margin-left: 5px;
+            height: 20px;
+            width: 20px;
+            text-align: center;
+            line-height: 20px;
+            cursor: pointer;
+            transition: color .5s;
+            border-radius: 2px;
 
-          &:hover {
-            background-color: $background-color-dark;
-            color: #ffffff;
+            &:hover {
+              background-color: $background-color-dark;
+              color: #ffffff;
+            }
+          }
+        }
+
+        .edit_ttl {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+
+          .ttl_input {
+            height: 20px;
+            padding: 0 5px;
           }
         }
       }
