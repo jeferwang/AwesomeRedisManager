@@ -1,7 +1,14 @@
 <template>
   <div class="key_box_main">
-    <div class="key_label">
-      Key Name
+    <div class="key_line">
+      <div class="key_label">
+        Key Name
+      </div>
+      <div class="ttl_box">
+        <div>TTL:</div>
+        <div>{{ttl}}&nbsp;({{expireDate}})</div>
+        <div class="btn_modify_ttl"><i class="fa fa-pencil-square-o"></i></div>
+      </div>
     </div>
     <div class="input_box">
       <textarea
@@ -28,6 +35,8 @@
 </template>
 
 <script>
+import moment from 'moment'
+
 export default {
   name: 'KeyBox',
   props: {
@@ -43,7 +52,16 @@ export default {
   data () {
     return {
       originKey: null,
-      key: null
+      key: null,
+      ttl: 0
+    }
+  },
+  computed: {
+    expireDate () {
+      if (this.ttl === -1) {
+        return 'Expires after the end of the world'
+      }
+      return `Expires on ${moment(Date.now() + this.ttl * 1000).format('YYYY-MM-DD hh:mm:ss')}`
     }
   },
   methods: {
@@ -58,9 +76,14 @@ export default {
     onClickDelete () {
       this.$emit('delete-key')
     },
-    initData () {
+    async initData () {
       this.originKey = this.mainKey
       this.key = this.mainKey
+      // 获取ttl
+      const ttl = await this.tab.connect.ttl(this.mainKey)
+      if (ttl) {
+        this.ttl = ttl
+      }
     }
   },
   mounted () {
@@ -78,54 +101,83 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.key_box_main {
-  padding: 10px;
-  font-size: 14px;
+  .key_box_main {
+    padding: 10px;
+    font-size: 14px;
 
-  .key_label {
-    line-height: 14px;
-    height: 14px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-
-    .btn_rename {
-      cursor: pointer;
-
-      &:hover {
-        color: $text-color-light;
-      }
-    }
-  }
-
-  .input_box {
-    display: flex;
-    flex-direction: row;
-    height: 80px;
-    margin-top: 10px;
-
-    .key_input {
-      flex-grow: 1;
-      height: 100%;
-      display: block;
-      width: 100%;
-      padding: 10px;
-      line-height: 18px;
-    }
-
-    .opt_group {
-      flex-shrink: 0;
+    .key_line {
       display: flex;
-      flex-direction: column;
-      justify-content: space-between;
+      height: 20px;
+      flex-direction: row;
+      align-items: center;
 
-      & > div {
-        width: 100px;
-        height: $grid-height-normal;
-        line-height: $grid-height-normal;
-        text-align: center;
+      .key_label {
+        line-height: 20px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-right: 15px;
+
+        .btn_rename {
+          cursor: pointer;
+
+          &:hover {
+            color: $text-color-light;
+          }
+        }
+      }
+
+      .ttl_box {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        .btn_modify_ttl {
+          margin-left: 5px;
+          height: 20px;
+          width: 20px;
+          text-align: center;
+          line-height: 20px;
+          cursor: pointer;
+          transition: color .5s;
+          border-radius: 2px;
+
+          &:hover {
+            background-color: $background-color-dark;
+            color: #ffffff;
+          }
+        }
+      }
+    }
+
+    .input_box {
+      display: flex;
+      flex-direction: row;
+      height: 80px;
+      margin-top: 10px;
+
+      .key_input {
+        flex-grow: 1;
+        height: 100%;
+        display: block;
+        width: 100%;
+        padding: 10px;
+        line-height: 18px;
+      }
+
+      .opt_group {
+        flex-shrink: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        & > div {
+          width: 100px;
+          height: $grid-height-normal;
+          line-height: $grid-height-normal;
+          text-align: center;
+        }
       }
     }
   }
-}
 </style>
