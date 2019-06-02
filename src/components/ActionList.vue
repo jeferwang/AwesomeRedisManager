@@ -29,7 +29,7 @@
         <template v-for="(action,idx) in actionList">
           <div
             class="action"
-            :key="idx"
+            :key="action"
             @click="onSelectAction(action,idx)"
             v-if="!filterText.length || action.toLowerCase().includes(filterText.toLowerCase())"
           >
@@ -48,7 +48,9 @@ export default {
     //   选项列表
     actionList: {
       type: Array,
-      default: () => { return [] }
+      default: () => {
+        return []
+      }
     },
     // 提示文字
     tipText: {
@@ -86,53 +88,59 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.action_list_mask {
-  position: fixed;
-  width: 100vw;
-  height: 100vh;
-  left: 0;
-  top: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background-color: $background-color-mask;
-  z-index: 99;
-  .action_list {
-    margin-top: 10px;
-    background-color: $background-color;
-    width: 30vw;
-    .filter_box {
-      .com-input {
-        width: 100%;
-        height: $grid-height-normal;
-        padding: 0 10px;
-      }
-    }
-    .tip_text {
-      font-size: 12px;
-      background-color: $background-color-dark;
-      padding: 5px 0 5px 10px;
-    }
-    .actions {
-      //   margin-top: 10px;
-      max-height: 40vh;
-      overflow: hidden;
-      overflow-y: auto;
+  .action_list_mask {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    left: 0;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: $background-color-mask;
+    z-index: 99;
 
-      .action {
-        padding: 0 0 0 10px;
-        cursor: pointer;
-        height: $grid-height-normal;
-        line-height: $grid-height-normal;
-        border-bottom: 1px solid $border-color;
-        &:last-child {
-          border-bottom: none;
+    .action_list {
+      margin-top: 10px;
+      background-color: $background-color;
+      width: 30vw;
+
+      .filter_box {
+        .com-input {
+          width: 100%;
+          height: $grid-height-normal;
+          padding: 0 10px;
         }
-        &:hover {
-          background-color: $background-color-lighter;
+      }
+
+      .tip_text {
+        font-size: 12px;
+        background-color: $background-color-dark;
+        padding: 5px 0 5px 10px;
+      }
+
+      .actions {
+        //   margin-top: 10px;
+        max-height: 40vh;
+        overflow: hidden;
+        overflow-y: auto;
+
+        .action {
+          padding: 0 0 0 10px;
+          cursor: pointer;
+          height: $grid-height-normal;
+          line-height: $grid-height-normal;
+          border-bottom: 1px solid $border-color;
+
+          &:last-child {
+            border-bottom: none;
+          }
+
+          &:hover {
+            background-color: $background-color-lighter;
+          }
         }
       }
     }
   }
-}
 </style>

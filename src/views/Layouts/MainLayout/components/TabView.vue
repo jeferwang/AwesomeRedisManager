@@ -172,7 +172,7 @@ export default {
     },
     // 收到子组件的删除事件
     async onDeleteCurrent () {
-      await this.deleteKey(this.detail.key, this.detail.index)
+      await this.deleteKey(this.detail.key, this.detail.idx)
       this.hideDetail()
     },
     // 隐藏详情

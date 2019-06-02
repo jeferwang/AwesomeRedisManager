@@ -54,7 +54,7 @@
             <div
               class="hash_group"
               v-for="(hashItem,hashIdx) in hashData"
-              :key="hashIdx"
+              :key="hashItem.id"
             >
               <div class="form_item">
                 <div class="item_label">Hash Key</div>
@@ -86,7 +86,7 @@
             <div class="add_btn_wrapper">
               <div
                 class="com-btn com-btn-primary add_btn"
-                @click="hashData.push({key:'',value:''})"
+                @click="hashData.push({key:'',value:'',id:Math.random()})"
               >
                 <span class="fa fa-plus"></span>
                 <span> Create Hash Item</span>
@@ -99,12 +99,12 @@
             <div
               class="form_item"
               v-for="(listItem,listIdx) in listData"
-              :key="listIdx"
+              :key="listItem.id"
             >
               <div class="item_label">List Item</div>
               <div class="item_body">
                 <input
-                  v-model="listData[listIdx]"
+                  v-model="listData[listIdx].value"
                   type="text"
                   class="com-input"
                 >
@@ -119,7 +119,7 @@
             <div class="add_btn_wrapper">
               <div
                 class="com-btn com-btn-primary add_btn"
-                @click="listData.push('')"
+                @click="listData.push({value:'',id:Math.random()})"
               >
                 <span class="fa fa-plus"></span>
                 <span> Create List Item</span>
@@ -132,12 +132,12 @@
             <div
               class="form_item"
               v-for="(setItem,setIdx) in setData"
-              :key="setIdx"
+              :key="setItem.id"
             >
               <div class="item_label">Set Item</div>
               <div class="item_body">
                 <input
-                  v-model="setData[setIdx]"
+                  v-model="setData[setIdx].value"
                   type="text"
                   class="com-input"
                 >
@@ -152,7 +152,7 @@
             <div class="add_btn_wrapper">
               <div
                 class="com-btn com-btn-primary add_btn"
-                @click="setData.push('')"
+                @click="setData.push({value:'',id:Math.random()})"
               >
                 <span class="fa fa-plus"></span>
                 <span> Create Set Item</span>
@@ -165,7 +165,7 @@
             <div
               class="zset_group"
               v-for="(zsetItem,zsetIdx) in zsetData"
-              :key="zsetIdx"
+              :key="zsetItem.id"
             >
               <div class="form_item">
                 <div class="item_label">Zset Score</div>
@@ -197,7 +197,7 @@
             <div class="add_btn_wrapper">
               <div
                 class="com-btn com-btn-primary add_btn"
-                @click="zsetData.push({score:'',value:''})"
+                @click="zsetData.push({score:'',value:'',id:Math.random()})"
               >
                 <span class="fa fa-plus"></span>
                 <span> Create Zset Item</span>
@@ -314,10 +314,10 @@ export default {
       let args = []
       // 验证hashData的有效性
       for (let i = 0; i < this.setData.length; i++) {
-        if (!this.setData[i].length) {
+        if (!this.setData[i].value.length) {
           throw new Error('Please input set full data')
         }
-        args.push(this.setData[i])
+        args.push(this.setData[i].value)
       }
       await conn.sadd(this.key, ...args)
     },
@@ -327,12 +327,12 @@ export default {
         throw new Error('Please input list data')
       }
       let args = []
-      // 验证hashData的有效性
+      // 验证listData的有效性
       for (let i = 0; i < this.listData.length; i++) {
-        if (!this.listData[i].length) {
+        if (!this.listData[i].value.length) {
           throw new Error('Please input list full data')
         }
-        args.push(this.listData[i])
+        args.push(this.listData[i].value)
       }
       await conn.rpush(this.key, ...args)
     },
