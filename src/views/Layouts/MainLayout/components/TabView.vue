@@ -306,6 +306,7 @@ export default {
           line-height: $grid-height-normal;
           padding: 0 10px;
           cursor: pointer;
+          white-space: nowrap;
         }
 
         .com-input {
@@ -340,6 +341,8 @@ export default {
     }
 
     .right {
+      overflow: hidden;
+      overflow-y: auto;
       height: 100%;
       width: 60vw;
       box-sizing: border-box;

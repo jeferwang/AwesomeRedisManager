@@ -416,7 +416,7 @@ export default {
 
           .hkey_input {
             flex-grow: 1;
-            flex-shrink: 0;
+            /*flex-shrink: 0;*/
             display: block;
             height: $grid-height-normal;
             line-height: $grid-height-normal;

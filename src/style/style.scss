@@ -101,3 +101,7 @@ textarea {
 textarea.no_resize{
   resize: none;
 }
+input{
+  min-width: 0;
+  min-height: 0;
+}
