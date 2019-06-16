@@ -73,7 +73,7 @@ export default {
   computed: {
     expireDate () {
       if (this.TTL === -1) {
-        return 'Expires after the end of the world'
+        return 'Infinite'
       }
       return `Expires on ${moment(Date.now() + this.TTL * 1000).format('YYYY-MM-DD hh:mm:ss')}`
     }
