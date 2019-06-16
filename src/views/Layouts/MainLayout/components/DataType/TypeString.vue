@@ -74,9 +74,13 @@ export default {
       if (this.val === this.originVal) {
         return false
       }
-      await this.tab.connect.set(this.mainKey, this.val)
-      // 保存成功的提示
-      this.$msg.msgBox({ msg: 'Save Successfully', type: 'success', duration: 1500 })
+      try {
+        await this.tab.connect.set(this.mainKey, this.val)
+        this.$msg.msgBox({ msg: 'Save Successfully', type: 'success', duration: 1500 })
+        this.originVal = this.val
+      } catch (e) {
+        this.$msg.msgBox({ msg: 'Save Failed', type: 'warning', duration: 1500 })
+      }
     },
     async initData () {
       let val = await this.tab.connect.get(this.mainKey)
@@ -99,39 +103,40 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.main_box {
-  padding: 10px;
+  .main_box {
+    padding: 10px;
 
-  .value_box {
-    font-size: 14px;
+    .value_box {
+      font-size: 14px;
 
-    .input_box {
-      display: flex;
-      flex-direction: row;
-      margin-top: 10px;
-
-      .value_input {
-        flex-grow: 1;
-        width: 100%;
-        padding: 10px;
-        line-height: 18px;
-        display: block;
-        height: 300px;
-      }
-
-      .opt_group {
+      .input_box {
         display: flex;
-        flex-direction: column;
-        flex-shrink: 0;
-        & > div {
-          width: 100px;
+        flex-direction: row;
+        margin-top: 10px;
+
+        .value_input {
           flex-grow: 1;
+          width: 100%;
+          padding: 10px;
+          line-height: 18px;
+          display: block;
+          height: 300px;
+        }
+
+        .opt_group {
           display: flex;
-          justify-content: center;
-          align-items: center;
+          flex-direction: column;
+          flex-shrink: 0;
+
+          & > div {
+            width: 100px;
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          }
         }
       }
     }
   }
-}
 </style>
