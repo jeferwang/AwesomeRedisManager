@@ -67,7 +67,7 @@
 import CreateMainKey from '../Dialog/CreateMainKey'
 
 export default {
-  name: 'TypeString',
+  name: 'TypeList',
   components: {
     CreateMainKey
   },
@@ -162,11 +162,12 @@ export default {
       let currLen = this.dataList.length
       if (currLen < this.dataCount) {
         let nextPageData = await this.tab.connect.lrange(this.mainKey, currLen, currLen + this.perPage)
-        nextPageData && nextPageData.length && nextPageData.forEach(item => {
-          if (!this.dataList.includes(item)) {
+        console.log(this.mainKey, currLen, currLen + this.perPage, nextPageData)
+        if (nextPageData && nextPageData.length) {
+          nextPageData.forEach(item => {
             this.dataList.push(item)
-          }
-        })
+          })
+        }
       } else {
         this.hasMore = false
       }
